@@ -4,6 +4,8 @@ One Paragraph of project description goes here
 
 ## Getting Started
 
+[Video on how to create Chrome Extension for Roam-Highlighter](https://www.screencast.com/t/7vYK9qMGqIyY)
+
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
