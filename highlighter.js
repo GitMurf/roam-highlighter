@@ -193,7 +193,8 @@ document.addEventListener('cut', function (e)
                     var newElem = document.createElement("span");
                     //Creating a new element so have to add one to the i counter
                     //UPDATE don't need to add one here because delete the created element later
-                    //i++;
+                    //UPDATE UPDATE you DO need this actually!
+                    i++;
                     newElem.textContent = elem.textContent;
                     //Set the elem variable to this new element and then can delete the "dummy" one we created
                     elem = newElem;
