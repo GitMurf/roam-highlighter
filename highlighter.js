@@ -194,7 +194,8 @@ document.addEventListener('cut', function (e)
                     //Creating a new element so have to add one to the i counter
                     //UPDATE don't need to add one here because delete the created element later
                     //UPDATE UPDATE you DO need this actually!
-                    i++;
+                    //FINAL update: You cannot have this here and instead added around line 267 when a SPAN is actually being added
+                    //i++;
                     newElem.textContent = elem.textContent;
                     //Set the elem variable to this new element and then can delete the "dummy" one we created
                     elem = newElem;
@@ -263,6 +264,7 @@ document.addEventListener('cut', function (e)
 
                             if(childElem.textContent.trim().length > 0)
                             {
+                                if(noChild == 1){i++;}
                                 //Create a range to create the new SPAN element from below
                                 var divTest = document.createRange();
                                 //Add teh start and end of the range for Highlighter
