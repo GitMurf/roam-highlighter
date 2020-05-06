@@ -2,7 +2,7 @@
 
 One Paragraph of project description goes here
 
-## DEMOS
+## Demo
 
 ![](https://user-images.githubusercontent.com/64155612/81142339-4b1ce180-8f24-11ea-908b-add409f0c7d4.gif)
 
@@ -12,7 +12,8 @@ One Paragraph of project description goes here
 
 I need to add other instructions here...
 
-# NOTE EVERYTHING BELOW IS A PLACEHOLDER THAT I NEED TO FILL OUT TO FINISH README
+
+## NOTE EVERYTHING BELOW IS A PLACEHOLDER THAT I NEED TO FILL OUT TO FINISH README
 
 ### Prerequisites
 
