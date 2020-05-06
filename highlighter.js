@@ -384,17 +384,17 @@ else
                     //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
                     //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
                     var newText = prevText + curElement.innerText + nextText;
-                    console.log('new text: ', newText);
+                    //console.log('new text: ', newText);
                     curElement.previousSibling.textContent = newText;
                     curElement.nextSibling.remove();
                 }else {
                     var newText = prevText + curElement.innerText;
-                    console.log('new text: ', newText);
+                    //console.log('new text: ', newText);
                     curElement.previousSibling.textContent = newText;
                 }
             }else {
                 var newText = curElement.innerText + nextText;
-                console.log('new text: ', newText);
+                //console.log('new text: ', newText);
                 curElement.nextSibling.textContent = newText;
             }
 
