@@ -13,7 +13,7 @@ else
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
     function updateClipboard() {
         //Get page title and URL and put in Roam format [Page Title](URL)
-        var reference = `[${document.title}](${location.href}) #[[Roam-Highlighter]]`;
+        var reference = `[${document.title}](${location.href}) #[[Roam-Highlights]]`;
         var finalString = "";
         var concatHighlights = "";
         var eachHighlight = "";
