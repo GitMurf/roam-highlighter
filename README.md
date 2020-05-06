@@ -2,6 +2,10 @@
 
 One Paragraph of project description goes here
 
+## DEMOS
+
+![](https://user-images.githubusercontent.com/64155612/81142339-4b1ce180-8f24-11ea-908b-add409f0c7d4.gif)
+
 ## Getting Started
 
 [Video on how to create Chrome Extension for Roam-Highlighter](https://www.screencast.com/t/7vYK9qMGqIyY)
