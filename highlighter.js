@@ -1,3 +1,5 @@
+//Version 1.0
+//Date: May 5, 2020
 console.log('Loaded highlighter.js script');
 
 //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
