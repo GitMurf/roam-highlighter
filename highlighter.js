@@ -26,7 +26,7 @@ else
         //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
         //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
         //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-        var sameBlock = 2;
+        var sameBlock = 3;
 
         //Get all the highlighted elements based off class name roamJsHighlighter
         var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
@@ -45,7 +45,8 @@ else
                 {
                     tempString = eachHighlight.trim().replace(/(\r\n|\n|\r)/gm," ");
                     tempString = tempString.replace(/\s+/g," ");
-                    tempString = `\t- ${tempString.trim()}\n`;
+                    plainText = `\t- ${tempString.trim()}\n`;
+                    htmlString = `<li>${tempString.trim()}</li>`;
                 }
             }
             else
