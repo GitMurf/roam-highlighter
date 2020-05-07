@@ -1,5 +1,13 @@
-//Version 1.1
-//Date: May 6, 2020
+//Version 1.2
+//Date: May 7, 2020
+
+//4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
+//Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
+//Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
+//Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
+//Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
+var sameBlock = Number(0);
+
 if(typeof roamHighlighterLoaded !== "undefined")
 {
     //Variable already present/set so therefore do not need to run again as don't want to duplicate load the Javascript code
@@ -25,14 +33,7 @@ else
         var plainConcatHighlights = "";
         var htmlConcatHighlights = "";
         var eachHighlight = "";
-
-        //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
-        //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
-        //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
-        //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
-        //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-        var sameBlock = 0;
-
+console.log('sameBlock: ', sameBlock);
         //Get all the highlighted elements based off class name roamJsHighlighter
         var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
         for (var i = 0; i < elemHighlights.length; i++)
@@ -59,6 +60,7 @@ else
 
             if(sameBlock == 3)
             {
+console.log('sameBlock 3 CASE');
                 //Instead of looping through line breaks below, replace line breaks with a SPACE to bring into same block.
                 if(eachHighlight.trim().length > 0)
                 {
@@ -87,10 +89,12 @@ else
                         switch (sameBlock)
                         {
                             case 0:
+console.log('sameBlock 0 CASE');
                                 plainText += `\t- ${eachLine.trim()}\n`;
                                 htmlString += `<li>${eachLine.trim()}</li>`;
                                 break;
                             case 1:
+console.log('sameBlock 1 CASE');
                                 if(x > 0)
                                 {
                                     //Nested under the first bullet/linebreak from the highlight
@@ -105,6 +109,7 @@ else
                                 }
                                 break;
                             case 2:
+console.log('sameBlock 2 CASE');
                                 //Plain text can't handle the Ctrl + Enter "soft line breaks" so just do same as case 1 above nested bullets
                                 if(x > 0)
                                 {
@@ -443,7 +448,7 @@ else
 console.log('length: ',nextChildElem.textContent.trim().length);
 console.log('length: ',nextChildElem.textContent.trim().length);
 */
-                                        if(nextChildElem.textContent.trim().length > 0 && (nextChildElem.nodeName == 'EM' || nextChildElem.nodeName == 'G-EMOJI' || nextChildElem.nodeName == 'A' || (nextChildElem.nodeName == '#text' && childElemEnd.nodeName == '#text')))
+                                        if(nextChildElem.textContent.trim().length > 0 && (nextChildElem.nodeName == 'EM' || nextChildElem.nodeName == 'PRE' || nextChildElem.nodeName == 'H3' || nextChildElem.nodeName == 'CODE' || nextChildElem.nodeName == 'G-EMOJI' || nextChildElem.nodeName == 'A' || (nextChildElem.nodeName == '#text' && childElemEnd.nodeName == '#text')))
                                         {
                                             /*
                                             console.log('in-i: ',i);
@@ -616,6 +621,28 @@ break;
         //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
         clickEvent = 0;
         updateClipboard();
+        e.preventDefault();
+    }
+    );
+
+    //Add listener to "paste" event (CTRL + V on Windows) to bring up option to change way line breaks are handled
+    document.addEventListener('paste', function (e)
+    {
+        //localStorage["sameBlockOpt"];
+        sameBlockOpt = Number(prompt("0 = [Default] Line breaks create new bullets at same 'level'\n1 = Nest underneath the first 'paragraph' in each highlight\n2 = Line Breaks stay within each bullet (ie. Ctrl + Shift + V)\n3 = Replace line breaks with SPACEs", 1));
+        //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
+        //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
+        //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
+        //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
+        //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
+        if(sameBlockOpt != 0 && sameBlockOpt != 1 && sameBlockOpt != 2 && sameBlockOpt != 3){sameBlock = Number(0);}else{sameBlock = Number(sameBlockOpt);}
+        console.log('sameBlock: ', sameBlock);
+
+        //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
+        //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+        //We already have the "cut" event listener set to run our code, so this should activate it
+        clickEvent = 1;
+        document.execCommand('cut');
         e.preventDefault();
     }
     );
