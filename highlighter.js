@@ -42,6 +42,8 @@ else
             var plainText = "";
             //title = 'HL:' + highlightCtr;
             var elemTitle = elemHighlights.item(i).title.split(":")[1];
+            //var elemTabs = elemHighlights.item(i).getAttribute('hltabs');
+
             eachHighlight = elemHighlights.item(i).textContent;
             //console.log('Element: ', eachHighlight);
             //Check if the next element is the same "title" which means is the same user selected highlight and should be combined
@@ -377,6 +379,10 @@ else
                                 //Default length of text to grab from elements is start to end (0 to the length of string)
                                 var stPos = 0;
                                 var enPos = childElem.length;
+                                if(childElem.nodeName == 'LI')
+                                {
+                                    enPos = childElem.textContent.length;
+                                }
 
                                 //If this is the beginning of the selected text, will handle differently because selection likely just partial of the entire HTML element
                                 if(childElem.textContent == startCont.textContent && foundStart == 0)
@@ -496,7 +502,16 @@ console.log('length: ',nextChildElem.textContent.trim().length);
                                         var divTest = document.createRange();
                                         //Add teh start and end of the range for Highlighter
                                         divTest.setStart(childElem, stPos);
-                                        divTest.setEnd(childElemEnd, enPos);
+
+                                        if(childElem.nodeName == 'LI')
+                                        {
+                                            divTest.setEnd(childElemEnd.childNodes[0], enPos);
+                                        }
+                                        else
+                                        {
+                                            divTest.setEnd(childElemEnd, enPos);
+                                        }
+
 /*
 foundEnd = 1;
 console.log(childElem);
@@ -529,6 +544,14 @@ break;
                                         //Set class for the new SPAN element so you can loop through the highlights later to copy to clipboard
                                         newSpan.className = "roamJsHighlighter";
                                         newSpan.title = 'HL:' + highlightCtr;
+                                        if(childElem.nodeName == 'LI')
+                                        {
+                                            newSpan.setAttribute("hltabs", "1");
+                                            //This is for UL parent to make sure it is idented for paste into roam
+                                            lastSpan.setAttribute("hltabs", "-1");
+                                        }
+                                        else{var lastSpan = newSpan;}
+
                                         newSpan.appendChild(selectedText);
                                         subSelection.insertNode(newSpan);
                                         //console.log('new span created: ', newSpan);
@@ -537,11 +560,10 @@ break;
                                             var finalRangeStart = newSpan;
                                             thisIsFirst = 0;
                                         }
+                                        //Have to jump ahead one more in the loop because just added an element
+                                        j++;
+                                        //i++;
                                     }
-
-                                    //Have to jump ahead one more in the loop because just added an element
-                                    j++;
-                                    //i++;
                                 }
                             }else{
                                 //console.log('not found in childnode selection');
