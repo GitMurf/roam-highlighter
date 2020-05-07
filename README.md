@@ -6,17 +6,17 @@ Follow instructions in the Video I linked under the Getting Started section to i
 
 - Install Chrome Extension on local machines via instructional Video below
 - Press the Highlighter icon in Chrome Extensions toolbar to activate it (only applies to the Tab you click it on)
-- Select text in an article you want to highlight and press Ctrl + X ("cut" command on Windows) to highlight.
-- Click a highlight if you want to remove it later.
-- Everything auto updates and copies ot clipboard anytime you make any changes.
+- Select text in an article you want to highlight and press `Ctrl + X` ("cut" command on Windows) to highlight.
+- `Click` a highlight if you want to remove it later.
+- Everything auto updates and copies to clipboard anytime you make any changes.
 - Paste into Roam and the formatting will do the work for you.
 - If you don't like the way it handles Line Breaks by default, there are 4 options to quickly switch between.
 - Simple go back to your webpage and press `Ctrl + V` ("paste" command on windows) to bring up an options input.
 - Four Options for handling line breaks within each selected highlight by the user (see Demo #3 below)
-  1. Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
-  2. Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
-  3. Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
-  4. Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
+  1. `Set to 0` (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
+  2. `Set to 1` if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
+  3. `Set to 2` if you want line breaks (e.g., each paragraph) to be in same bullet with `Ctrl + Enter` "soft line breaks" like `Ctrl + Shift + V` does in browser pasting
+  4. `Set to 3` if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
 
 ## Demo
 
