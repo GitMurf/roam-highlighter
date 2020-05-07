@@ -26,7 +26,7 @@ else
         //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
         //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
         //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-        var sameBlock = 0;
+        var sameBlock = 1;
 
         //Get all the highlighted elements based off class name roamJsHighlighter
         var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
@@ -53,6 +53,7 @@ else
                 //Loop through each line break within each highlight
                 //Even if no line breaks it will still go through loop and have lineBreaks[0] as the only value it loops through
                 var lineBreaks = eachHighlight.trim().split(/[\r\n]+/);
+                var lineCtr = 0;
                 for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
                 {
                     //console.log('Line ',x,': "',eachLine,'"');
@@ -63,16 +64,36 @@ else
                     //If string is NOT empty, add to variable with a TAB and "-" for bullet
                     if(eachLine.trim().length > 0)
                     {
-                        switch (sameBlock) {
+                        switch (sameBlock)
+                        {
                             case 0:
                                 plainText += `\t- ${eachLine.trim()}\n`;
                                 htmlString += `<li>${eachLine.trim()}</li>`;
+                                break;
+                            case 1:
+                                if(x > 0)
+                                {
+                                    //Nested under the first bullet/linebreak from the highlight
+                                    plainText += `\t\t- ${eachLine.trim()}\n`;
+                                    htmlString += `<li>${eachLine.trim()}</li>`;
+                                }
+                                else
+                                {
+                                    //First line which will go in parent bullet that the rest of the highlight will go under
+                                    plainText += `\t- ${eachLine.trim()}\n`;
+                                    if(lineBreaks.length > 1){htmlString += `<li>${eachLine.trim()}<ul>`;}else{htmlString += `<li>${eachLine.trim()}</li>`;}
+                                }
                                 break;
                             default:
                                 plainText += `\t- ${eachLine.trim()}\n`;
                                 htmlString += `\t- ${eachLine.trim()}\n`;
                         }
+                        lineCtr++
                     }
+                }
+                if(lineCtr > 1)
+                {
+                    htmlString += `</ul></li>`;
                 }
             }
 
@@ -97,6 +118,13 @@ else
             htmlConcatHighlights = '<ul><li>' + reference + '<ul>' + htmlConcatHighlights + '</ul></li></ul>';
             //console.log('Final string: ', plainConcatHighlights);
         }
+
+        /*console.log('plain');
+        console.log(plainText);
+        console.log(plainConcatHighlights);
+        console.log('html');
+        console.log(htmlString);
+        console.log(htmlConcatHighlights);*/
 /*
         finalString = `<p>${finalString}
         new line here</p><p>new paragraph</p>`;
