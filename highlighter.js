@@ -11,6 +11,9 @@ else
     var clickEvent = 0;
     //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
     var highlightCtr = 0;
+    //Global variables for parsing selected elements for highlight
+    var foundStart = 0;
+    var foundEnd = 0;
 
     console.log('Loaded highlighter.js script');
 
@@ -28,7 +31,7 @@ else
         //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
         //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
         //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-        var sameBlock = 2;
+        var sameBlock = 0;
 
         //Get all the highlighted elements based off class name roamJsHighlighter
         var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
@@ -188,6 +191,47 @@ else
         return;
     }
 
+    //
+    function checkSelection(selectionFunc, endContFunc, endOffFunc, childElemFunc)
+    {
+        newChild = childElemFunc.childNodes[0];
+        newOrigElem = childElemFunc;
+        var bNewChild = 1;
+
+        if(typeof newChild == 'undefined')
+        {
+            newChild = newOrigElem;
+            bNewChild = 0;
+        }
+
+        if(selectionFunc.containsNode(newChild, true) || selectionFunc.containsNode(newOrigElem, true))
+        {
+            //console.log('new j: ', j);
+            //Default length of text to grab from elements is start to end (0 to the length of string)
+            var stPos = 0;
+            var enPos = newChild.length;
+
+            //Looking for the end of selection range
+            if(newChild.textContent == endContFunc.textContent)
+            {
+                //console.log('Found end');
+                foundEnd = 1;
+                stPos = 0;
+                enPos = endOffFunc;
+            }
+
+            //If found the end and already added, then will break from the entire loop and end script
+            if(foundEnd == 2)
+            {
+                return 0;
+            }
+            //If are currently processing the end of selection, then now set variable to 2 which will end script with above line next loop through
+            if(foundEnd == 1){foundEnd = 2;}
+            return enPos;
+        }
+        return 0;
+    }
+
     //Add listener to "cut" event (CTRL + X on Windows) for highlighting trigger
     document.addEventListener('cut', function (e)
     {
@@ -265,16 +309,17 @@ else
                 //console.log('start cont: ', startCont);
                 //console.log('end cont: ', endCont);
 
-        /* Loop through all elements for testing
+           /*     //Loop through all elements for testing
                 for (var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
                 {
                     console.log('i: ', i);
                     console.log('elem: ', elem);
                     console.log('elem text: ', elem.textContent);
-                }
-        */
-                var foundStart = 0;
-                var foundEnd = 0;
+                    console.log('elem type: ', elem.nodeName)
+                }*/
+
+                foundStart = 0;
+                foundEnd = 0;
                 var thisIsFirst = 0;
 
                 //Loop through all the child elements of the parent container of the selected text
@@ -359,14 +404,84 @@ else
                                 //If are currently processing the end of selection, then now set variable to 2 which will end script with above line next loop through
                                 if(foundEnd == 1){foundEnd = 2;}
 
+                                //Check the next i element to see if somethign like <em>, <a>, <pre>, <code> etc. that we can extend to
+                                var checkNextEnd = enPos;
+                                if(noChild == 1){childElem = origElem;}
+                                var childElemEnd = childElem;
+                                var whileElem = elem;
+                                while(checkNextEnd > 0)
+                                {
+                                    checkNextEnd = 0;
+                                    if(typeof whileElem.childNodes[j+1] == 'undefined')
+                                    {
+                                        //console.log('i+1');
+                                        nextChildElem = allWithinRangeParent.childNodes[i+1];
+                                    }
+                                    else
+                                    {
+                                        //console.log('j+1');
+                                        nextChildElem = whileElem.childNodes[j+1];
+                                    }
+
+                                    if(typeof nextChildElem !== 'undefined')
+                                    {
+               /* console.log('i: ',i);
+                console.log('j: ',j);
+                console.log('childElem: ',childElem);
+                console.log('childElemType: ',childElem.nodeName);
+                console.log('childElemEnd: ',childElemEnd);
+                console.log('childElemEndType: ',childElemEnd.nodeName);
+                console.log('nextChildElem: ',nextChildElem);
+                console.log('nextChildElemType: ',nextChildElem.nodeName);
+                console.log('nextChildElemNode: ',nextChildElem.childNodes[0]);
+console.log('length: ',nextChildElem.textContent.trim().length);
+console.log('length: ',nextChildElem.textContent.trim().length);
+*/
+                                        if(nextChildElem.textContent.trim().length > 0 && (nextChildElem.nodeName == 'EM' || nextChildElem.nodeName == 'G-EMOJI' || (nextChildElem.nodeName == '#text' && childElemEnd.nodeName == '#text')))
+                                        {
+                                            /*
+                                            console.log('in-i: ',i);
+                                            console.log('in-j: ',j);
+                                            console.log('curItem: ',childElem);
+                                            console.log('curItemType: ',childElem.nodeName);
+                                            console.log('nextChildElem: ',nextChildElem);
+                                            console.log('nextChildElemType: ',nextChildElem.nodeName);
+                                            console.log('nextChildElemNode: ',nextChildElem.childNodes[0]);*/
+                                            checkNextEnd = checkSelection(selection, endCont, endOff, nextChildElem);
+                                            //console.log('checkNextEnd: ',checkNextEnd);
+                                            if(checkNextEnd > 0)
+                                            {
+                                                enPos = checkNextEnd;
+                                                if(typeof nextChildElem.childNodes[0] == 'undefined'){childElemEnd = nextChildElem;}else{childElemEnd = nextChildElem.childNodes[0];}
+
+                                                if(typeof whileElem.childNodes[j+1] == 'undefined')
+                                                {
+                                                    //console.log('now');
+                                                    i++;
+                                                    whileElem = allWithinRangeParent.childNodes[i];
+                                                }
+                                                else
+                                                {
+                                                     //console.log('now2');
+                                                    j++;
+                                                }
+                                            }
+                                             //console.log('now3');
+                                        }
+                                    }
+                                }
+      /*  console.log('here i: ',i);
+        console.log('here j: ',j);
+        console.log('here childElem: ',childElemEnd);*/
                                 //console.log('cur i: ', i);
                                 //console.log('new j: ', j);
 
                                 //This should weed out "empty" items
-                                if(enPos - stPos > 0)
+                                if(enPos > 0)
                                 {
                                     if(noChild == 1)
                                     {
+                                        //console.log('nochild: ',elem);
                                         //noChild explained above
                                         childElem = origElem;
                                         elem.remove();
@@ -381,7 +496,21 @@ else
                                         var divTest = document.createRange();
                                         //Add teh start and end of the range for Highlighter
                                         divTest.setStart(childElem, stPos);
-                                        divTest.setEnd(childElem, enPos);
+                                        divTest.setEnd(childElemEnd, enPos);
+/*
+foundEnd = 1;
+console.log(childElem);
+stPos++
+console.log(stPos);
+console.log(childElemEnd);
+enPos--
+console.log(enPos);
+document.getSelection().removeAllRanges();
+document.getSelection().addRange(divTest);
+//var selec = window.getSelection();
+//selec.addRange(divTest);
+break;
+*/
                                         var subSelection = divTest;
                                         var selectedText = subSelection.extractContents();
 
@@ -426,7 +555,8 @@ else
                             let finalRange = document.createRange();
                             finalRange.setStart(finalRangeStart.childNodes[0], 0);
                             //break;
-                            finalRange.setEnd(newSpan.childNodes[0], newSpan.childNodes[0].length);
+                            var childNodeLength = newSpan.childNodes.length;
+                            finalRange.setEnd(newSpan.childNodes[childNodeLength-1], newSpan.childNodes[childNodeLength-1].length);
                             //console.log('length: ',newSpan.childNodes[0].length);
                             //console.log('length: ',newSpan.length);
 
