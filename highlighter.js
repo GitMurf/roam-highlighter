@@ -437,7 +437,7 @@ else
 console.log('length: ',nextChildElem.textContent.trim().length);
 console.log('length: ',nextChildElem.textContent.trim().length);
 */
-                                        if(nextChildElem.textContent.trim().length > 0 && (nextChildElem.nodeName == 'EM' || nextChildElem.nodeName == 'G-EMOJI' || (nextChildElem.nodeName == '#text' && childElemEnd.nodeName == '#text')))
+                                        if(nextChildElem.textContent.trim().length > 0 && (nextChildElem.nodeName == 'EM' || nextChildElem.nodeName == 'G-EMOJI' || nextChildElem.nodeName == 'A' || (nextChildElem.nodeName == '#text' && childElemEnd.nodeName == '#text')))
                                         {
                                             /*
                                             console.log('in-i: ',i);
