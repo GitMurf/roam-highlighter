@@ -1,17 +1,45 @@
 # roam-highlighter
 
-One Paragraph of project description goes here
+Follow instructions in the Video I linked under the Getting Started section to install Chrome Extension on your machine with my roam-highlighter code. Very easy to do!
+
+## How to Use the Highlighter
+
+- Install Chrome Extension on local machines via instructional Video below
+- Press the Highlighter icon in Chrome Extensions toolbar to activate it (only applies to the Tab you click it on)
+- Select text in an article you want to highlight and press Ctrl + X ("cut" command on Windows) to highlight.
+- Click a highlight if you want to remove it later.
+- Everything auto updates and copies ot clipboard anytime you make any changes.
+- Paste into Roam and the formatting will do the work for you.
+- If you don't like the way it handles Line Breaks by default, there are 4 options to quickly switch between.
+- Simple go back to your webpage and press Ctrl + V ("paste" command on windows) to bring up an options input.
+- Four Options for handling line breaks within each selected highlight by the user (see Demo #3 below)
+  1. Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
+  2. Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
+  3. Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
+  4. Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
 
 ## Demo
 
+### Demo 1 (real quick/simple)
+
+![](https://files.slack.com/files-pri/TNEAEL9QW-F0137GJHH29/qefdv2hxx0.gif)
+
+### Demo 2
+
 ![](https://user-images.githubusercontent.com/64155612/81142339-4b1ce180-8f24-11ea-908b-add409f0c7d4.gif)
+
+### Demo 3 (showing options for handling line breaks)
+
+![](https://files.slack.com/files-pri/TNEAEL9QW-F01328J9HL6/tsd4blbcoi.gif)
 
 ## Getting Started
 
 [Video on how to create Chrome Extension for Roam-Highlighter](https://www.screencast.com/t/7vYK9qMGqIyY)
 
-I need to add other instructions here...
-
+- Download repository
+- Follow the video above for complete instructions on creating Chrome Extension
+- Video also has a demo of the product (although when it wasn't as good a few days ago)
+- Review the GIF Demos above to get an idea of how it works
 
 ## NOTE EVERYTHING BELOW IS A PLACEHOLDER THAT I NEED TO FILL OUT TO FINISH README
 
