@@ -22,7 +22,7 @@ Follow instructions in the Video I linked under the Getting Started section to i
 
 ### Demo 1 (real quick/simple)
 
-![](https://files.slack.com/files-pri/TNEAEL9QW-F0137GJHH29/qefdv2hxx0.gif)
+![](https://user-images.githubusercontent.com/64155612/81344586-e2408100-906b-11ea-9601-5b6082c6de5f.gif)
 
 ### Demo 2
 
@@ -30,7 +30,7 @@ Follow instructions in the Video I linked under the Getting Started section to i
 
 ### Demo 3 (showing options for handling line breaks)
 
-![](https://files.slack.com/files-pri/TNEAEL9QW-F01328J9HL6/tsd4blbcoi.gif)
+![](https://user-images.githubusercontent.com/64155612/81344530-c3da8580-906b-11ea-9696-3abce1d0a912.gif)
 
 ## Getting Started
 
