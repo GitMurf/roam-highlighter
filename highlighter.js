@@ -26,7 +26,7 @@ else
         //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
         //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
         //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-        var sameBlock = 1;
+        var sameBlock = 2;
 
         //Get all the highlighted elements based off class name roamJsHighlighter
         var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
@@ -84,6 +84,21 @@ else
                                     if(lineBreaks.length > 1){htmlString += `<li>${eachLine.trim()}<ul>`;}else{htmlString += `<li>${eachLine.trim()}</li>`;}
                                 }
                                 break;
+                            case 2:
+                                //Plain text can't handle the Ctrl + Enter "soft line breaks" so just do same as case 1 above nested bullets
+                                if(x > 0)
+                                {
+                                    //Second line and on which is nested in the same bullet replicating ctrl + Enter
+                                    plainText += `\t\t- ${eachLine.trim()}\n`;
+                                    htmlString += `\n${eachLine.trim()}`;
+                                }
+                                else
+                                {
+                                    //First line
+                                    plainText += `\t- ${eachLine.trim()}\n`;
+                                    if(lineBreaks.length > 1){htmlString += `<li>${eachLine.trim()}`;}else{htmlString += `<li>${eachLine.trim()}</li>`;}
+                                }
+                                break;
                             default:
                                 plainText += `\t- ${eachLine.trim()}\n`;
                                 htmlString += `\t- ${eachLine.trim()}\n`;
@@ -91,9 +106,18 @@ else
                         lineCtr++
                     }
                 }
-                if(lineCtr > 1)
+
+                switch (sameBlock)
                 {
-                    htmlString += `</ul></li>`;
+                    case 0:
+                        break;
+                    case 1:
+                        if(lineCtr > 1){htmlString += `</ul></li>`;}
+                        break;
+                    case 2:
+                        if(lineCtr > 1){htmlString += `</li>`;}
+                        break;
+                    default:
                 }
             }
 
