@@ -1,6 +1,6 @@
 # roam-highlighter
 
-Follow instructions in the Video (Linking it [Here](https://www.screencast.com/t/7vYK9qMGqIyY) too) I linked under the Getting Started section to install Chrome Extension on your machine with my roam-highlighter code. Very easy to do!
+Follow instructions in the Video ([Linking it Here](https://www.screencast.com/t/7vYK9qMGqIyY) too) I linked under the Getting Started section to install Chrome Extension on your machine with my roam-highlighter code. Very easy to do!
 
 ## How to Use the Highlighter
 
