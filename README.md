@@ -11,7 +11,7 @@ Follow instructions in the Video I linked under the Getting Started section to i
 - Everything auto updates and copies ot clipboard anytime you make any changes.
 - Paste into Roam and the formatting will do the work for you.
 - If you don't like the way it handles Line Breaks by default, there are 4 options to quickly switch between.
-- Simple go back to your webpage and press Ctrl + V ("paste" command on windows) to bring up an options input.
+- Simple go back to your webpage and press `Ctrl + V` ("paste" command on windows) to bring up an options input.
 - Four Options for handling line breaks within each selected highlight by the user (see Demo #3 below)
   1. Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
   2. Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
