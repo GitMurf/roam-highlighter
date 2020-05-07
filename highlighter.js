@@ -9,6 +9,8 @@ else
     var roamHighlighterLoaded = 1;
     //Variable to see if starting by click event (to remove a highlight) OR by a 'cut' event by user adding a highlight
     var clickEvent = 0;
+    //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
+    var highlightCtr = 0;
 
     console.log('Loaded highlighter.js script');
 
@@ -26,7 +28,7 @@ else
         //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
         //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
         //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-        var sameBlock = 3;
+        var sameBlock = 2;
 
         //Get all the highlighted elements based off class name roamJsHighlighter
         var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
@@ -35,8 +37,20 @@ else
             var tempString = "";
             var htmlString = "";
             var plainText = "";
+            //title = 'HL:' + highlightCtr;
+            var elemTitle = elemHighlights.item(i).title.split(":")[1];
             eachHighlight = elemHighlights.item(i).textContent;
             //console.log('Element: ', eachHighlight);
+            //Check if the next element is the same "title" which means is the same user selected highlight and should be combined
+            if(i + 1 < elemHighlights.length)
+            {
+                while(elemTitle == elemHighlights.item(i+1).title.split(":")[1])
+                {
+                    eachHighlight += '\n' + elemHighlights.item(i+1).textContent;
+                    i++;
+                    if(i + 1 >= elemHighlights.length){break;}
+                }
+            }
 
             if(sameBlock == 3)
             {
@@ -179,6 +193,8 @@ else
     {
         if(clickEvent == 0)
         {
+            //Check to see if at least one selection by the user was found to be highlighted (will use to increment the highlightCtr variable later)
+            var foundSelection = 0;
             //Get current selected text which will be used to highlight and then later when ready to export to Roam
             var selection = window.getSelection();
             //Create range from selected text
@@ -223,6 +239,11 @@ else
                 var selectedText = subSelection.extractContents();
                 //Create new HTML element SPAN and will add the roamJsHighlighter class to loop through later
                 var newSpan = document.createElement("span");
+                if(foundSelection == 0)
+                {
+                    foundSelection = 1;
+                    highlightCtr++
+                }
 
                 //newSpan.style.backgroundColor = "yellow";
                 //Adding !important to CSS to account for Dark Theme extensions that override styles... otherwise can't see highlights in dark mode
@@ -231,6 +252,7 @@ else
 
                 //Set class for the new SPAN element so you can loop through the highlights later to copy to clipboard
                 newSpan.className = "roamJsHighlighter";
+                newSpan.title = 'HL:' + highlightCtr;
                 newSpan.appendChild(selectedText);
                 subSelection.insertNode(newSpan);
                 //Clear the original user mouse selection
@@ -365,6 +387,11 @@ else
 
                                         //Create new HTML element SPAN and will add the roamJsHighlighter class to loop through later
                                         var newSpan = document.createElement("span");
+                                        if(foundSelection == 0)
+                                        {
+                                            foundSelection = 1;
+                                            highlightCtr++
+                                        }
                                         //newSpan.style.backgroundColor = "yellow";
                                         //Adding !important to CSS to account for Dark Theme extensions that override styles... otherwise can't see highlights in dark mode
                                         newSpan.style.setProperty("background-color", "yellow", "important");
@@ -372,6 +399,7 @@ else
 
                                         //Set class for the new SPAN element so you can loop through the highlights later to copy to clipboard
                                         newSpan.className = "roamJsHighlighter";
+                                        newSpan.title = 'HL:' + highlightCtr;
                                         newSpan.appendChild(selectedText);
                                         subSelection.insertNode(newSpan);
                                         //console.log('new span created: ', newSpan);
