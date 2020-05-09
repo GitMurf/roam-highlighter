@@ -1,5 +1,5 @@
-//Version 1.3
-//Date: May 8, 2020
+//Version 1.4
+//Date: May 9, 2020
 
 //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
 //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
@@ -35,7 +35,8 @@ else
         var eachHighlight = "";
 
         //Get all the highlighted elements based off class name roamJsHighlighter
-        var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
+        //var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
+        var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
         for (var i = 0; i < elemHighlights.length; i++)
         {
             var tempString = "";
@@ -47,6 +48,7 @@ else
 
             eachHighlight = elemHighlights.item(i).textContent;
             var elemSpan = elemHighlights.item(i);
+            //console.log('main: ',elemSpan.className);
             var aElemUrl = elemSpan.querySelectorAll("a");
             for (var y = 0; y < aElemUrl.length; y++)
             {
@@ -57,12 +59,15 @@ else
 
             //console.log('Element: ', eachHighlight);
             //Check if the next element is the same "title" which means is the same user selected highlight and should be combined
+            var lastMainSpanText = elemSpan.textContent;
             if(i + 1 < elemHighlights.length)
             {
                 while(elemTitle == elemHighlights.item(i+1).title.split(":")[1])
                 {
-                    var newHighlight = elemHighlights.item(i+1).textContent;
                     var elemSpan = elemHighlights.item(i+1);
+                    var newHighlight = elemSpan.textContent;
+                    var classFound = elemSpan.className;
+                    //console.log('main+1: ',classFound);
                     var aElemUrl = elemSpan.querySelectorAll("a");
                     for (var y = 0; y < aElemUrl.length; y++)
                     {
@@ -70,7 +75,17 @@ else
                         var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
                         newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
                     }
-                    eachHighlight += '\n' + newHighlight;
+                    if(classFound == 'roamJsHighlighter pageLink')
+                    {
+                        var replaceLastText = lastMainSpanText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
+                        eachHighlight = eachHighlight.replace(lastMainSpanText,replaceLastText);
+                        lastMainSpanText = replaceLastText;
+                    }
+                    else
+                    {
+                        eachHighlight += '\n' + newHighlight;
+                        lastMainSpanText = elemSpan.textContent;
+                    }
                     i++;
                     if(i + 1 >= elemHighlights.length){break;}
                 }
@@ -163,8 +178,8 @@ else
             //For some special Roam stuff add single ticks ` around it like :: attributes so it doesn't try to create pages/attributes in Roam when pasted
             //OLD WAY (only first occurence replaced): tempString = tempString.replace("::","`::`").replace("[[","`[[`").replace("]]","`]]`").replace("#","`#`");
             //Using Split/Join allows to replace multiple instances of the characters you are looking to replace
-            plainText = plainText.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`");
-            htmlString = htmlString.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`");
+            plainText = plainText.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]");
+            htmlString = htmlString.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
@@ -662,48 +677,95 @@ break;
     );
 
     //Add click event to allow for "erasing" of previous highlights you don't want anymore. Simply click anywhere inside the highlight
+    //Or if you selected text then it will try and add page linking for Roam
     document.addEventListener('click', function(e) {
         var curElement = e.target || e.srcElement;
-        if(curElement.className === "roamJsHighlighter")
+        //console.log(curElement);
+        //console.log(curElement.className);
+        if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
         {
-            /*
-            console.log('class: ', curElement.className);
-            console.log('current: ', curElement);
-            console.log('parent: ', curElement.parentNode);
-            console.log('prev sibling: ', curElement.previousSibling);
-            console.log('next sibling: ', curElement.nextSibling);
-            console.log('text: ', curElement.textContent);
-            */
-            var prevText = "", nextText = "";
-
-            //Check the previous and next siblings (i.e., the element before and after our highlight SPAN)
-            if(curElement.previousSibling !== null){prevText = curElement.previousSibling.textContent;}
-            if(curElement.nextSibling !== null){nextText = curElement.nextSibling.textContent;}
-
-            if(prevText.length > 0){
-                //If there is a previous sibling, then will append the highlighted text to that element to try and get HTML back to way it was before highlighter
-                if(nextText.length > 0)
-                {
-                    //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
-                    //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
-                    var newText = prevText + curElement.innerText + nextText;
-                    //console.log('new text: ', newText);
-                    curElement.previousSibling.textContent = newText;
-                    curElement.nextSibling.remove();
-                }else {
-                    var newText = prevText + curElement.innerText;
-                    //console.log('new text: ', newText);
-                    curElement.previousSibling.textContent = newText;
-                }
-            }else {
-                var newText = curElement.innerText + nextText;
-                //console.log('new text: ', newText);
-                curElement.nextSibling.textContent = newText;
+            //console.log(curElement);
+            var bSelFound = 0;
+            if (typeof window.getSelection != "undefined")
+            {
+                var theSelection = window.getSelection();
+                if(theSelection.toString().length > 0){bSelFound = 1;}
             }
 
-            // remove the empty element that had the highlights before
-            curElement.remove();
+            if(bSelFound == 1)
+            {
+                //console.log('selection: ', window.getSelection);
+                var theSelection = window.getSelection();
+                if(theSelection.toString().length > 0)
+                {
+                    //This means the user clicked and dragged to select some text instead of just clicking
+                    var selectedTextHl = theSelection.toString();
+                    //console.log(selectedTextHl);
+                    //Create new SPAN element for the page reference highlight
+                    var divTest = document.createRange();
+                    //divTest = window.getSelection();
+                    //console.log(theSelection);
+                    divTest.setStart(theSelection.baseNode, theSelection.baseOffset);
+                    divTest.setEnd(theSelection.extentNode, theSelection.extentOffset);
+                    //console.log(divTest);
+                    var subSelection = divTest;
+                    var selectedText = subSelection.extractContents();
+                    //Create new HTML element SPAN
+                    var newSpanTag = document.createElement("span");
+                    //Adding !important to CSS to account for Dark Theme extensions that override styles... otherwise can't see highlights in dark mode
+                    newSpanTag.style.setProperty("background-color", "aqua", "important");
+                    newSpanTag.style.setProperty("color", "black", "important");
+                    //Set class for the new SPAN element so you can loop through the highlights later to copy to clipboard
+                    newSpanTag.className = "roamJsHighlighter pageLink";
+                    newSpanTag.title = curElement.title;
+                    newSpanTag.appendChild(selectedText);
+                    subSelection.insertNode(newSpanTag);
+                    //Clear the original user mouse selection
+                    //document.getSelection().removeAllRanges();
+                    //Re-add the user mouse selection based off the range just created/highlighted
+                    //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
+                    //document.getSelection().addRange(divTest);
+                }
+            }
+            else
+            {
+                /*
+                console.log('class: ', curElement.className);
+                console.log('current: ', curElement);
+                console.log('parent: ', curElement.parentNode);
+                console.log('prev sibling: ', curElement.previousSibling);
+                console.log('next sibling: ', curElement.nextSibling);
+                console.log('text: ', curElement.textContent);
+                */
+                var prevText = "", nextText = "";
 
+                //Check the previous and next siblings (i.e., the element before and after our highlight SPAN)
+                if(curElement.previousSibling !== null){prevText = curElement.previousSibling.textContent;}
+                if(curElement.nextSibling !== null){nextText = curElement.nextSibling.textContent;}
+                if(prevText.length > 0){
+                    //If there is a previous sibling, then will append the highlighted text to that element to try and get HTML back to way it was before highlighter
+                    if(nextText.length > 0)
+                    {
+                        //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
+                        //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
+                        var newText = prevText + curElement.innerText + nextText;
+                        //console.log('new text: ', newText);
+                        curElement.previousSibling.textContent = newText;
+                        curElement.nextSibling.remove();
+                    }else {
+                        var newText = prevText + curElement.innerText;
+                        //console.log('new text: ', newText);
+                        curElement.previousSibling.textContent = newText;
+                    }
+                }else {
+                    var newText = curElement.innerText + nextText;
+                    //console.log('new text: ', newText);
+                    curElement.nextSibling.textContent = newText;
+                }
+
+                // remove the empty element that had the highlights before
+                curElement.remove();
+            }
             //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
             //Old Way which wasn't working with clipboardData setData since not called by a cut or copy event
             //updateClipboard();
