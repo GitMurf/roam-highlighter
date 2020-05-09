@@ -1,5 +1,5 @@
-//Version 1.2
-//Date: May 7, 2020
+//Version 1.3
+//Date: May 8, 2020
 
 //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
 //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
@@ -46,13 +46,31 @@ else
             //var elemTabs = elemHighlights.item(i).getAttribute('hltabs');
 
             eachHighlight = elemHighlights.item(i).textContent;
+            var elemSpan = elemHighlights.item(i);
+            var aElemUrl = elemSpan.querySelectorAll("a");
+            for (var y = 0; y < aElemUrl.length; y++)
+            {
+                var eachLink = aElemUrl.item(y);
+                var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
+                eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
+            }
+
             //console.log('Element: ', eachHighlight);
             //Check if the next element is the same "title" which means is the same user selected highlight and should be combined
             if(i + 1 < elemHighlights.length)
             {
                 while(elemTitle == elemHighlights.item(i+1).title.split(":")[1])
                 {
-                    eachHighlight += '\n' + elemHighlights.item(i+1).textContent;
+                    var newHighlight = elemHighlights.item(i+1).textContent;
+                    var elemSpan = elemHighlights.item(i+1);
+                    var aElemUrl = elemSpan.querySelectorAll("a");
+                    for (var y = 0; y < aElemUrl.length; y++)
+                    {
+                        var eachLink = aElemUrl.item(y);
+                        var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
+                        newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                    }
+                    eachHighlight += '\n' + newHighlight;
                     i++;
                     if(i + 1 >= elemHighlights.length){break;}
                 }
