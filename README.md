@@ -19,6 +19,8 @@ Follow instructions in the Video ([Linking it Here](https://www.screencast.com/t
   3. `Set to 2` if you want line breaks (e.g., each paragraph) to be in same bullet with `Ctrl + Enter` "soft line breaks" like `Ctrl + Shift + V` does in browser pasting
   4. `Set to 3` if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
 
+Note: if you highlight something will turn to yellow... then if you click that highlight it will remove it... BUT if you now select text within a Highlight yellow, it will turn it blue and will now tag that piece in double brackets [[selection]] so that when pasted into Roam it creates a backlink/page/tag!! so  you can pre tag/link stuff straight from page. If you click any of the blue highlights, it will remove it from being tagged and turn it back to Yellow.
+
 ## Demo 1 (real quick/simple)
 
 ![](https://user-images.githubusercontent.com/64155612/81344586-e2408100-906b-11ea-9601-5b6082c6de5f.gif)
