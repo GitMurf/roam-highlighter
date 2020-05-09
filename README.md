@@ -33,6 +33,10 @@ Follow instructions in the Video ([Linking it Here](https://www.screencast.com/t
 
 ![](https://user-images.githubusercontent.com/64155612/81344530-c3da8580-906b-11ea-9696-3abce1d0a912.gif)
 
+### Demo 4 (Select word(s) within a highlight to mark for [[page linking]])
+
+![](https://user-images.githubusercontent.com/64155612/81480345-0a4ff180-91de-11ea-8a10-6e4b5527c5e7.gif)
+
 ## Getting Started
 
 [Video on how to create Chrome Extension for Roam-Highlighter](https://www.screencast.com/t/7vYK9qMGqIyY)
