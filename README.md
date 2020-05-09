@@ -19,21 +19,19 @@ Follow instructions in the Video ([Linking it Here](https://www.screencast.com/t
   3. `Set to 2` if you want line breaks (e.g., each paragraph) to be in same bullet with `Ctrl + Enter` "soft line breaks" like `Ctrl + Shift + V` does in browser pasting
   4. `Set to 3` if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
 
-## Demo
-
-### Demo 1 (real quick/simple)
+## Demo 1 (real quick/simple)
 
 ![](https://user-images.githubusercontent.com/64155612/81344586-e2408100-906b-11ea-9601-5b6082c6de5f.gif)
 
-### Demo 2
+## Demo 2
 
 ![](https://user-images.githubusercontent.com/64155612/81142339-4b1ce180-8f24-11ea-908b-add409f0c7d4.gif)
 
-### Demo 3 (showing options for handling line breaks)
+## Demo 3 (showing options for handling line breaks)
 
 ![](https://user-images.githubusercontent.com/64155612/81344530-c3da8580-906b-11ea-9696-3abce1d0a912.gif)
 
-### Demo 4 (Select word(s) within a highlight to mark for [[page linking]])
+## Demo 4 (Select word(s) within a highlight to mark for [[page linking]])
 
 ![](https://user-images.githubusercontent.com/64155612/81480345-0a4ff180-91de-11ea-8a10-6e4b5527c5e7.gif)
 
