@@ -39,7 +39,9 @@ Note: if you highlight something will turn to yellow... then if you click that h
 
 ## Getting Started
 
-[Video on how to create Chrome Extension for Roam-Highlighter](https://www.screencast.com/t/7vYK9qMGqIyY)
+[Video on how to create Chrome Extension for Roam-Highlighter](https://www.screencast.com/t/7vYK9qMGqIyY) started with highlight.
+
+Then more stuff here.
 
 - Download repository
 - Follow the video above for complete instructions on creating Chrome Extension
