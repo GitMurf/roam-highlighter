@@ -1,5 +1,5 @@
-//Version 1.4
-//Date: May 9, 2020
+//Version 1.5
+//Date: May 10, 2020
 
 //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
 //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
@@ -19,11 +19,25 @@ else
     var clickEvent = 0;
     //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
     var highlightCtr = 0;
-    //Global variables for parsing selected elements for highlight
-    var foundStart = 0;
-    var foundEnd = 0;
 
     console.log('Loaded highlighter.js script');
+
+    //0 = [Default] Don't show debug
+    //1 = Show all log items marked logLevel = 1
+    //2 = Show all log items marked logLevel 1 & 2
+    //3 = Show all log items (Full Verbose)
+    var debugMode = 0;
+    var consoleTabLevel = '';
+
+    function writeToConsole(textString, logLevel = 1, tabLevel = 1, alwaysShow = "no")
+    {
+        if(alwaysShow == "yes" || (debugMode == 1 && logLevel == 1) || (debugMode == 2 && logLevel <= 2) || debugMode == 3)
+        {
+            var finalTextString = textString;
+            if(tabLevel != 0){finalTextString = consoleTabLevel + textString;}
+            console.log(finalTextString);
+        }
+    }
 
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
     function updateClipboard() {
@@ -37,6 +51,7 @@ else
         //Get all the highlighted elements based off class name roamJsHighlighter
         //var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
         var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
+        writeToConsole(elemHighlights,3,0);
         for (var i = 0; i < elemHighlights.length; i++)
         {
             var tempString = "";
@@ -44,18 +59,31 @@ else
             var plainText = "";
             //title = 'HL:' + highlightCtr;
             var elemTitle = elemHighlights.item(i).title.split(":")[1];
+            writeToConsole('elemTitle: ' + elemTitle,3);
             //var elemTabs = elemHighlights.item(i).getAttribute('hltabs');
 
             eachHighlight = elemHighlights.item(i).textContent;
+            writeToConsole('eachHighlight: ' + eachHighlight,3);
             var elemSpan = elemHighlights.item(i);
+            writeToConsole(elemSpan,3,0);
             //console.log('main: ',elemSpan.className);
-            var aElemUrl = elemSpan.querySelectorAll("a");
-            for (var y = 0; y < aElemUrl.length; y++)
+            writeToConsole('elemSpan.parentElement.nodeName: ' + elemSpan.parentElement.nodeName,3);
+            if(elemSpan.parentElement.nodeName == "A")
             {
-                var eachLink = aElemUrl.item(y);
+                var eachLink = elemSpan.parentElement;
                 var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
+                writeToConsole(`Here: [${eachLink.innerText}](${eachLink.href})`);
                 eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
             }
+            writeToConsole(elemSpan.parentElement,1,0);
+            var parNodeName = elemSpan.parentElement.nodeName;
+
+            if(parNodeName == "STRONG"){eachHighlight = '**' + eachHighlight + '**';}
+            if(parNodeName == "EM"){eachHighlight = '__' + eachHighlight + '__';}
+            if(parNodeName == "H1" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h1>' + eachHighlight + '</h1>';}
+            //if(parNodeName == "H2"){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
+            if(parNodeName == "H2" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
+            if(parNodeName == "H3" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h3>' + eachHighlight + '</h3>';}
 
             //console.log('Element: ', eachHighlight);
             //Check if the next element is the same "title" which means is the same user selected highlight and should be combined
@@ -68,13 +96,27 @@ else
                     var newHighlight = elemSpan.textContent;
                     var classFound = elemSpan.className;
                     //console.log('main+1: ',classFound);
-                    var aElemUrl = elemSpan.querySelectorAll("a");
-                    for (var y = 0; y < aElemUrl.length; y++)
+                    writeToConsole('newHighlight: ' + newHighlight,3);
+                    writeToConsole('while loop elemSpan.parentElement.nodeName: ' + elemSpan.parentElement.nodeName,3)
+                    parNodeName = elemSpan.parentElement.nodeName;
+                    if(parNodeName == "A")
                     {
-                        var eachLink = aElemUrl.item(y);
+                        var eachLink = elemSpan.parentElement;
                         var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
+                        writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);
                         newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
                     }
+
+                    writeToConsole('newHighlight: ' + newHighlight,3);
+                    writeToConsole(elemSpan.parentElement,1,0);
+
+                    if(parNodeName == "STRONG"){newHighlight = '**' + newHighlight + '**';}
+                    if(parNodeName == "EM"){newHighlight = '__' + newHighlight + '__';}
+                    if(parNodeName == "H1" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h1>' + newHighlight + '</h1>';}
+                    //if(parNodeName == "H2"){newHighlight = '<h2>' + newHighlight + '</h2>';}
+                    if(parNodeName == "H2" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h2>' + newHighlight + '</h2>';}
+                    if(parNodeName == "H3" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h3>' + newHighlight + '</h3>';}
+
                     if(classFound == 'roamJsHighlighter pageLink')
                     {
                         var replaceLastText = lastMainSpanText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
@@ -83,10 +125,16 @@ else
                     }
                     else
                     {
-                        eachHighlight += '\n' + newHighlight;
+                        if(((parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "G-EMOJI" || parNodeName == "STRONG") && (elemHighlights.item(i).innerText.substring(elemHighlights.item(i).innerText.length - 1) == " " || elemHighlights.item(i).innerText.substring(elemHighlights.item(i).innerText.length - 1) == "("))
+                         || ((lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG") && (newHighlight.substring(0,1) == " " || newHighlight.substring(0,1) == ")" || newHighlight.substring(0,1) == "." || newHighlight.substring(0,1) == "?" || newHighlight.substring(0,1) == "!")))
+                        {
+                            eachHighlight += newHighlight;
+                        }else{eachHighlight += '\n' + newHighlight;}
                         lastMainSpanText = elemSpan.textContent;
                     }
+                    writeToConsole('eachHighlight: ' + eachHighlight,3);
                     i++;
+                    var lastParNodeName = parNodeName;
                     if(i + 1 >= elemHighlights.length){break;}
                 }
             }
@@ -178,6 +226,7 @@ else
             //For some special Roam stuff add single ticks ` around it like :: attributes so it doesn't try to create pages/attributes in Roam when pasted
             //OLD WAY (only first occurence replaced): tempString = tempString.replace("::","`::`").replace("[[","`[[`").replace("]]","`]]`").replace("#","`#`");
             //Using Split/Join allows to replace multiple instances of the characters you are looking to replace
+
             plainText = plainText.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]");
             htmlString = htmlString.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]");
 
@@ -227,52 +276,14 @@ else
         return;
     }
 
-    //
-    function checkSelection(selectionFunc, endContFunc, endOffFunc, childElemFunc)
-    {
-        newChild = childElemFunc.childNodes[0];
-        newOrigElem = childElemFunc;
-        var bNewChild = 1;
-
-        if(typeof newChild == 'undefined')
-        {
-            newChild = newOrigElem;
-            bNewChild = 0;
-        }
-
-        if(selectionFunc.containsNode(newChild, true) || selectionFunc.containsNode(newOrigElem, true))
-        {
-            //console.log('new j: ', j);
-            //Default length of text to grab from elements is start to end (0 to the length of string)
-            var stPos = 0;
-            var enPos = newChild.length;
-
-            //Looking for the end of selection range
-            if(newChild.textContent == endContFunc.textContent)
-            {
-                //console.log('Found end');
-                foundEnd = 1;
-                stPos = 0;
-                enPos = endOffFunc;
-            }
-
-            //If found the end and already added, then will break from the entire loop and end script
-            if(foundEnd == 2)
-            {
-                return 0;
-            }
-            //If are currently processing the end of selection, then now set variable to 2 which will end script with above line next loop through
-            if(foundEnd == 1){foundEnd = 2;}
-            return enPos;
-        }
-        return 0;
-    }
-
     //Add listener to "cut" event (CTRL + X on Windows) for highlighting trigger
     document.addEventListener('cut', function (e)
     {
         if(clickEvent == 0)
         {
+            //Variables for parsing selected elements for highlight
+            var foundStartOfSelection = 0;
+            var foundEnd = 0;
             //Check to see if at least one selection by the user was found to be highlighted (will use to increment the highlightCtr variable later)
             var foundSelection = 0;
             //Get current selected text which will be used to highlight and then later when ready to export to Roam
@@ -280,41 +291,28 @@ else
             //Create range from selected text
             var range = selection.getRangeAt(0);
             //console.log(range);
-
-            //Test to make sure there is a selection and variable/function is not undefined which would throw error
-            var testMultiple = typeof(range.commonAncestorContainer.getElementsByTagName);
-            var numOfElem = 0;
-            //If the testMultiple variable is not undefined it will return result of 'function' and we know there is selected text and over multiple HTML elements
-            if(testMultiple === 'function')
-            {
-                numOfElem = 2;
-                //console.log('common anc: ', range.commonAncestorContainer);
-                //console.log('common anc node0: ', range.commonAncestorContainer.childNodes[0]);
-
-                //OLD WAY
-                //var allWithinRangeParent = range.commonAncestorContainer.getElementsByTagName("*");
-                //NEW WAY
-                var allWithinRangeParent = range.commonAncestorContainer;
-                //console.log(allWithinRangeParent);
-            }
+            var allWithinRangeParent = range.commonAncestorContainer;
 
             var startCont = range.startContainer;
             var startOff = range.startOffset;
             var endCont = range.endContainer;
             var endOff = range.endOffset;
 
-            if(startCont === endCont)
-            {
-                //console.log('Start and end are the same HTML element/container...');
-                numOfElem = 1;
-            }
+            //Other variables
+            var tempLogLevel = 1;
+            var allTextFound = "";
+            var thisIsFirst = 0;
+            var finalRangeStart = null;
+            var finalRangeEnd = null;
 
-            if(numOfElem == 1)
+            function createSpanElement(startElemNode, startElemPos, endElemNode, endElemPos)
             {
-                //If the selection is in the same HTML element/container, it is much simpler and can do the following
+                //Create a range to create the new SPAN element from below
                 var divTest = document.createRange();
-                divTest.setStart(startCont, startOff);
-                divTest.setEnd(startCont, endOff);
+                //Add the start and end points of the range for Highlighter
+                divTest.setStart(startElemNode, startElemPos);
+                divTest.setEnd(endElemNode, endElemPos);
+                //Get the selection text to create from
                 var subSelection = divTest;
                 var selectedText = subSelection.extractContents();
                 //Create new HTML element SPAN and will add the roamJsHighlighter class to loop through later
@@ -333,318 +331,200 @@ else
                 //Set class for the new SPAN element so you can loop through the highlights later to copy to clipboard
                 newSpan.className = "roamJsHighlighter";
                 newSpan.title = 'HL:' + highlightCtr;
+
+                //Don't think I am using this yet but idea is to be able to indent in Roam under a UL
+                if(startElemNode.parentNode.nodeName == 'LI')
+                {
+                    newSpan.setAttribute("hltabs", "1");
+                }
+
                 newSpan.appendChild(selectedText);
                 subSelection.insertNode(newSpan);
-                //Clear the original user mouse selection
-                document.getSelection().removeAllRanges();
-                //Re-add the user mouse selection based off the range just created/highlighted
-                //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
-                document.getSelection().addRange(divTest);
-            }else
+                writeToConsole("NEW SPAN CREATED: " + newSpan);
+                if(thisIsFirst == 1)
+                {
+                    finalRangeStart = newSpan;
+                    thisIsFirst = 0;
+                }
+                finalRangeEnd = newSpan;
+
+                return newSpan;
+            }
+
+            function findLowestNode(elemInput, hierarchyLevel)
             {
-                //console.log('start cont: ', startCont);
-                //console.log('end cont: ', endCont);
-
-           /*     //Loop through all elements for testing
-                for (var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
+                //Since creating new elements we have to make sure we skip any highlighted because otherwise an infinite loop
+                if(elemInput.className == "roamJsHighlighter"){return;}
+                var thisHierarchyLevel = hierarchyLevel + ':' + elemInput.nodeName;
+                writeToConsole("FIND LOWEST NODE: " + thisHierarchyLevel,3);
+                var inputNodeName = elemInput.nodeName;
+                writeToConsole("elemInput.childNodes.length: " + elemInput.childNodes.length,3);
+                writeToConsole(elemInput.childNodes, 3, 0);
+                if(elemInput.childNodes.length > 0)
                 {
-                    console.log('i: ', i);
-                    console.log('elem: ', elem);
-                    console.log('elem text: ', elem.textContent);
-                    console.log('elem type: ', elem.nodeName)
-                }*/
-
-                foundStart = 0;
-                foundEnd = 0;
-                var thisIsFirst = 0;
-
-                //Loop through all the child elements of the parent container of the selected text
-                for (var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
-                {
-                    //console.log('new i: ', i);
-                    //console.log('new elem: ', elem);
-                    //Just in case, add this check to avoid infinite loops
-                    if(i > 1000)
+                    for(var k=0, newElemInput; newElemInput = elemInput.childNodes[k]; k++)
                     {
-                        console.log('Infinite loop at i: ',i);
-                        break;
-                    }
-
-                    var noChild = 0;
-                    //Check to see if the Element is part of the selected text, otherwise skip
-                    if(selection.containsNode(elem, true))
-                    {
-                        var origElem = elem;
-                        //console.log('elem childnode0: ', elem.childNodes[0]);
-                        //Check in rare use case that there is text in element but no childNode
-                        if(elem.length > 0 && elem.childNodes[0] == null)
+                        if(selection.containsNode(newElemInput, true))
                         {
-                            //console.log('no children... appending itself');
-                            //If this happens, we want to flag this to still be used since it has selected text
-                            noChild = 1;
-                            //Have to create a "dummy" element that will hold the text to add to highlighter
-                            var newElem = document.createElement("span");
-                            //Creating a new element so have to add one to the i counter
-                            //UPDATE don't need to add one here because delete the created element later
-                            //UPDATE UPDATE you DO need this actually!
-                            //FINAL update: You cannot have this here and instead added around line 267 when a SPAN is actually being added
-                            //i++;
-                            newElem.textContent = elem.textContent;
-                            //Set the elem variable to this new element and then can delete the "dummy" one we created
-                            elem = newElem;
-                            newElem.remove();
+                            writeToConsole(`hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);
+                            //thisHierarchyLevel += ':' + newElemInput.nodeName;
+                            findLowestNode(newElemInput, thisHierarchyLevel);
                         }
-
-                        //Loop through each childNode of each element
-                        for(var j=0, childElem; childElem = elem.childNodes[j]; j++)
+                        else
                         {
-                            //Just in case, add this check to avoid infinite loops
-                            if(j > 1000)
+                            writeToConsole(`NOT SELECTED: hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);
+                        }
+                    }
+                }
+                else
+                {
+                    writeToConsole("FIND LOWEST NODE: NO CHILDREN",3);
+                    //if(inputNodeName == '#text'){inputNodeText = elemInput.textContent;}else{inputNodeText = elemInput.innerHTML;}
+                    if(inputNodeName == '#text'){inputNodeText = elemInput.textContent;}else{inputNodeText = elemInput.innerHTML;}
+                    thisHierarchyLevel += ':' + inputNodeText.trim();
+                    if(inputNodeText.trim() != '')
+                    {
+                        var startPos = 0;
+                        var endPos = inputNodeText.length;
+                        var resultText = inputNodeText;
+                        writeToConsole(`RETURNED hierarchyLevel: ${thisHierarchyLevel}`);
+                        if(foundStartOfSelection == 0)
+                        {
+                            if(startCont.textContent.trim() == inputNodeText.trim())
                             {
-                                console.log('Infinite loop at j: ',j);
-                                break;
-                            }
-
-                            //console.log('childElem: ', childElem);
-                            //Have to check against both the current childElem or the origElem to see if contained in selection because of the noChild corner case described above
-                            if(selection.containsNode(childElem, true) || selection.containsNode(origElem, true))
-                            {
-                                //console.log('new j: ', j);
-                                //Default length of text to grab from elements is start to end (0 to the length of string)
-                                var stPos = 0;
-                                var enPos = childElem.length;
-                                if(childElem.nodeName == 'LI')
-                                {
-                                    enPos = childElem.textContent.length;
-                                }
-
-                                //If this is the beginning of the selected text, will handle differently because selection likely just partial of the entire HTML element
-                                if(childElem.textContent == startCont.textContent && foundStart == 0)
-                                {
-                                    //console.log('Found start');
-                                    foundStart = 1;
-                                    stPos = startOff;
-                                    enPos = childElem.length;
-                                    thisIsFirst = 1;
-                                }
-
-                                //Looking for the end of selection range
-                                if(childElem.textContent == endCont.textContent)
-                                {
-                                    //console.log('Found end');
-                                    foundEnd = 1;
-                                    stPos = 0;
-                                    enPos = endOff;
-                                }
-
-                                //If haven't found the beginning of the selection yet then can skip to next item/element in the loop
-                                if(foundStart == 0){continue;}
-                                //If found the end and already added, then will break from the entire loop and end script
-                                if(foundEnd == 2){break;}
-                                //If are currently processing the end of selection, then now set variable to 2 which will end script with above line next loop through
-                                if(foundEnd == 1){foundEnd = 2;}
-
-                                //Check the next i element to see if somethign like <em>, <a>, <pre>, <code> etc. that we can extend to
-                                var checkNextEnd = enPos;
-                                if(noChild == 1){childElem = origElem;}
-                                var childElemEnd = childElem;
-                                var whileElem = elem;
-                                while(checkNextEnd > 0)
-                                {
-                                    checkNextEnd = 0;
-                                    if(typeof whileElem.childNodes[j+1] == 'undefined')
-                                    {
-                                        //console.log('i+1');
-                                        nextChildElem = allWithinRangeParent.childNodes[i+1];
-                                    }
-                                    else
-                                    {
-                                        //console.log('j+1');
-                                        nextChildElem = whileElem.childNodes[j+1];
-                                    }
-
-                                    if(typeof nextChildElem !== 'undefined')
-                                    {
-               /* console.log('i: ',i);
-                console.log('j: ',j);
-                console.log('childElem: ',childElem);
-                console.log('childElemType: ',childElem.nodeName);
-                console.log('childElemEnd: ',childElemEnd);
-                console.log('childElemEndType: ',childElemEnd.nodeName);
-                console.log('nextChildElem: ',nextChildElem);
-                console.log('nextChildElemType: ',nextChildElem.nodeName);
-                console.log('nextChildElemNode: ',nextChildElem.childNodes[0]);
-console.log('length: ',nextChildElem.textContent.trim().length);
-console.log('length: ',nextChildElem.textContent.trim().length);
-*/
-                                        if(nextChildElem.textContent.trim().length > 0 && (nextChildElem.nodeName == 'EM' || nextChildElem.nodeName == 'STRONG' || nextChildElem.nodeName == 'PRE' || nextChildElem.nodeName == 'H3' || nextChildElem.nodeName == 'CODE' || nextChildElem.nodeName == 'G-EMOJI' || nextChildElem.nodeName == 'A' || (nextChildElem.nodeName == '#text' && childElemEnd.nodeName == '#text')))
-                                        {
-                                            /*
-                                            console.log('in-i: ',i);
-                                            console.log('in-j: ',j);
-                                            console.log('curItem: ',childElem);
-                                            console.log('curItemType: ',childElem.nodeName);
-                                            console.log('nextChildElem: ',nextChildElem);
-                                            console.log('nextChildElemType: ',nextChildElem.nodeName);
-                                            console.log('nextChildElemNode: ',nextChildElem.childNodes[0]);*/
-                                            checkNextEnd = checkSelection(selection, endCont, endOff, nextChildElem);
-                                            //console.log('checkNextEnd: ',checkNextEnd);
-                                            if(checkNextEnd > 0)
-                                            {
-                                                enPos = checkNextEnd;
-                                                if(typeof nextChildElem.childNodes[0] == 'undefined'){childElemEnd = nextChildElem;}else{childElemEnd = nextChildElem.childNodes[0];}
-
-                                                if(typeof whileElem.childNodes[j+1] == 'undefined')
-                                                {
-                                                    //console.log('now');
-                                                    i++;
-                                                    whileElem = allWithinRangeParent.childNodes[i];
-                                                }
-                                                else
-                                                {
-                                                     //console.log('now2');
-                                                    j++;
-                                                }
-                                            }
-                                             //console.log('now3');
-                                        }
-                                    }
-                                }
-      /*  console.log('here i: ',i);
-        console.log('here j: ',j);
-        console.log('here childElem: ',childElemEnd);*/
-                                //console.log('cur i: ', i);
-                                //console.log('new j: ', j);
-
-                                //This should weed out "empty" items
-                                if(enPos > 0)
-                                {
-                                    if(noChild == 1)
-                                    {
-                                        //console.log('nochild: ',elem);
-                                        //noChild explained above
-                                        childElem = origElem;
-                                        elem.remove();
-                                    }
-                                    //console.log('stPos: ', stPos);
-                                    //console.log('enPos: ', enPos);
-
-                                    if(childElem.textContent.trim().length > 0)
-                                    {
-                                        if(noChild == 1){i++;}
-                                        //Create a range to create the new SPAN element from below
-                                        var divTest = document.createRange();
-                                        //Add teh start and end of the range for Highlighter
-                                        divTest.setStart(childElem, stPos);
-
-                                        if(childElem.nodeName == 'LI')
-                                        {
-                                            divTest.setEnd(childElemEnd.childNodes[0], enPos);
-                                        }
-                                        else
-                                        {
-                                            divTest.setEnd(childElemEnd, enPos);
-                                        }
-
-/*
-foundEnd = 1;
-console.log(childElem);
-stPos++
-console.log(stPos);
-console.log(childElemEnd);
-enPos--
-console.log(enPos);
-document.getSelection().removeAllRanges();
-document.getSelection().addRange(divTest);
-//var selec = window.getSelection();
-//selec.addRange(divTest);
-break;
-*/
-                                        var subSelection = divTest;
-                                        var selectedText = subSelection.extractContents();
-
-                                        //Create new HTML element SPAN and will add the roamJsHighlighter class to loop through later
-                                        var newSpan = document.createElement("span");
-                                        if(foundSelection == 0)
-                                        {
-                                            foundSelection = 1;
-                                            highlightCtr++
-                                        }
-                                        //newSpan.style.backgroundColor = "yellow";
-                                        //Adding !important to CSS to account for Dark Theme extensions that override styles... otherwise can't see highlights in dark mode
-                                        newSpan.style.setProperty("background-color", "yellow", "important");
-                                        newSpan.style.setProperty("color", "black", "important");
-
-                                        //Set class for the new SPAN element so you can loop through the highlights later to copy to clipboard
-                                        newSpan.className = "roamJsHighlighter";
-                                        newSpan.title = 'HL:' + highlightCtr;
-                                        if(childElem.nodeName == 'LI')
-                                        {
-                                            newSpan.setAttribute("hltabs", "1");
-                                            //This is for UL parent to make sure it is idented for paste into roam
-                                            lastSpan.setAttribute("hltabs", "-1");
-                                        }
-                                        else{var lastSpan = newSpan;}
-
-                                        newSpan.appendChild(selectedText);
-                                        subSelection.insertNode(newSpan);
-                                        //console.log('new span created: ', newSpan);
-                                        if(thisIsFirst == 1)
-                                        {
-                                            var finalRangeStart = newSpan;
-                                            thisIsFirst = 0;
-                                        }
-                                        //Have to jump ahead one more in the loop because just added an element
-                                        j++;
-                                        //i++;
-                                    }
-                                }
-                            }else{
-                                //console.log('not found in childnode selection');
+                                resultText = startCont.textContent.substring(startOff);
+                                allTextFound += resultText;
+                                foundStartOfSelection = 1;
+                                thisIsFirst = 1;
+                                startPos = startOff;
                             }
                         }
-
-                        if(foundEnd == 2)
+                        else
                         {
-                            //Clear the original user mouse selection
-                            document.getSelection().removeAllRanges();
-                            let finalRange = document.createRange();
-                            finalRange.setStart(finalRangeStart.childNodes[0], 0);
-                            //break;
-                            var childNodeLength = newSpan.childNodes.length;
-                            finalRange.setEnd(newSpan.childNodes[childNodeLength-1], newSpan.childNodes[childNodeLength-1].length);
-                            //console.log('length: ',newSpan.childNodes[0].length);
-                            //console.log('length: ',newSpan.length);
-
-                            //Re-add the user mouse selection based off the range just created/highlighted
-                            //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
-                            document.getSelection().addRange(finalRange);
-                            //console.log('Selected original text again...');
-                            break;
+                            if(endCont.textContent.trim() == inputNodeText.trim())
+                            {
+                                writeToConsole(`******* FOUND THE END ********`,3);
+                                resultText = endCont.textContent.substring(0, endOff);
+                                foundEnd = 1;
+                                endPos = endOff;
+                            }
+                            allTextFound += '\n' + resultText;
                         }
-                    }else
-                    {
-                        //console.log('not found in selection');
-                    }
 
-                    //Loop through the current element to see if it has any child descendents as need to add i++ for each
-                    //Reason is that otherwise we will loop through this element child nodes / text and then will also loop through
-                    //the descendent child elements later in the i++ loop which is causing duplication. Especially important for emojis, <br>, etc.
-                    /* LOOKS LIKE WE DON'T NEED THIS ANYMORE NOW THAT WE ARE JUST GOING STRAIGHT FROM THE PARENT WITH allWithinRangeParent = range.commonAncestorContainer
-                    var ancestor = elem;
-                    var ifFunction = typeof(ancestor.getElementsByTagName);
-                    if(ifFunction === 'function')
-                    {
-                        var descendents = ancestor.getElementsByTagName('*');
-                            // gets all descendent of ancestor
-                        for (var k = 0; k < descendents.length; k++) {
-                            console.log('skipping descendent: ', descendents[k]);
-                            //i++;
-                        }
+                        if(foundStartOfSelection == 1){createSpanElement(elemInput, startPos, elemInput, endPos);}
                     }
-                    */
+                    writeToConsole(`ENDING hierarchyLevel: ${thisHierarchyLevel} | inputNodeName: ${inputNodeName} | inputNodeText: ${inputNodeText}`,3);
+                }
+
+                return;
+            }
+
+            switch (debugMode)
+            {
+                case 1:
+                    writeToConsole("Show Level 1 Debugging",1);
+                    break;
+                case 2:
+                    writeToConsole("Show Level 1 Debugging",1);
+                    writeToConsole("Show Level 2 Debugging",2);
+                    break;
+                case 3:
+                    writeToConsole("Show Level 1 Debugging",1);
+                    writeToConsole("Show Level 2 Debugging",2);
+                    writeToConsole("Show All Debugging Levels",3);
+                    break;
+                default:
+                    //Don't show any debugging
+                    break;
+            }
+
+            writeToConsole('range:');
+            writeToConsole(range,1,0);
+            writeToConsole('startCont: ' + startCont);
+            writeToConsole('startOffset: ' + startOff);
+            writeToConsole('endCont: ' + endCont);
+            writeToConsole('endOffset: ' + endOff);
+            writeToConsole('allWithinRangeParent:');
+            writeToConsole(allWithinRangeParent,1,0);
+            writeToConsole('allWithinRangeParent.childNodes:');
+            writeToConsole(allWithinRangeParent.childNodes,1,0);
+
+            //If only one html element selected
+            if(allWithinRangeParent.childNodes.length == 0)
+            {
+                if(startCont === endCont && endOff > startOff)
+                {
+                    var theOnlyNode = createSpanElement(startCont, startOff, endCont, endOff);
+
+                    //Clear the original user mouse selection
+                    document.getSelection().removeAllRanges();
+                    let finalRange = document.createRange();
+                    writeToConsole(finalRangeStart,3,0);
+                    writeToConsole(finalRangeEnd,3,0);
+                    finalRange.setStart(theOnlyNode.childNodes[0], 0);
+                    finalRange.setEnd(theOnlyNode.childNodes[0], theOnlyNode.childNodes[0].textContent.length);
+                    writeToConsole(finalRange,3,0);
+                    //Re-add the user mouse selection based off the range just created/highlighted
+                    //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
+                    document.getSelection().addRange(finalRange);
                 }
             }
+
+            //loop through all of the elements contained in the parent container of the highest common level of selected text
+            writeToConsole("Starting loop through all elements contained in the parent container of the highest common level of selected text");
+            for (var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
+            {
+                consoleTabLevel = '';
+                var elementNodeName = elem.nodeName;
+                writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`,2);
+                var elementText = "";
+                if(elementNodeName == '#text'){elementText = elem.textContent;}else{elementText = elem.innerText;}
+
+                //Set to loglevel 2 if H1, H2, H3, H4 Header elements... otherwise loglevel 3
+                if(elementNodeName == 'H1' || elementNodeName == 'H2' || elementNodeName == 'H3' || elementNodeName == 'H4'){tempLogLevel = 2;}else{tempLogLevel = 3;}
+                writeToConsole(`i: ${i} | elementText: ${elementText}`, tempLogLevel);
+                writeToConsole(`i: ${i} | elementInnerHtml: ${elem.innerHTML}`, 3);
+
+                //Check to see if the Element is part of the selected text, otherwise skip
+                if(selection.containsNode(elem, true))
+                {
+                    consoleTabLevel = '\t';
+                    writeToConsole("This element was at least partially found in the Selected Text by the user");
+                    writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`);
+                    writeToConsole(`i: ${i} | elementText: ${elementText}`)
+
+                    //Recursively drill down to the #text value
+                    var newCtr = 1;
+                    consoleTabLevel = '\t\t';
+
+                    //var findHierarchy = findLowestNode(elem, 'root:' + elementNodeName);
+                    findLowestNode(elem, 'root');
+                    writeToConsole("foundStart: " + foundStartOfSelection + " foundEnd: " + foundEnd, 3);
+                    //If haven't found the beginning of the selection yet then can skip to next item/element in the loop
+                    if(foundStartOfSelection == 0){continue;}
+
+                    if(foundEnd == 1)
+                    {
+                        //Clear the original user mouse selection
+                        document.getSelection().removeAllRanges();
+                        let finalRange = document.createRange();
+                        writeToConsole(finalRangeStart,3,0);
+                        writeToConsole(finalRangeEnd,3,0);
+                        finalRange.setStart(finalRangeStart.childNodes[0], 0);
+                        finalRange.setEnd(finalRangeEnd.childNodes[0], finalRangeEnd.childNodes[0].length);
+                        writeToConsole(finalRange,3,0);
+                        //Re-add the user mouse selection based off the range just created/highlighted
+                        //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
+                        document.getSelection().addRange(finalRange);
+                        break;
+                    }
+                    consoleTabLevel = '\t';
+                }
+                consoleTabLevel = '';
+            }
+
+            writeToConsole(`allTextFound: ${allTextFound}`);
+            writeToConsole(`Ended i Loop at: ${i}`);
         }
 
         //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
