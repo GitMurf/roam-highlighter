@@ -466,7 +466,7 @@ else
                     writeToConsole(finalRange,3,0);
                     //Re-add the user mouse selection based off the range just created/highlighted
                     //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
-                    document.getSelection().addRange(finalRange);
+                    //document.getSelection().addRange(finalRange);
                 }
             }
 
@@ -507,6 +507,7 @@ else
                     {
                         //Clear the original user mouse selection
                         document.getSelection().removeAllRanges();
+                        /* ACTUALLY LIKE IDEA OF UNSELECTING THE SELECTION AFTER HIGHLIGHT
                         let finalRange = document.createRange();
                         writeToConsole(finalRangeStart,3,0);
                         writeToConsole(finalRangeEnd,3,0);
@@ -516,6 +517,7 @@ else
                         //Re-add the user mouse selection based off the range just created/highlighted
                         //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
                         document.getSelection().addRange(finalRange);
+                        */
                         break;
                     }
                     consoleTabLevel = '\t';
