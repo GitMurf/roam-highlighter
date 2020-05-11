@@ -564,10 +564,14 @@ else
     //Going to change the single click to require ctrl to be held down to remove highlights which will allow for double click even to fire for selecting a word
     document.addEventListener('click', function(evt) {
         var curElement = evt.target || evt.srcElement;
-        var controlKeyHeld = evt.ctrlKey;
+        //MACs can't use the ctrl key because that simulates a right click so using Alt for them
+        //var specialKeyHeld = evt.shiftKey;
+        //var specialKeyHeld = evt.ctrlKey;
+        var specialKeyHeld = evt.altKey;
+        //var specialKeyHeld = evt.metaKey;
         //console.log(curElement);
         //console.log(curElement.className);
-        if(controlKeyHeld || evt.button == 2)
+        if(specialKeyHeld || evt.ctrlKey)
         {
             if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
             {
