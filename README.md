@@ -37,7 +37,7 @@ Note: if you highlight something will turn to yellow... then if you click that h
 
 ## Demo 4 (Select word(s) within a highlight to mark for [[page linking]])
 
-![](https://user-images.githubusercontent.com/64155612/81480345-0a4ff180-91de-11ea-8a10-6e4b5527c5e7.gif)
+![KfZJYsYBuJ](https://user-images.githubusercontent.com/64155612/81620376-8d20aa00-93a0-11ea-8a6a-55d4d427f27c.gif)
 
 ## Getting Started
 
