@@ -8,7 +8,9 @@ Follow instructions in the Video ([Linking it Here](https://www.screencast.com/t
 - Press the Highlighter icon in Chrome Extensions toolbar to activate it (only applies to the Tab you click it on)
 - Select text in an article you want to highlight and press `Ctrl + X` ("cut" command on Windows) to highlight.
 - If you just want a quick way to grab a Link to the page in the `[` Page title `]` `(`URL`)` format for Roam without having to highlight anything, simply use `Ctrl + X` without any text selected or Highlights and it will just copy that to the clipboard for you.
-- `Click` a highlight if you want to remove it later.
+- `Ctrl + Click` (will not work for MACs) or `Alt + Click` (MACs or Windows) text already highlighted if you want to remove it later.
+- Double-Click a word that is already highlighted for it to turn Blue which means will be pasted to roam as page reference [[Clicked-Word]]
+- `Ctrl or Alt + Select Text` that is already highlighted will allow for multi word page reference in Roam [[Multiple Word Page Names]]
 - Everything auto updates and copies to clipboard anytime you make any changes.
 - Paste into Roam and the formatting will do the work for you.
 - If you don't like the way it handles Line Breaks by default, there are 4 options to quickly switch between.
