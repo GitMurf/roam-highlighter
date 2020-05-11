@@ -567,7 +567,7 @@ else
         var controlKeyHeld = evt.ctrlKey;
         //console.log(curElement);
         //console.log(curElement.className);
-        if(controlKeyHeld)
+        if(controlKeyHeld || evt.button == 2)
         {
             if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
             {
