@@ -1,5 +1,5 @@
-//Version 1.6
-//Date: May 11, 2020
+//Version 1.7
+//Date: May 12, 2020
 
 //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
 //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
@@ -20,7 +20,7 @@ else
     //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
     var highlightCtr = 0;
 
-    console.log('Loaded highlighter.js script');
+    console.log('Loaded highlighter.js script v1.7');
 
     //0 = [Default] Don't show debug
     //1 = Show all log items marked logLevel = 1
@@ -79,12 +79,13 @@ else
             var parNodeName = elemSpan.parentElement.nodeName;
 
             if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
-            if(parNodeName == "EM"){eachHighlight = '__' + eachHighlight + '__';}
+            if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = '__' + eachHighlight + '__';}
             if(parNodeName == "H1" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h1>' + eachHighlight + '</h1>';}
             //if(parNodeName == "H2"){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
             if(parNodeName == "H2" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
             if(parNodeName == "H3" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h3>' + eachHighlight + '</h3>';}
 
+            var lastParNodeName = parNodeName;
             //console.log('Element: ', eachHighlight);
             //Check if the next element is the same "title" which means is the same user selected highlight and should be combined
             var lastMainSpanText = elemSpan.textContent;
@@ -112,13 +113,6 @@ else
                     writeToConsole('newHighlight: ' + newHighlight,3);
                     writeToConsole(elemSpan.parentElement,1,0);
 
-                    if(parNodeName == "STRONG" || parNodeName == "B"){newHighlight = '**' + newHighlight + '**';}
-                    if(parNodeName == "EM"){newHighlight = '__' + newHighlight + '__';}
-                    if(parNodeName == "H1" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h1>' + newHighlight + '</h1>';}
-                    //if(parNodeName == "H2"){newHighlight = '<h2>' + newHighlight + '</h2>';}
-                    if(parNodeName == "H2" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h2>' + newHighlight + '</h2>';}
-                    if(parNodeName == "H3" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h3>' + newHighlight + '</h3>';}
-
                     if(classFound == 'roamJsHighlighter pageLink')
                     {
                         var replaceLastText = lastMainSpanText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
@@ -130,8 +124,8 @@ else
                         if(
                             (
                                 (
-                                    (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
-                                    || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
+                                    (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                                    || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
                                 )
                                 && (
                                     elemHighlights.item(i).innerText.substring(elemHighlights.item(i).innerText.length - 1) == " "
@@ -139,20 +133,38 @@ else
                                 )
                             )
                             || (
-                                (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B")
+                                (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
+                                || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
                                 && (
                                     newHighlight.substring(0,1) == " " || newHighlight.substring(0,1) == ")" || newHighlight.substring(0,1) == "." || newHighlight.substring(0,1) == "?" || newHighlight.substring(0,1) == "!" || newHighlight.substring(0,1) == "," || newHighlight.substring(0,1) == ":" || newHighlight.substring(0,1) == ";"
                                 )
                             )
+                            || parNodeName == "SUP"
                         )
                         {
+                            if(parNodeName == "STRONG" || parNodeName == "B"){newHighlight = '**' + newHighlight + '**';}
+                            if(parNodeName == "EM" || parNodeName == "U"){newHighlight = '__' + newHighlight + '__';}
+                            if(parNodeName == "H1" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h1>' + newHighlight + '</h1>';}
+                            //if(parNodeName == "H2"){newHighlight = '<h2>' + newHighlight + '</h2>';}
+                            if(parNodeName == "H2" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h2>' + newHighlight + '</h2>';}
+                            if(parNodeName == "H3" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h3>' + newHighlight + '</h3>';}
                             eachHighlight += newHighlight;
-                        }else{eachHighlight += '\n' + newHighlight;}
+                        }
+                        else
+                        {
+                            if(parNodeName == "STRONG" || parNodeName == "B"){newHighlight = '**' + newHighlight + '**';}
+                            if(parNodeName == "EM" || parNodeName == "U"){newHighlight = '__' + newHighlight + '__';}
+                            if(parNodeName == "H1" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h1>' + newHighlight + '</h1>';}
+                            //if(parNodeName == "H2"){newHighlight = '<h2>' + newHighlight + '</h2>';}
+                            if(parNodeName == "H2" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h2>' + newHighlight + '</h2>';}
+                            if(parNodeName == "H3" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h3>' + newHighlight + '</h3>';}
+                            eachHighlight += '\n' + newHighlight;
+                        }
                         lastMainSpanText = elemSpan.textContent;
                     }
                     writeToConsole('eachHighlight: ' + eachHighlight,3);
                     i++;
-                    var lastParNodeName = parNodeName;
+                    lastParNodeName = parNodeName;
                     if(i + 1 >= elemHighlights.length){break;}
                 }
             }
