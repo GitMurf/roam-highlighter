@@ -1,5 +1,5 @@
-//Version 1.5
-//Date: May 10, 2020
+//Version 1.6
+//Date: May 11, 2020 [No changes as of yet since chrome extension shipped with v1.5]
 
 //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
 //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
@@ -78,7 +78,7 @@ else
             writeToConsole(elemSpan.parentElement,1,0);
             var parNodeName = elemSpan.parentElement.nodeName;
 
-            if(parNodeName == "STRONG"){eachHighlight = '**' + eachHighlight + '**';}
+            if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
             if(parNodeName == "EM"){eachHighlight = '__' + eachHighlight + '__';}
             if(parNodeName == "H1" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h1>' + eachHighlight + '</h1>';}
             //if(parNodeName == "H2"){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
@@ -99,6 +99,8 @@ else
                     writeToConsole('newHighlight: ' + newHighlight,3);
                     writeToConsole('while loop elemSpan.parentElement.nodeName: ' + elemSpan.parentElement.nodeName,3)
                     parNodeName = elemSpan.parentElement.nodeName;
+                    var prevSibNode = elemSpan.previousElementSibling;
+                    if(prevSibNode == null){var prevSibNodeName = ""}else{var prevSibNodeName = elemSpan.previousElementSibling.nodeName;}
                     if(parNodeName == "A")
                     {
                         var eachLink = elemSpan.parentElement;
@@ -110,7 +112,7 @@ else
                     writeToConsole('newHighlight: ' + newHighlight,3);
                     writeToConsole(elemSpan.parentElement,1,0);
 
-                    if(parNodeName == "STRONG"){newHighlight = '**' + newHighlight + '**';}
+                    if(parNodeName == "STRONG" || parNodeName == "B"){newHighlight = '**' + newHighlight + '**';}
                     if(parNodeName == "EM"){newHighlight = '__' + newHighlight + '__';}
                     if(parNodeName == "H1" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h1>' + newHighlight + '</h1>';}
                     //if(parNodeName == "H2"){newHighlight = '<h2>' + newHighlight + '</h2>';}
@@ -125,8 +127,24 @@ else
                     }
                     else
                     {
-                        if(((parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "G-EMOJI" || parNodeName == "STRONG") && (elemHighlights.item(i).innerText.substring(elemHighlights.item(i).innerText.length - 1) == " " || elemHighlights.item(i).innerText.substring(elemHighlights.item(i).innerText.length - 1) == "("))
-                         || ((lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG") && (newHighlight.substring(0,1) == " " || newHighlight.substring(0,1) == ")" || newHighlight.substring(0,1) == "." || newHighlight.substring(0,1) == "?" || newHighlight.substring(0,1) == "!")))
+                        if(
+                            (
+                                (
+                                    (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                                    || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
+                                )
+                                && (
+                                    elemHighlights.item(i).innerText.substring(elemHighlights.item(i).innerText.length - 1) == " "
+                                    || elemHighlights.item(i).innerText.substring(elemHighlights.item(i).innerText.length - 1) == "("
+                                )
+                            )
+                            || (
+                                (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B")
+                                && (
+                                    newHighlight.substring(0,1) == " " || newHighlight.substring(0,1) == ")" || newHighlight.substring(0,1) == "." || newHighlight.substring(0,1) == "?" || newHighlight.substring(0,1) == "!" || newHighlight.substring(0,1) == "," || newHighlight.substring(0,1) == ":" || newHighlight.substring(0,1) == ";"
+                                )
+                            )
+                        )
                         {
                             eachHighlight += newHighlight;
                         }else{eachHighlight += '\n' + newHighlight;}
