@@ -1,5 +1,5 @@
 //Version 1.6
-//Date: May 11, 2020 [No changes as of yet since chrome extension shipped with v1.5]
+//Date: May 11, 2020
 
 //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
 //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
