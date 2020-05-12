@@ -1,6 +1,8 @@
 # roam-highlighter
 
-Follow instructions in the Video ([Linking it Here](https://www.screencast.com/t/7vYK9qMGqIyY)) under the Getting Started section below to install Chrome Extension on your machine with my roam-highlighter code. Very easy to do! **Video is under 8 minutes** and will have you up and running! Looking for any and all feedback from folks!
+Now you can officially install the Extension from the Chrome Web Store here: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
+
+This Highlighter extension is meant for use with the Roam Research note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use!
 
 ## How to Use the Highlighter
 
@@ -21,7 +23,7 @@ Follow instructions in the Video ([Linking it Here](https://www.screencast.com/t
   3. `Set to 2` if you want line breaks (e.g., each paragraph) to be in same bullet with `Ctrl + Enter` "soft line breaks" like `Ctrl + Shift + V` does in browser pasting
   4. `Set to 3` if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
 
-Note: if you highlight something will turn to yellow... then if you click that highlight it will remove it... BUT if you now select text within a Highlight yellow, it will turn it blue and will now tag that piece in double brackets [[selection]] so that when pasted into Roam it creates a backlink/page/tag!! so  you can pre tag/link stuff straight from page. If you click any of the blue highlights, it will remove it from being tagged and turn it back to Yellow.
+Note: if you highlight something it will turn to yellow... then if you Ctrl + Click (or Alt + Click) any highlight, it will remove it... BUT now if you select text (instead of just clicking) within a yellow Highlight while holding Ctrl or Alt, it will turn it Blue and will now tag/link that piece in Double Brackets [[selection]] so that when pasted into Roam it creates a backlink/page/tag!! So  you can pre tag/link stuff straight from webpages. If you Ctrl + Click (or Alt + Click) any of the Blue highlights, it will remove it from being tagged and turn it back to Yellow.
 
 ## Demo 1 (real quick/simple)
 
@@ -41,46 +43,7 @@ Note: if you highlight something will turn to yellow... then if you click that h
 
 ## Getting Started
 
-[Video on how to create Chrome Extension for Roam-Highlighter](https://www.screencast.com/t/7vYK9qMGqIyY) started with highlight.
-
-Then more stuff here.
-
-- Download repository
-- Follow the video above for complete instructions on creating Chrome Extension
-- Video also has a demo of the product (although when it wasn't as good a few days ago)
-- Review the GIF Demos above to get an idea of how it works
-
-## NOTE EVERYTHING BELOW IS A PLACEHOLDER THAT I NEED TO FILL OUT TO FINISH README
-
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+Install the extenstion from the Chrome Web Store at: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
 
 ## Acknowledgments
 
