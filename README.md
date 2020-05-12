@@ -6,7 +6,7 @@ This Highlighter extension is meant for use with the Roam Research note taking a
 
 ## How to Use the Highlighter
 
-- Install Chrome Extension on local machines via instructional Video below
+- Install Chrome Extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
 - Press the Highlighter icon in Chrome Extensions toolbar to activate it (only applies to the Tab you click it on)
 - Select text in an article you want to highlight and press `Ctrl + X` ("cut" command on Windows) to highlight.
 - If you just want a quick way to grab a Link to the page in the `[` Page title `]` `(`URL`)` format for Roam without having to highlight anything, simply use `Ctrl + X` without any text selected or Highlights and it will just copy that to the clipboard for you.
