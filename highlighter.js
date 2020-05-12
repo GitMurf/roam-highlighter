@@ -80,6 +80,7 @@ else
 
             if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
             if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = '__' + eachHighlight + '__';}
+            if(parNodeName == "CODE"){eachHighlight = "`" + eachHighlight + "`";}
             if(parNodeName == "H1" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h1>' + eachHighlight + '</h1>';}
             //if(parNodeName == "H2"){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
             if(parNodeName == "H2" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
@@ -102,13 +103,6 @@ else
                     parNodeName = elemSpan.parentElement.nodeName;
                     var prevSibNode = elemSpan.previousElementSibling;
                     if(prevSibNode == null){var prevSibNodeName = ""}else{var prevSibNodeName = elemSpan.previousElementSibling.nodeName;}
-                    if(parNodeName == "A")
-                    {
-                        var eachLink = elemSpan.parentElement;
-                        var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
-                        writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);
-                        newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
-                    }
 
                     writeToConsole('newHighlight: ' + newHighlight,3);
                     writeToConsole(elemSpan.parentElement,1,0);
@@ -133,8 +127,10 @@ else
                                 )
                             )
                             || (
-                                (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
-                                || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                                (
+                                    (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
+                                    || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                                )
                                 && (
                                     newHighlight.substring(0,1) == " " || newHighlight.substring(0,1) == ")" || newHighlight.substring(0,1) == "." || newHighlight.substring(0,1) == "?" || newHighlight.substring(0,1) == "!" || newHighlight.substring(0,1) == "," || newHighlight.substring(0,1) == ":" || newHighlight.substring(0,1) == ";"
                                 )
@@ -144,20 +140,40 @@ else
                         {
                             if(parNodeName == "STRONG" || parNodeName == "B"){newHighlight = '**' + newHighlight + '**';}
                             if(parNodeName == "EM" || parNodeName == "U"){newHighlight = '__' + newHighlight + '__';}
+                            if(parNodeName == "CODE"){newHighlight = "`" + newHighlight + "`";}
                             if(parNodeName == "H1" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h1>' + newHighlight + '</h1>';}
                             //if(parNodeName == "H2"){newHighlight = '<h2>' + newHighlight + '</h2>';}
                             if(parNodeName == "H2" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h2>' + newHighlight + '</h2>';}
                             if(parNodeName == "H3" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h3>' + newHighlight + '</h3>';}
+
+                            if(parNodeName == "A")
+                            {
+                                var eachLink = elemSpan.parentElement;
+                                var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
+                                writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);
+                                newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                            }
+
                             eachHighlight += newHighlight;
                         }
                         else
                         {
                             if(parNodeName == "STRONG" || parNodeName == "B"){newHighlight = '**' + newHighlight + '**';}
                             if(parNodeName == "EM" || parNodeName == "U"){newHighlight = '__' + newHighlight + '__';}
+                            if(parNodeName == "CODE"){newHighlight = "`" + newHighlight + "`";}
                             if(parNodeName == "H1" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h1>' + newHighlight + '</h1>';}
                             //if(parNodeName == "H2"){newHighlight = '<h2>' + newHighlight + '</h2>';}
                             if(parNodeName == "H2" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h2>' + newHighlight + '</h2>';}
                             if(parNodeName == "H3" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h3>' + newHighlight + '</h3>';}
+
+                            if(parNodeName == "A")
+                            {
+                                var eachLink = elemSpan.parentElement;
+                                var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
+                                writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);
+                                newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                            }
+
                             eachHighlight += '\n' + newHighlight;
                         }
                         lastMainSpanText = elemSpan.textContent;
@@ -411,6 +427,7 @@ else
                     writeToConsole("FIND LOWEST NODE: NO CHILDREN",3);
                     //if(inputNodeName == '#text'){inputNodeText = elemInput.textContent;}else{inputNodeText = elemInput.innerHTML;}
                     if(inputNodeName == '#text'){inputNodeText = elemInput.textContent;}else{inputNodeText = elemInput.innerHTML;}
+                    if (typeof inputNodeText == "undefined"){inputNodeText = '';}
                     thisHierarchyLevel += ':' + inputNodeText.trim();
                     if(inputNodeText.trim() != '')
                     {
