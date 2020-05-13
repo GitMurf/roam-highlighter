@@ -1,4 +1,4 @@
-//Version 1.7
+//Version 1.7.1
 //Date: May 12, 2020
 
 //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
@@ -20,13 +20,13 @@ else
     //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
     var highlightCtr = 0;
 
-    console.log('Loaded highlighter.js script v1.7');
+    console.log('Loaded highlighter.js script v1.7.1');
 
     //0 = [Default] Don't show debug
     //1 = Show all log items marked logLevel = 1
     //2 = Show all log items marked logLevel 1 & 2
     //3 = Show all log items (Full Verbose)
-    var debugMode = 0;
+    var debugMode = 1;
     var consoleTabLevel = '';
 
     function writeToConsole(textString, logLevel = 1, tabLevel = 1, alwaysShow = "no")
@@ -39,14 +39,74 @@ else
         }
     }
 
+    //This function adds Roam markdown formatting based on Element type (e.g., <STRONG> --> **text**)
+    function convertFormat(eachHighlight, elemSpan) {
+        var parNodeName = elemSpan.parentElement.nodeName;
+        var parElemText = elemSpan.parentElement.innerText;
+
+        if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
+        if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = '__' + eachHighlight + '__';}
+        if(parNodeName == "CODE"){eachHighlight = "`" + eachHighlight + "`";}
+        if(eachHighlight == parElemText)
+        {
+            if(parNodeName == "H1"){eachHighlight = '<h1>' + eachHighlight + '</h1>';}
+            if(parNodeName == "H2"){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
+            if(parNodeName == "H3"){eachHighlight = '<h3>' + eachHighlight + '</h3>';}
+        }
+
+        return eachHighlight;
+    }
+
+    //This function looks at current and previous "node" aka highlight aka span element to decide whether it should actually be on the same line or not
+    function isSameLine(curNode, prevNode, lastParNodeName) {
+        var parNodeName = curNode.parentElement.nodeName;
+        var prevSibNode = curNode.previousElementSibling;
+            if(prevSibNode == null){var prevSibNodeName = ""}else{var prevSibNodeName = prevSibNode.nodeName;}
+        //var lastParNodeName = prevNode.parentElement.nodeName;
+        var curHighlight = curNode.textContent;
+
+        writeToConsole('curHighlight: ' + curHighlight);
+        writeToConsole('parNodeName: ' + parNodeName);
+        writeToConsole(prevNode,1,0);
+        writeToConsole('prevSibNodeName: ' + prevSibNodeName);
+        writeToConsole('prevNode.innerText: ' + prevNode.innerText);
+        writeToConsole('lastParNodeName: ' + lastParNodeName);
+
+        if(
+            (
+                (
+                    (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                    || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
+                )
+                && (
+                    prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "("
+                )
+            )
+            || (
+                (
+                    (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
+                    || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                )
+                && (
+                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";"
+                )
+            )
+            || parNodeName == "SUP"
+        )
+        {
+            return true;
+        }
+        else{return false;}
+    }
+
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
     function updateClipboard() {
         //Get page title and URL and put in Roam format [Page Title](URL)
         var reference = `[${document.title}](${location.href}) #[[Roam-Highlights]]`;
-        var finalString = "";
         var plainConcatHighlights = "";
         var htmlConcatHighlights = "";
         var eachHighlight = "";
+        var origHighlight = "";
 
         //Get all the highlighted elements based off class name roamJsHighlighter
         //var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
@@ -61,126 +121,80 @@ else
             var elemTitle = elemHighlights.item(i).title.split(":")[1];
             writeToConsole('elemTitle: ' + elemTitle,3);
             //var elemTabs = elemHighlights.item(i).getAttribute('hltabs');
-
-            eachHighlight = elemHighlights.item(i).textContent;
-            writeToConsole('eachHighlight: ' + eachHighlight,3);
             var elemSpan = elemHighlights.item(i);
             writeToConsole(elemSpan,3,0);
-            //console.log('main: ',elemSpan.className);
-            writeToConsole('elemSpan.parentElement.nodeName: ' + elemSpan.parentElement.nodeName,3);
-            if(elemSpan.parentElement.nodeName == "A")
+            eachHighlight = elemSpan.textContent;
+            origHighlight = eachHighlight;
+            writeToConsole('eachHighlight: ' + eachHighlight,3);
+            var parNodeName = elemSpan.parentElement.nodeName;
+            writeToConsole(elemSpan.parentElement,1,0);
+            writeToConsole('parNodeName: ' + parNodeName,3);
+            if(parNodeName == "A")
             {
                 var eachLink = elemSpan.parentElement;
                 var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
                 writeToConsole(`Here: [${eachLink.innerText}](${eachLink.href})`);
                 eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
             }
-            writeToConsole(elemSpan.parentElement,1,0);
-            var parNodeName = elemSpan.parentElement.nodeName;
 
-            if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
-            if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = '__' + eachHighlight + '__';}
-            if(parNodeName == "CODE"){eachHighlight = "`" + eachHighlight + "`";}
-            if(parNodeName == "H1" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h1>' + eachHighlight + '</h1>';}
-            //if(parNodeName == "H2"){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
-            if(parNodeName == "H2" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
-            if(parNodeName == "H3" && eachHighlight == elemSpan.parentElement.innerText){eachHighlight = '<h3>' + eachHighlight + '</h3>';}
+            eachHighlight = convertFormat(eachHighlight, elemSpan);
 
-            var lastParNodeName = parNodeName;
-            //console.log('Element: ', eachHighlight);
-            //Check if the next element is the same "title" which means is the same user selected highlight and should be combined
-            var lastMainSpanText = elemSpan.textContent;
+            //Check if the next element is the same "title" which means is the same user selected highlight and should be combined into one bullet/node unless there is legitimate line break
+            var lastMainSpanText = origHighlight;
             if(i + 1 < elemHighlights.length)
             {
+                var prevNode = elemSpan;
+                var lastParNodeName = parNodeName;
                 while(elemTitle == elemHighlights.item(i+1).title.split(":")[1])
                 {
                     var elemSpan = elemHighlights.item(i+1);
+                    writeToConsole('elemSpan.title: ' + elemSpan.title);
+                    writeToConsole('prevNode.title: ' + prevNode.title);
                     var newHighlight = elemSpan.textContent;
                     var classFound = elemSpan.className;
-                    //console.log('main+1: ',classFound);
-                    writeToConsole('newHighlight: ' + newHighlight,3);
-                    writeToConsole('while loop elemSpan.parentElement.nodeName: ' + elemSpan.parentElement.nodeName,3)
                     parNodeName = elemSpan.parentElement.nodeName;
-                    var prevSibNode = elemSpan.previousElementSibling;
-                    if(prevSibNode == null){var prevSibNodeName = ""}else{var prevSibNodeName = elemSpan.previousElementSibling.nodeName;}
 
                     writeToConsole('newHighlight: ' + newHighlight,3);
+                    writeToConsole('while loop elemSpan.parentElement.nodeName: ' + parNodeName,3)
                     writeToConsole(elemSpan.parentElement,1,0);
+                    var bIsSameLine = true;
 
                     if(classFound == 'roamJsHighlighter pageLink')
                     {
-                        var replaceLastText = lastMainSpanText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
+                        writeToConsole('newHighlight: ' + newHighlight);
+                        writeToConsole('lastMainSpanText: ' + lastMainSpanText);
+                        //first try to get rid of ** or __ or ` for bold or italics or code since can't format a page link
+                        var replaceLastText = lastMainSpanText.replace('**' + newHighlight + '**', newHighlight);
+                        replaceLastText = replaceLastText.replace('__' + newHighlight + '__', newHighlight);
+                        replaceLastText = replaceLastText.replace('`' + newHighlight + '`', newHighlight);
+                        replaceLastText = replaceLastText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
+                        writeToConsole('replaceLastText: ' + replaceLastText);
+                        writeToConsole('lastMainSpanText: ' + lastMainSpanText);
+                        writeToConsole('eachHighlight: ' + eachHighlight);
                         eachHighlight = eachHighlight.replace(lastMainSpanText,replaceLastText);
+                        writeToConsole('eachHighlight: ' + eachHighlight);
                         lastMainSpanText = replaceLastText;
                     }
                     else
                     {
-                        if(
-                            (
-                                (
-                                    (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
-                                    || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
-                                )
-                                && (
-                                    elemHighlights.item(i).innerText.substring(elemHighlights.item(i).innerText.length - 1) == " "
-                                    || elemHighlights.item(i).innerText.substring(elemHighlights.item(i).innerText.length - 1) == "("
-                                )
-                            )
-                            || (
-                                (
-                                    (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
-                                    || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
-                                )
-                                && (
-                                    newHighlight.substring(0,1) == " " || newHighlight.substring(0,1) == ")" || newHighlight.substring(0,1) == "." || newHighlight.substring(0,1) == "?" || newHighlight.substring(0,1) == "!" || newHighlight.substring(0,1) == "," || newHighlight.substring(0,1) == ":" || newHighlight.substring(0,1) == ";"
-                                )
-                            )
-                            || parNodeName == "SUP"
-                        )
+                        bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
+                        newHighlight = convertFormat(newHighlight, elemSpan);
+
+                        if(parNodeName == "A")
                         {
-                            if(parNodeName == "STRONG" || parNodeName == "B"){newHighlight = '**' + newHighlight + '**';}
-                            if(parNodeName == "EM" || parNodeName == "U"){newHighlight = '__' + newHighlight + '__';}
-                            if(parNodeName == "CODE"){newHighlight = "`" + newHighlight + "`";}
-                            if(parNodeName == "H1" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h1>' + newHighlight + '</h1>';}
-                            //if(parNodeName == "H2"){newHighlight = '<h2>' + newHighlight + '</h2>';}
-                            if(parNodeName == "H2" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h2>' + newHighlight + '</h2>';}
-                            if(parNodeName == "H3" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h3>' + newHighlight + '</h3>';}
-
-                            if(parNodeName == "A")
-                            {
-                                var eachLink = elemSpan.parentElement;
-                                var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
-                                writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);
-                                newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
-                            }
-
-                            eachHighlight += newHighlight;
+                            var eachLink = elemSpan.parentElement;
+                            var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
+                            writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);
+                            newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
                         }
-                        else
-                        {
-                            if(parNodeName == "STRONG" || parNodeName == "B"){newHighlight = '**' + newHighlight + '**';}
-                            if(parNodeName == "EM" || parNodeName == "U"){newHighlight = '__' + newHighlight + '__';}
-                            if(parNodeName == "CODE"){newHighlight = "`" + newHighlight + "`";}
-                            if(parNodeName == "H1" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h1>' + newHighlight + '</h1>';}
-                            //if(parNodeName == "H2"){newHighlight = '<h2>' + newHighlight + '</h2>';}
-                            if(parNodeName == "H2" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h2>' + newHighlight + '</h2>';}
-                            if(parNodeName == "H3" && newHighlight == elemSpan.parentElement.innerText){newHighlight = '<h3>' + newHighlight + '</h3>';}
 
-                            if(parNodeName == "A")
-                            {
-                                var eachLink = elemSpan.parentElement;
-                                var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
-                                writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);
-                                newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
-                            }
-
-                            eachHighlight += '\n' + newHighlight;
-                        }
-                        lastMainSpanText = elemSpan.textContent;
+                        if(bIsSameLine){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
+                        lastMainSpanText = newHighlight;
                     }
-                    writeToConsole('eachHighlight: ' + eachHighlight,3);
-                    i++;
+                    writeToConsole('newHighlight: ' + newHighlight);
+                    writeToConsole('eachHighlight: ' + eachHighlight);
                     lastParNodeName = parNodeName;
+                    i++;
                     if(i + 1 >= elemHighlights.length){break;}
                 }
             }
@@ -289,36 +303,11 @@ else
         else {
             plainConcatHighlights = '- ' + reference + '\n' + plainConcatHighlights;
             htmlConcatHighlights = '<ul><li>' + reference + '<ul>' + htmlConcatHighlights + '</ul></li></ul>';
-            //console.log('Final string: ', plainConcatHighlights);
         }
-
-        /*console.log('plain');
-        console.log(plainText);
-        console.log(plainConcatHighlights);
-        console.log('html');
-        console.log(htmlString);
-        console.log(htmlConcatHighlights);*/
-/*
-        finalString = `<p>${finalString}
-        new line here</p><p>new paragraph</p>`;
-        //var dataToCopyHTML = new Blob(["Text data"], {type : "text/html"});
-                //Add text from variable to #Clipboard
-*/
 
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
         clipboardDataEvt.setData('text/html', htmlConcatHighlights);
-/*
-        //OLD method that worked but doesn't work with text/html format (or atleast couldn't figure out how)
-        //Add text from variable to #Clipboard
-        navigator.clipboard.writeText(finalString)
-            .then(() => {
-            // Success!
-            })
-            .catch(err => {
-            console.log('Issue adding results to clipboard', err);
-            });
-*/
         return;
     }
 
@@ -348,10 +337,8 @@ else
             var tempLogLevel = 1;
             var allTextFound = "";
             var thisIsFirst = 0;
-            var finalRangeStart = null;
-            var finalRangeEnd = null;
 
-            function createSpanElement(startElemNode, startElemPos, endElemNode, endElemPos)
+            function createSpanElement(startElemNode, startElemPos, endElemNode, endElemPos, spanClass = "roamJsHighlighter", spanColor = "yellow", spanTitle = "")
             {
                 //Create a range to create the new SPAN element from below
                 var divTest = document.createRange();
@@ -363,20 +350,22 @@ else
                 var selectedText = subSelection.extractContents();
                 //Create new HTML element SPAN and will add the roamJsHighlighter class to loop through later
                 var newSpan = document.createElement("span");
+
                 if(foundSelection == 0)
                 {
                     foundSelection = 1;
                     highlightCtr++
                 }
 
-                //newSpan.style.backgroundColor = "yellow";
+                if(spanTitle == ""){spanTitle = 'HL:' + highlightCtr;}
+
                 //Adding !important to CSS to account for Dark Theme extensions that override styles... otherwise can't see highlights in dark mode
-                newSpan.style.setProperty("background-color", "yellow", "important");
+                newSpan.style.setProperty("background-color", spanColor, "important");
                 newSpan.style.setProperty("color", "black", "important");
 
                 //Set class for the new SPAN element so you can loop through the highlights later to copy to clipboard
-                newSpan.className = "roamJsHighlighter";
-                newSpan.title = 'HL:' + highlightCtr;
+                newSpan.className = spanClass;
+                newSpan.title = spanTitle;
 
                 //Don't think I am using this yet but idea is to be able to indent in Roam under a UL
                 if(startElemNode.parentNode.nodeName == 'LI')
@@ -389,10 +378,8 @@ else
                 writeToConsole("NEW SPAN CREATED: " + newSpan);
                 if(thisIsFirst == 1)
                 {
-                    finalRangeStart = newSpan;
                     thisIsFirst = 0;
                 }
-                finalRangeEnd = newSpan;
 
                 return newSpan;
             }
@@ -501,19 +488,9 @@ else
             {
                 if(startCont === endCont && endOff > startOff)
                 {
-                    var theOnlyNode = createSpanElement(startCont, startOff, endCont, endOff);
-
+                    createSpanElement(startCont, startOff, endCont, endOff);
                     //Clear the original user mouse selection
                     document.getSelection().removeAllRanges();
-                    let finalRange = document.createRange();
-                    writeToConsole(finalRangeStart,3,0);
-                    writeToConsole(finalRangeEnd,3,0);
-                    finalRange.setStart(theOnlyNode.childNodes[0], 0);
-                    finalRange.setEnd(theOnlyNode.childNodes[0], theOnlyNode.childNodes[0].textContent.length);
-                    writeToConsole(finalRange,3,0);
-                    //Re-add the user mouse selection based off the range just created/highlighted
-                    //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
-                    //document.getSelection().addRange(finalRange);
                 }
             }
 
@@ -554,17 +531,6 @@ else
                     {
                         //Clear the original user mouse selection
                         document.getSelection().removeAllRanges();
-                        /* ACTUALLY LIKE IDEA OF UNSELECTING THE SELECTION AFTER HIGHLIGHT
-                        let finalRange = document.createRange();
-                        writeToConsole(finalRangeStart,3,0);
-                        writeToConsole(finalRangeEnd,3,0);
-                        finalRange.setStart(finalRangeStart.childNodes[0], 0);
-                        finalRange.setEnd(finalRangeEnd.childNodes[0], finalRangeEnd.childNodes[0].length);
-                        writeToConsole(finalRange,3,0);
-                        //Re-add the user mouse selection based off the range just created/highlighted
-                        //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
-                        document.getSelection().addRange(finalRange);
-                        */
                         break;
                     }
                     consoleTabLevel = '\t';
@@ -636,9 +602,6 @@ else
                     var theSelection = window.getSelection();
                     if(theSelection.toString().length > 0)
                     {
-                        //This means the user clicked and dragged to select some text instead of just clicking
-                        var selectedTextHl = theSelection.toString();
-                        //console.log(selectedTextHl);
                         //Create new SPAN element for the page reference highlight
                         var divTest = document.createRange();
                         //divTest = window.getSelection();
@@ -658,23 +621,10 @@ else
                         newSpanTag.title = curElement.title;
                         newSpanTag.appendChild(selectedText);
                         subSelection.insertNode(newSpanTag);
-                        //Clear the original user mouse selection
-                        //document.getSelection().removeAllRanges();
-                        //Re-add the user mouse selection based off the range just created/highlighted
-                        //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
-                        //document.getSelection().addRange(divTest);
                     }
                 }
                 else
                 {
-                    /*
-                    console.log('class: ', curElement.className);
-                    console.log('current: ', curElement);
-                    console.log('parent: ', curElement.parentNode);
-                    console.log('prev sibling: ', curElement.previousSibling);
-                    console.log('next sibling: ', curElement.nextSibling);
-                    console.log('text: ', curElement.textContent);
-                    */
                     var prevText = "", nextText = "";
 
                     //Check the previous and next siblings (i.e., the element before and after our highlight SPAN)
@@ -704,9 +654,7 @@ else
                     // remove the empty element that had the highlights before
                     curElement.remove();
                 }
-                //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
-                //Old Way which wasn't working with clipboardData setData since not called by a cut or copy event
-                //updateClipboard();
+
                 //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
                 //We already have the "cut" event listener set to run our code, so this should activate it
                 clickEvent = 1;
@@ -726,6 +674,9 @@ else
         var curElement = evt.target || evt.srcElement;
         //console.log(curElement);
         //console.log(curElement.className);
+        writeToConsole("****** DOUBLE CLICK *******");
+        writeToConsole(curElement,1,0);
+        writeToConsole(curElement.className);
         if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
         {
             //console.log(curElement);
@@ -734,14 +685,38 @@ else
             {
                 var theSelection = window.getSelection();
                 var theSelectionString = theSelection.toString();
+                writeToConsole(theSelectionString);
+                writeToConsole(theSelection.baseNode,1,0);
+                writeToConsole(theSelection.baseOffset);
+                writeToConsole(theSelection.extentNode,1,0);
+                writeToConsole(theSelection.extentOffset);
                 if(theSelectionString.length > 0)
                 {
-                    //Fix the selection in case it extends a character and grabs space character in front or after the word
                     var divTest = document.createRange();
-                    if(theSelectionString.substring(0,1) == " "){var addOffset = 1;}else{var addOffset = 0;}
-                    if(theSelectionString.substring(theSelectionString.length - 1) == " "){var subOffset = 1;}else{var subOffset = 0;}
-                    divTest.setStart(theSelection.baseNode, theSelection.baseOffset + addOffset);
-                    divTest.setEnd(theSelection.extentNode, theSelection.extentOffset - subOffset);
+                    //If there is a single bolded word on webpage it is its own element and the selection then will extend into next element with double click when adding extra space
+                    if(theSelection.baseNode != theSelection.extentNode)
+                    {
+                        if(theSelectionString.substring(0,1) == " ")
+                        {
+                            //Extra space at beginning of word which means the full word should be in the extendNode instead
+                            divTest.setStart(theSelection.extentNode, 0);
+                            divTest.setEnd(theSelection.extentNode, theSelection.extentOffset);
+                        }
+                        else
+                        {
+                            //Extra space at end of word which means the full word should be in the baseNode
+                            divTest.setStart(theSelection.baseNode, theSelection.baseOffset);
+                            divTest.setEnd(theSelection.baseNode, theSelection.baseNode.length);
+                        }
+                    }
+                    else
+                    {
+                        //Fix the selection in case it extends a character and grabs space character in front or after the word
+                        if(theSelectionString.substring(0,1) == " "){var addOffset = 1;}else{var addOffset = 0;}
+                        if(theSelectionString.substring(theSelectionString.length - 1) == " "){var subOffset = 1;}else{var subOffset = 0;}
+                        divTest.setStart(theSelection.baseNode, theSelection.baseOffset + addOffset);
+                        divTest.setEnd(theSelection.extentNode, theSelection.extentOffset - subOffset);
+                    }
                     document.getSelection().removeAllRanges();
                     document.getSelection().addRange(divTest);
                     bSelFound = 1;
@@ -750,13 +725,15 @@ else
 
             if(bSelFound == 1)
             {
-                //console.log('selection: ', window.getSelection);
-                var theSelection = window.getSelection();
+                theSelection = window.getSelection();
+                writeToConsole(theSelection,1,0);
                 if(theSelection.toString().length > 0)
                 {
-                    //This means the user clicked and dragged to select some text instead of just clicking
-                    var selectedTextHl = theSelection.toString();
-                    //console.log(selectedTextHl);
+                    writeToConsole(theSelection.baseNode,1,0);
+                    writeToConsole(theSelection.baseOffset);
+                    writeToConsole(theSelection.extentNode,1,0);
+                    writeToConsole(theSelection.extentOffset);
+                    writeToConsole(curElement.title);
                     //Create new SPAN element for the page reference highlight
                     var divTest = document.createRange();
                     //divTest = window.getSelection();
@@ -776,11 +753,6 @@ else
                     newSpanTag.title = curElement.title;
                     newSpanTag.appendChild(selectedText);
                     subSelection.insertNode(newSpanTag);
-                    //Clear the original user mouse selection
-                    //document.getSelection().removeAllRanges();
-                    //Re-add the user mouse selection based off the range just created/highlighted
-                    //Reason is in certain circumstances, the selected text range gets shortened so do this just to make sure
-                    //document.getSelection().addRange(divTest);
                 }
             }
             //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
