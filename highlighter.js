@@ -1,5 +1,5 @@
-//Version 1.7.1
-//Date: May 12, 2020
+//Version 1.7.2
+//Date: May 13, 2020
 
 //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
 //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
@@ -20,13 +20,13 @@ else
     //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
     var highlightCtr = 0;
 
-    console.log('Loaded highlighter.js script v1.7.1');
+    console.log('Loaded highlighter.js script v1.7.2');
 
     //0 = [Default] Don't show debug
     //1 = Show all log items marked logLevel = 1
     //2 = Show all log items marked logLevel 1 & 2
     //3 = Show all log items (Full Verbose)
-    var debugMode = 1;
+    var debugMode = 0;
     var consoleTabLevel = '';
 
     function writeToConsole(textString, logLevel = 1, tabLevel = 1, alwaysShow = "no")
@@ -193,6 +193,7 @@ else
                     }
                     writeToConsole('newHighlight: ' + newHighlight);
                     writeToConsole('eachHighlight: ' + eachHighlight);
+                    prevNode = elemSpan;
                     lastParNodeName = parNodeName;
                     i++;
                     if(i + 1 >= elemHighlights.length){break;}
@@ -550,24 +551,71 @@ else
     );
 
     //Add listener to "paste" event (CTRL + V on Windows) to bring up option to change way line breaks are handled
-    document.addEventListener('paste', function (e)
-    {
-        //localStorage["sameBlockOpt"];
-        sameBlockOpt = Number(prompt("0 = [Default] Line breaks create new bullets at same 'level'\n1 = Nest underneath the first 'paragraph' in each highlight\n2 = Line Breaks stay within each bullet (ie. Ctrl + Shift + V)\n3 = Replace line breaks with SPACEs", 1));
-        //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
-        //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
-        //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
-        //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
-        //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-        if(sameBlockOpt != 0 && sameBlockOpt != 1 && sameBlockOpt != 2 && sameBlockOpt != 3){sameBlock = Number(0);}else{sameBlock = Number(sameBlockOpt);}
-        //console.log('sameBlock: ', sameBlock);
+    document.addEventListener('keydown', function (evt) {
+        if(evt.ctrlKey)
+        {
+            if(evt.key === 'l')
+            {
+                //localStorage["sameBlockOpt"];
+                sameBlockOpt = Number(prompt("0 = [Default] Line breaks create new bullets at same 'level'\n1 = Nest underneath the first 'paragraph' in each highlight\n2 = Line Breaks stay within each bullet (ie. Ctrl + Shift + V)\n3 = Replace line breaks with SPACEs", 1));
+                //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
+                //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
+                //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
+                //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
+                //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
+                if(sameBlockOpt != 0 && sameBlockOpt != 1 && sameBlockOpt != 2 && sameBlockOpt != 3){sameBlock = Number(0);}else{sameBlock = Number(sameBlockOpt);}
+                //console.log('sameBlock: ', sameBlock);
+                evt.preventDefault();
+            }
 
-        //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
-        //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
-        //We already have the "cut" event listener set to run our code, so this should activate it
-        clickEvent = 1;
-        document.execCommand('cut');
-        e.preventDefault();
+            //Get rid of all highlights on the page
+            if(evt.key === 'q')
+            {
+                removeAllHlOpt = Number(prompt("Do you want to remove all Highlights from this page?\n0 = No\n1 = Yes", 1));
+                if(removeAllHlOpt != 0 && removeAllHlOpt != 1){removeAllHl = Number(0);}else{removeAllHl = Number(removeAllHlOpt);}
+                if(removeAllHlOpt == 0){return;}
+                var prevText = "", nextText = "";
+                var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
+                for (var i = 0; i < elemHighlights.length; i++)
+                {
+                    var curElement = elemHighlights.item(i);
+
+                    //Check the previous and next siblings (i.e., the element before and after our highlight SPAN)
+                    if(curElement.previousSibling !== null){prevText = curElement.previousSibling.textContent;}
+                    if(curElement.nextSibling !== null){nextText = curElement.nextSibling.textContent;}
+                    if(prevText.length > 0){
+                        //If there is a previous sibling, then will append the highlighted text to that element to try and get HTML back to way it was before highlighter
+                        if(nextText.length > 0)
+                        {
+                            //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
+                            //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
+                            var newText = prevText + curElement.innerText + nextText;
+                            //console.log('new text: ', newText);
+                            curElement.previousSibling.textContent = newText;
+                            curElement.nextSibling.remove();
+                        }else {
+                            var newText = prevText + curElement.innerText;
+                            //console.log('new text: ', newText);
+                            curElement.previousSibling.textContent = newText;
+                        }
+                    }else {
+                        var newText = curElement.innerText + nextText;
+                        //console.log('new text: ', newText);
+                        curElement.nextSibling.textContent = newText;
+                    }
+
+                    // remove the empty element that had the highlights before
+                    curElement.remove();
+                }
+                evt.preventDefault();
+            }
+
+            //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
+            //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+            //We already have the "cut" event listener set to run our code, so this should activate it
+            clickEvent = 1;
+            document.execCommand('cut');
+        }
     }
     );
 
