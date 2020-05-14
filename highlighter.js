@@ -1,26 +1,29 @@
-//Version 1.7.2
+//Version 1.7.3
 //Date: May 13, 2020
+var verNum = '1.7.3';
+var getPage = location.href;
 
-//4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
-//Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
-//Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
-//Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
-//Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-var sameBlock = Number(0);
-
-if(typeof roamHighlighterLoaded !== "undefined")
+if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearch.com'))
 {
     //Variable already present/set so therefore do not need to run again as don't want to duplicate load the Javascript code
+    if(roamHighlighterLoaded == 1)
+    {
+        var divElemMain = document.getElementById("rmHLmain");
+        divElemMain.style.display = "block";
+    }
 }
 else
 {
+    var sameBlock = Number(0);
+    var pageTitle = document.title.toString();
+    var pageRef = "#[[Roam-Highlights]]";
     var roamHighlighterLoaded = 1;
     //Variable to see if starting by click event (to remove a highlight) OR by a 'cut' event by user adding a highlight
     var clickEvent = 0;
     //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
     var highlightCtr = 0;
 
-    console.log('Loaded highlighter.js script v1.7.2');
+    console.log('Loaded highlighter.js script v' + verNum);
 
     //0 = [Default] Don't show debug
     //1 = Show all log items marked logLevel = 1
@@ -28,6 +31,215 @@ else
     //3 = Show all log items (Full Verbose)
     var debugMode = 0;
     var consoleTabLevel = '';
+
+    //Setup the options/settings menu
+    var divElem = document.createElement('div');
+        divElem.id = 'rmHLmain';
+        divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:30%;height:85%;opacity:0.8;z-index:9999';
+    var divButtonsElem = document.createElement('div');
+        divButtonsElem.id = 'rmHLdivButt';
+        divButtonsElem.style.cssText = 'width:100%';
+        divElem.appendChild(divButtonsElem);
+    var divTextElem = document.createElement('div');
+        divTextElem.id = 'rmHLdivText';
+        divTextElem.style.cssText = 'width:100%;height:100%;float:right';
+        divElem.appendChild(divTextElem);
+
+    var divSetElem = document.createElement('div');
+        divSetElem.id = 'rmHLdivSett';
+        divSetElem.style.cssText = 'width:50%;height:100%;display:none;float:left';
+        divElem.appendChild(divSetElem);
+
+        var formElem = document.createElement('div');
+            formElem.id = 'rmHLform';
+            formElem.style.cssText = 'width:100%;height:100%;background-color:white;padding:15px;border:1px solid black';
+            divSetElem.appendChild(formElem);
+
+            var labelElem = document.createElement('label');
+                labelElem.innerHTML = 'Highlighter Link #Tag';
+                labelElem.htmlFor = "rmHLtb";
+                formElem.appendChild(labelElem);
+            formElem.appendChild(document.createElement('br'));
+            var tbElem = document.createElement('input');
+                tbElem.value = pageRef;
+                tbElem.id = 'rmHLtb';
+                tbElem.style.cssText = 'padding-left:5px';
+                tbElem.name = "rmHLtb";
+                tbElem.placeholder = "#[[Roam-Highlights]]";
+                formElem.appendChild(tbElem);
+
+            formElem.appendChild(document.createElement('br'));
+            formElem.appendChild(document.createElement('br'));
+            var labelElem2 = document.createElement('label');
+                labelElem2.innerHTML = 'Page Title for Alias Link';
+                labelElem2.htmlFor = "rmHLta2";
+                formElem.appendChild(labelElem2);
+            formElem.appendChild(document.createElement('br'));
+            var textElem2 = document.createElement('textarea');
+                textElem2.value = pageTitle;
+                textElem2.id = 'rmHLta2';
+                textElem2.style.cssText = 'width:90%';
+                textElem2.rows = 3;
+                textElem2.name = "rmHLta2";
+                //textElem2.placeholder = "#[[Roam-Highlights]]";
+                formElem.appendChild(textElem2);
+
+            //5 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
+                //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
+                //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
+                //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
+                //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
+            formElem.appendChild(document.createElement('br'));
+            formElem.appendChild(document.createElement('br'));
+            var labelElem3 = document.createElement('label');
+                labelElem3.innerHTML = 'How to handle Line Breaks within each Highlight';
+                labelElem3.htmlFor = "rmHLsel";
+                formElem.appendChild(labelElem3);
+            formElem.appendChild(document.createElement('br'));
+            var selElem = document.createElement('select');
+                selElem.options.add( new Option("[DEFAULT] New bullets same level","0", true, true) );
+                selElem.options.add( new Option("Nest under first Line Break","1") );
+                selElem.options.add( new Option("Ctrl + Shift + V same bullet","2") );
+                selElem.options.add( new Option("Replace with single space","3") );
+                selElem.options.add( new Option("Remove line breaks","4") );
+                selElem.style.cssText = 'padding:3px';
+                selElem.id = 'rmHLsel';
+                formElem.appendChild(selElem);
+
+            formElem.appendChild(document.createElement('br'));
+            formElem.appendChild(document.createElement('br'));
+            var butSave = document.createElement('button');
+                butSave.style.cssText = 'background-color:black;color:white;border-color:white';
+                butSave.innerHTML = 'Save';
+                butSave.id = 'rmHLsave';
+                butSave.id = 'rmHLsave';
+                formElem.appendChild(butSave);
+
+                butSave.addEventListener("click", function(){
+                    var tbElem = document.getElementById("rmHLtb");
+                    var textElem2 = document.getElementById("rmHLta2");
+                    var selElem = document.getElementById("rmHLsel");
+                    var butSave = document.getElementById("rmHLsave");
+
+                    pageRef = tbElem.value;
+                    pageTitle = textElem2.value;
+                    sameBlock = Number(selElem.value);
+                    console.log(pageRef);
+                    console.log(pageTitle);
+                    console.log(sameBlock);
+
+                    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+                    //We already have the "cut" event listener set to run our code, so this should activate it
+                    clickEvent = 1;
+                    document.execCommand('cut');
+                });
+
+    var butSett = document.createElement('button');
+        butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
+        butSett.innerHTML = 'Settings';
+        butSett.id = 'rmHLsettings';
+        divButtonsElem.appendChild(butSett);
+
+        butSett.addEventListener("click", function(){
+            var divElemMain = document.getElementById("rmHLmain");
+            var divSetElem = document.getElementById("rmHLdivSett");
+            var divTextElem = document.getElementById("rmHLdivText");
+            var tbElem = document.getElementById("rmHLtb");
+            var textElem2 = document.getElementById("rmHLta2");
+            var selElem = document.getElementById("rmHLsel");
+            var butSett = document.getElementById("rmHLsettings");
+            var butMax = document.getElementById("rmHLexpand");
+            var butWrap = document.getElementById("rmHLwrap");
+
+            if(divSetElem.style.display == "none")
+            {
+                divElemMain.style.opacity = "1";
+                divTextElem.style.width = "50%";
+                divSetElem.style.display = "block";
+                tbElem.value = pageRef;
+                textElem2.value = pageTitle;
+                selElem.value = sameBlock;
+                if(butMax.innerHTML == "Expand"){butMax.click();}
+            }
+            else
+            {
+                divElemMain.style.opacity = "0.8";
+                divTextElem.style.width = "100%";
+                divSetElem.style.display = "none";
+                //butMax.click();
+            }
+        });
+
+    var butWrap = document.createElement('button');
+        butWrap.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
+        butWrap.innerHTML = 'Un-Wrap';
+        butWrap.id = 'rmHLwrap';
+        divButtonsElem.appendChild(butWrap);
+
+        butWrap.addEventListener("click", function(){
+            var textInput = document.getElementById("rmHLtextArea");
+            var butWrap = document.getElementById("rmHLwrap");
+
+            if(butWrap.innerHTML == "Wrap")
+            {
+                textInput.style.whiteSpace = "normal";
+                butWrap.innerHTML = 'Un-Wrap';
+            }
+            else
+            {
+                textInput.style.whiteSpace = "pre";
+                butWrap.innerHTML = 'Wrap';
+            }
+        });
+
+    var butHide = document.createElement('button');
+        butHide.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
+        butHide.innerHTML = 'Hide';
+        divButtonsElem.appendChild(butHide);
+
+        butHide.addEventListener("click", function(){
+            var divElemMain = document.getElementById("rmHLmain");
+            divElemMain.style.display = "none";
+            //divElemMain.style.display = "block";
+        });
+
+    var butMax = document.createElement('button');
+        butMax.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
+        butMax.innerHTML = 'Expand';
+        butMax.id = 'rmHLexpand';
+        divButtonsElem.appendChild(butMax);
+
+        butMax.addEventListener("click", function(){
+            var divElemMain = document.getElementById("rmHLmain");
+            var divTextElem = document.getElementById("rmHLdivText");
+            var butMax = document.getElementById("rmHLexpand");
+            var divSetElem = document.getElementById("rmHLdivSett");
+
+            if(butMax.innerHTML == "Expand")
+            {
+                divElemMain.style.width = "80%";
+                butMax.innerHTML = 'Shrink';
+            }
+            else
+            {
+                if(divSetElem.style.display == "block")
+                {
+                    divElemMain.style.opacity = "0.8";
+                    divTextElem.style.width = "100%";
+                    divSetElem.style.display = "none";
+                }
+
+                divElemMain.style.width = "30%";
+                butMax.innerHTML = 'Expand';
+            }
+        });
+
+    var textInput = document.createElement("textarea");
+        textInput.name = "textAreaInput";
+        textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:normal;float:right;padding-left:5px;padding-right:1px';
+        textInput.id = 'rmHLtextArea';
+        divTextElem.appendChild(textInput);
+    document.body.appendChild(divElem);
 
     function writeToConsole(textString, logLevel = 1, tabLevel = 1, alwaysShow = "no")
     {
@@ -37,6 +249,13 @@ else
             if(tabLevel != 0){finalTextString = consoleTabLevel + textString;}
             console.log(finalTextString);
         }
+    }
+
+    //async function to make sure to wait for user input before continuing when using in async function
+    function promptPromise(message, defaultVal) {
+        return new Promise((resolve, reject) => {
+            resolve(window.prompt(message, defaultVal));
+        });
     }
 
     //This function adds Roam markdown formatting based on Element type (e.g., <STRONG> --> **text**)
@@ -79,7 +298,7 @@ else
                     || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
                 )
                 && (
-                    prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "("
+                    prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "(" || prevNode.innerText.substring(prevNode.innerText.length - 1) == '"' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '“' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '”'
                 )
             )
             || (
@@ -88,7 +307,7 @@ else
                     || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
                 )
                 && (
-                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";"
+                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“'
                 )
             )
             || parNodeName == "SUP"
@@ -102,7 +321,10 @@ else
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
     function updateClipboard() {
         //Get page title and URL and put in Roam format [Page Title](URL)
-        var reference = `[${document.title}](${location.href}) #[[Roam-Highlights]]`;
+        var reference = `[${pageTitle}](${location.href}) ${pageRef}`;
+        reference = reference.trim();
+        writeToConsole('reference: ' + reference);
+
         var plainConcatHighlights = "";
         var htmlConcatHighlights = "";
         var eachHighlight = "";
@@ -161,6 +383,9 @@ else
 
                     if(classFound == 'roamJsHighlighter pageLink')
                     {
+                        bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
+                        lastParNodeName = parNodeName;
+                        prevNode = elemSpan;
                         writeToConsole('newHighlight: ' + newHighlight);
                         writeToConsole('lastMainSpanText: ' + lastMainSpanText);
                         //first try to get rid of ** or __ or ` for bold or italics or code since can't format a page link
@@ -178,6 +403,8 @@ else
                     else
                     {
                         bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
+                        lastParNodeName = parNodeName;
+                        prevNode = elemSpan;
                         newHighlight = convertFormat(newHighlight, elemSpan);
 
                         if(parNodeName == "A")
@@ -193,13 +420,11 @@ else
                     }
                     writeToConsole('newHighlight: ' + newHighlight);
                     writeToConsole('eachHighlight: ' + eachHighlight);
-                    prevNode = elemSpan;
-                    lastParNodeName = parNodeName;
                     i++;
                     if(i + 1 >= elemHighlights.length){break;}
                 }
             }
-
+            writeToConsole("LINE BREAK OPTION SET TO: " + sameBlock);
             if(sameBlock == 3)
             {
                 //Instead of looping through line breaks below, replace line breaks with a SPACE to bring into same block.
@@ -309,14 +534,22 @@ else
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
         clipboardDataEvt.setData('text/html', htmlConcatHighlights);
+        var textInput = document.getElementById("rmHLtextArea");
+        writeToConsole("UPDATED THE CLIPBOARD");
+        //textInput.value = 'tESTING MAKING empty';
+        htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>').split("</ul>").join('\n</ul>').split("</li>").join('\n<li>');
+        textInput.value = htmlConcatHighlights;
+        textInput.value += '\n\n' + plainConcatHighlights;
         return;
     }
 
     //Add listener to "cut" event (CTRL + X on Windows) for highlighting trigger
     document.addEventListener('cut', function (e)
     {
+        writeToConsole("start CUT");
         if(clickEvent == 0)
         {
+            writeToConsole("INSIDE CLICKEVENT = 0");
             //Variables for parsing selected elements for highlight
             var foundStartOfSelection = 0;
             var foundEnd = 0;
@@ -543,6 +776,7 @@ else
             writeToConsole(`Ended i Loop at: ${i}`);
         }
 
+        writeToConsole("BEFORE RUNNING UPDATECLIPBOARD");
         //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
         clickEvent = 0;
         updateClipboard();
@@ -552,25 +786,14 @@ else
 
     //Add listener to "paste" event (CTRL + V on Windows) to bring up option to change way line breaks are handled
     document.addEventListener('keydown', function (evt) {
+        var bMatchedKey = false;
+        //Need to keep combined each separately or the evt.preventDefault(); will not work properly
         if(evt.ctrlKey)
         {
-            if(evt.key === 'l')
-            {
-                //localStorage["sameBlockOpt"];
-                sameBlockOpt = Number(prompt("0 = [Default] Line breaks create new bullets at same 'level'\n1 = Nest underneath the first 'paragraph' in each highlight\n2 = Line Breaks stay within each bullet (ie. Ctrl + Shift + V)\n3 = Replace line breaks with SPACEs", 1));
-                //4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
-                //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
-                //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
-                //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
-                //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-                if(sameBlockOpt != 0 && sameBlockOpt != 1 && sameBlockOpt != 2 && sameBlockOpt != 3){sameBlock = Number(0);}else{sameBlock = Number(sameBlockOpt);}
-                //console.log('sameBlock: ', sameBlock);
-                evt.preventDefault();
-            }
-
             //Get rid of all highlights on the page
             if(evt.key === 'q')
             {
+                bMatchedKey = true;
                 removeAllHlOpt = Number(prompt("Do you want to remove all Highlights from this page?\n0 = No\n1 = Yes", 1));
                 if(removeAllHlOpt != 0 && removeAllHlOpt != 1){removeAllHl = Number(0);}else{removeAllHl = Number(removeAllHlOpt);}
                 if(removeAllHlOpt == 0){return;}
@@ -610,11 +833,12 @@ else
                 evt.preventDefault();
             }
 
-            //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
-            //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
-            //We already have the "cut" event listener set to run our code, so this should activate it
-            clickEvent = 1;
-            document.execCommand('cut');
+            if(evt.key === 's')
+            {
+                var divElemMain = document.getElementById("rmHLmain");
+                if(divElemMain.style.display == "block"){divElemMain.style.display = "none";}else{divElemMain.style.display = "block";}
+                evt.preventDefault();
+            }
         }
     }
     );
