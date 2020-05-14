@@ -1,6 +1,6 @@
-//Version 1.7.3
-//Date: May 13, 2020
-var verNum = '1.7.3';
+//Version 1.7.4
+//Date: May 14, 2020
+var verNum = '1.7.4';
 var getPage = location.href;
 
 if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearch.com'))
@@ -25,6 +25,7 @@ else
 
     console.log('Loaded highlighter.js script v' + verNum);
 
+    //-1 = Only for current item you are testing... never leave these permanently
     //0 = [Default] Don't show debug
     //1 = Show all log items marked logLevel = 1
     //2 = Show all log items marked logLevel 1 & 2
@@ -172,7 +173,7 @@ else
 
     var butWrap = document.createElement('button');
         butWrap.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
-        butWrap.innerHTML = 'Un-Wrap';
+        butWrap.innerHTML = 'Wrap';
         butWrap.id = 'rmHLwrap';
         divButtonsElem.appendChild(butWrap);
 
@@ -236,14 +237,14 @@ else
 
     var textInput = document.createElement("textarea");
         textInput.name = "textAreaInput";
-        textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:normal;float:right;padding-left:5px;padding-right:1px';
+        textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px';
         textInput.id = 'rmHLtextArea';
         divTextElem.appendChild(textInput);
     document.body.appendChild(divElem);
 
     function writeToConsole(textString, logLevel = 1, tabLevel = 1, alwaysShow = "no")
     {
-        if(alwaysShow == "yes" || (debugMode == 1 && logLevel == 1) || (debugMode == 2 && logLevel <= 2) || debugMode == 3)
+        if(alwaysShow == "yes" || (debugMode == -1 && logLevel == -1) || (debugMode == 1 && logLevel == 1) || (debugMode == 2 && logLevel <= 2) || debugMode == 3)
         {
             var finalTextString = textString;
             if(tabLevel != 0){finalTextString = consoleTabLevel + textString;}
@@ -251,11 +252,37 @@ else
         }
     }
 
-    //async function to make sure to wait for user input before continuing when using in async function
-    function promptPromise(message, defaultVal) {
-        return new Promise((resolve, reject) => {
-            resolve(window.prompt(message, defaultVal));
-        });
+    //Remove a highlight based on given element variable
+    function removeHighlight(curElement)
+    {
+        var prevText = "", nextText = "";
+
+        //Check the previous and next siblings (i.e., the element before and after our highlight SPAN)
+        if(curElement.previousSibling !== null){prevText = curElement.previousSibling.textContent;}
+        if(curElement.nextSibling !== null){nextText = curElement.nextSibling.textContent;}
+        if(prevText.length > 0){
+            //If there is a previous sibling, then will append the highlighted text to that element to try and get HTML back to way it was before highlighter
+            if(nextText.length > 0)
+            {
+                //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
+                //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
+                var newText = prevText + curElement.innerText + nextText;
+                //console.log('new text: ', newText);
+                curElement.previousSibling.textContent = newText;
+                curElement.nextSibling.remove();
+            }else {
+                var newText = prevText + curElement.innerText;
+                //console.log('new text: ', newText);
+                curElement.previousSibling.textContent = newText;
+            }
+        }else {
+            var newText = curElement.innerText + nextText;
+            //console.log('new text: ', newText);
+            curElement.nextSibling.textContent = newText;
+        }
+
+        // remove the empty element that had the highlights before
+        curElement.remove();
     }
 
     //This function adds Roam markdown formatting based on Element type (e.g., <STRONG> --> **text**)
@@ -538,8 +565,12 @@ else
         writeToConsole("UPDATED THE CLIPBOARD");
         //textInput.value = 'tESTING MAKING empty';
         htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>').split("</ul>").join('\n</ul>').split("</li>").join('\n<li>');
-        textInput.value = htmlConcatHighlights;
-        textInput.value += '\n\n' + plainConcatHighlights;
+        textInput.value = "";
+        textInput.value += '\n'
+        textInput.value += plainConcatHighlights;
+        textInput.value += '\n'
+        textInput.value += htmlConcatHighlights;
+        textInput.value += '\n'
         return;
     }
 
@@ -717,63 +748,114 @@ else
             writeToConsole('allWithinRangeParent.childNodes:');
             writeToConsole(allWithinRangeParent.childNodes,1,0);
 
+            var bRemoveHighlights = false;
             //If only one html element selected
             if(allWithinRangeParent.childNodes.length == 0)
             {
-                if(startCont === endCont && endOff > startOff)
+                if(allWithinRangeParent.parentElement.className == "roamJsHighlighter" || allWithinRangeParent.parentElement.className == "roamJsHighlighter pageLink")
                 {
-                    createSpanElement(startCont, startOff, endCont, endOff);
-                    //Clear the original user mouse selection
-                    document.getSelection().removeAllRanges();
+                    //call function to remove element highlight
+                    removeHighlight(allWithinRangeParent.parentElement);
+                    bRemoveHighlights = true;
                 }
-            }
-
-            //loop through all of the elements contained in the parent container of the highest common level of selected text
-            writeToConsole("Starting loop through all elements contained in the parent container of the highest common level of selected text");
-            for (var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
-            {
-                consoleTabLevel = '';
-                var elementNodeName = elem.nodeName;
-                writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`,2);
-                var elementText = "";
-                if(elementNodeName == '#text'){elementText = elem.textContent;}else{elementText = elem.innerText;}
-
-                //Set to loglevel 2 if H1, H2, H3, H4 Header elements... otherwise loglevel 3
-                if(elementNodeName == 'H1' || elementNodeName == 'H2' || elementNodeName == 'H3' || elementNodeName == 'H4'){tempLogLevel = 2;}else{tempLogLevel = 3;}
-                writeToConsole(`i: ${i} | elementText: ${elementText}`, tempLogLevel);
-                writeToConsole(`i: ${i} | elementInnerHtml: ${elem.innerHTML}`, 3);
-
-                //Check to see if the Element is part of the selected text, otherwise skip
-                if(selection.containsNode(elem, true))
+                else
                 {
-                    consoleTabLevel = '\t';
-                    writeToConsole("This element was at least partially found in the Selected Text by the user");
-                    writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`);
-                    writeToConsole(`i: ${i} | elementText: ${elementText}`)
-
-                    //Recursively drill down to the #text value
-                    var newCtr = 1;
-                    consoleTabLevel = '\t\t';
-
-                    //var findHierarchy = findLowestNode(elem, 'root:' + elementNodeName);
-                    findLowestNode(elem, 'root');
-                    writeToConsole("foundStart: " + foundStartOfSelection + " foundEnd: " + foundEnd, 3);
-                    //If haven't found the beginning of the selection yet then can skip to next item/element in the loop
-                    if(foundStartOfSelection == 0){continue;}
-
-                    if(foundEnd == 1)
+                    if(startCont === endCont && endOff > startOff)
                     {
+                        createSpanElement(startCont, startOff, endCont, endOff);
                         //Clear the original user mouse selection
                         document.getSelection().removeAllRanges();
-                        break;
                     }
-                    consoleTabLevel = '\t';
                 }
-                consoleTabLevel = '';
             }
 
-            writeToConsole(`allTextFound: ${allTextFound}`);
-            writeToConsole(`Ended i Loop at: ${i}`);
+            //If selected text is part of a previous highlight then the user is trying to remove that highlight
+            if(bRemoveHighlights == false)
+            {
+                //Quickly loop through each selected element to see if any are already highlighted
+                for(var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
+                {
+                    writeToConsole(elem,1,0);
+                    writeToConsole('elem.className: ' + elem.className,1);
+                    if(selection.containsNode(elem, true))
+                    {
+                        if (typeof elem.querySelectorAll !== "undefined")
+                        {
+                            var elemsInSameHighlight = elem.querySelectorAll(".roamJsHighlighter, .roamJsHighlighter pageLink");
+                            for(var m = 0; m < elemsInSameHighlight.length; m++)
+                            {
+                                var newCurElement = elemsInSameHighlight.item(m);
+                                writeToConsole(newCurElement,1,0);
+                                writeToConsole('newCurElement.className: ' + newCurElement.className,1);
+                                if(selection.containsNode(newCurElement, true))
+                                {
+                                    if(newCurElement.className == "roamJsHighlighter" || newCurElement.className == "roamJsHighlighter pageLink")
+                                    {
+                                        //Remove highlights
+                                        removeHighlight(newCurElement);
+                                        bRemoveHighlights = true;
+                                    }
+                                }else{writeToConsole('NOT SELECTED newCurElement.className: ' + newCurElement,1);}
+                            }
+                        }
+                    }else{writeToConsole('NOT SELECTED elem.className: ' + elem,1);}
+                }
+            }
+
+            if(bRemoveHighlights)
+            {
+                //Removed highlights instead of adding new ones
+                document.getSelection().removeAllRanges();
+            }
+            else
+            {
+                //loop through all of the elements contained in the parent container of the highest common level of selected text
+                writeToConsole("Starting loop through all elements contained in the parent container of the highest common level of selected text");
+                for (var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
+                {
+                    consoleTabLevel = '';
+                    var elementNodeName = elem.nodeName;
+                    writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`,2);
+                    var elementText = "";
+                    if(elementNodeName == '#text'){elementText = elem.textContent;}else{elementText = elem.innerText;}
+
+                    //Set to loglevel 2 if H1, H2, H3, H4 Header elements... otherwise loglevel 3
+                    if(elementNodeName == 'H1' || elementNodeName == 'H2' || elementNodeName == 'H3' || elementNodeName == 'H4'){tempLogLevel = 2;}else{tempLogLevel = 3;}
+                    writeToConsole(`i: ${i} | elementText: ${elementText}`, tempLogLevel);
+                    writeToConsole(`i: ${i} | elementInnerHtml: ${elem.innerHTML}`, 3);
+
+                    //Check to see if the Element is part of the selected text, otherwise skip
+                    if(selection.containsNode(elem, true))
+                    {
+                        consoleTabLevel = '\t';
+                        writeToConsole("This element was at least partially found in the Selected Text by the user");
+                        writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`);
+                        writeToConsole(`i: ${i} | elementText: ${elementText}`)
+
+                        //Recursively drill down to the #text value
+                        var newCtr = 1;
+                        consoleTabLevel = '\t\t';
+
+                        //var findHierarchy = findLowestNode(elem, 'root:' + elementNodeName);
+                        findLowestNode(elem, 'root');
+                        writeToConsole("foundStart: " + foundStartOfSelection + " foundEnd: " + foundEnd, 3);
+                        //If haven't found the beginning of the selection yet then can skip to next item/element in the loop
+                        if(foundStartOfSelection == 0){continue;}
+
+                        if(foundEnd == 1)
+                        {
+                            //Clear the original user mouse selection
+                            document.getSelection().removeAllRanges();
+                            break;
+                        }
+                        consoleTabLevel = '\t';
+                    }
+                    consoleTabLevel = '';
+                }
+
+                writeToConsole(`allTextFound: ${allTextFound}`);
+                writeToConsole(`Ended i Loop at: ${i}`);
+            }
         }
 
         writeToConsole("BEFORE RUNNING UPDATECLIPBOARD");
@@ -793,7 +875,6 @@ else
             //Get rid of all highlights on the page
             if(evt.key === 'q')
             {
-                bMatchedKey = true;
                 removeAllHlOpt = Number(prompt("Do you want to remove all Highlights from this page?\n0 = No\n1 = Yes", 1));
                 if(removeAllHlOpt != 0 && removeAllHlOpt != 1){removeAllHl = Number(0);}else{removeAllHl = Number(removeAllHlOpt);}
                 if(removeAllHlOpt == 0){return;}
@@ -897,34 +978,16 @@ else
                 }
                 else
                 {
-                    var prevText = "", nextText = "";
+                    //Remove highlights
+                    var titleOfElement = curElement.title;
+                    var elemsInSameHighlight = document.querySelectorAll('[title="' + titleOfElement + '"]');
 
-                    //Check the previous and next siblings (i.e., the element before and after our highlight SPAN)
-                    if(curElement.previousSibling !== null){prevText = curElement.previousSibling.textContent;}
-                    if(curElement.nextSibling !== null){nextText = curElement.nextSibling.textContent;}
-                    if(prevText.length > 0){
-                        //If there is a previous sibling, then will append the highlighted text to that element to try and get HTML back to way it was before highlighter
-                        if(nextText.length > 0)
-                        {
-                            //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
-                            //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
-                            var newText = prevText + curElement.innerText + nextText;
-                            //console.log('new text: ', newText);
-                            curElement.previousSibling.textContent = newText;
-                            curElement.nextSibling.remove();
-                        }else {
-                            var newText = prevText + curElement.innerText;
-                            //console.log('new text: ', newText);
-                            curElement.previousSibling.textContent = newText;
-                        }
-                    }else {
-                        var newText = curElement.innerText + nextText;
-                        //console.log('new text: ', newText);
-                        curElement.nextSibling.textContent = newText;
+                    for(var i = 0; i < elemsInSameHighlight.length; i++)
+                    {
+                        curElement = elemsInSameHighlight.item(i);
+                        //call function to remove element
+                        removeHighlight(curElement);
                     }
-
-                    // remove the empty element that had the highlights before
-                    curElement.remove();
                 }
 
                 //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
