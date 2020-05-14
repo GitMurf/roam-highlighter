@@ -1,4 +1,4 @@
-//Version 1.7.4
+//Version 1.7.4 (chrome release)
 //Date: May 14, 2020
 var verNum = '1.7.4';
 var getPage = location.href;
