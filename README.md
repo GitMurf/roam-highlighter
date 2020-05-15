@@ -6,29 +6,40 @@ This Highlighter extension is meant for use with the Roam Research note taking a
 
 ## How to Use the Highlighter
 
+**Note:** _I am a Windows guy. While I try to document MAC specific shortcuts below, if you have any issues please google the Windows command I list to look for the MAC alternative, and whether it works or not, please open an Issue in Github letting me know what you tried so I can update the instructions accordingly and/or make a fix to the code to include a good MAC alternative. Thanks!_
+
 - Install Chrome Extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
 - Press the Highlighter icon in Chrome Extensions toolbar to activate it (only applies to the Tab you click it on)
-- **Make Highlights:** Select text in an article you want to highlight and press `Ctrl + X` ("cut" command on Windows) to highlight.
-  - Updates/changes automatically copy to the clipboard anytime you make any changes.
-  - With the new _Side Window_ (see below) you will see changes reflected _Real Time_.
-- **Copy Page Title & URL:** If you just want a quick way to grab a Link to the page in the `[` Page title `]` `(`URL`)` format for Roam without having to highlight anything, simply use `Ctrl + X` without any Highlights made and it will copy `[` Page title `]` `(`URL`)` to the clipboard.
-- **Remove a Highlight:** `Ctrl + Click` (Windows) or `Alt + Click` (MACs and Windows) previously highlighted text to remove it. **Note:** This will remove all parts of a single Highlight. If you just want to remove just a "piece" of a Highlight like a single bullet in a list, you can select that "piece" and press `Ctrl + X` to remove it.
-- **Remove ALL Highlights:** `Ctrl + Q` will ask for confirmation to remove all Highlights from the current page. Press `ENTER` to confirm.
-- **Link Pages (Single Word):** `Double-Click` a word that is already highlighted in Yellow to turn it Blue, which means will paste into Roam as page reference [[DoubleClickedWord]]
-- **Link Pages (Multi Word):** Select previously highlighted (Yellow) text and `Ctrl + Click` (Windows) or `Alt + Click` (MACs and Windows) which will turn it to Blue, which will look like this in Roam: [[Multiple Word Page Names]]
-- **Remove Linked Pages:** `Ctrl + Click` (Windows) or `Alt + Click` (MACs and Windows) any of the Blue highlights (page links) to remove the [[Double Brackets]] and turn it back to Yellow (still preserving the Highlight).
 - **Show/Hide Side Window:** `Ctrl + S` or `Click Extension Icon` to Open and Close the side window view and _Settings_.
+- **Make Highlights:** Select text from any webpage and press `Ctrl + X` (_"cut" command_) to highlight.
+  - Updates/changes automatically copy to the clipboard anytime you make changes/additions.
+  - With the new _Side Window_ you will see changes reflected _Real Time_ to see what it will look like in Roam.
+- **Copy Page Title & URL:** For a quick way to grab a _Link_ to a page in the `[` Page title `]` `(`URL`)` format for Roam without any highlights, simply use `Ctrl + X` without any Selection/Highlights and it will copy `[` Page title `]` `(`URL`)` to the clipboard.
+- **Removing Highlights**
+  - **Single Highlight:** To remove a highlight use `Ctrl + Click` (Windows) or `Alt + Click` (MAC or Windows). This will remove all _"parts"_ (links, bullets, line breaks, etc.) of something you Highlighted.
+  - **Part of a Highlight:** If you just want to remove a _"part"_ of a Highlight (e.g., single bullet in a list), you can select the text of that _"part"_ and press `Ctrl + X` (_"cut" command_) to remove it, while preserving the rest of the Highlight.
+  - **ALL Highlights:** Pressing `Ctrl + Q` will ask for confirmation to remove all Highlights from the current page.
+    - Press `ENTER` to confirm.
+    - If you want to abort, press cancel or type `0` in the pop up prompt and press `ENTER`.
+- **Adding [[Double Brackets]] for Page Linking/References in Roam**
+  - For text that is already highlighted in Yellow, you can have [[Double Brackets]] added for _Page Linking_ in Roam.
+  - Anything you choose to have [[Double Brackets]] added to will be highlighted in Blue. See the following:
+    - **Single Word:** `Double-Click` a single word to add to Roam like: [[DoubleClickedWord]]
+    - **Multiple Words:** Select multiple words from previously highlighted (Yellow) text and press `Ctrl + Click` (Windows) or `Alt + Click` (MAC or Windows) to add to Roam like: [[Multiple Words]]
+    - **Removing Linked References:** `Ctrl + Click` (Windows) or `Alt + Click` (MAC or Windows) any of the Blue highlights (page references) to turn it back to Yellow. [[Double Brackets]] will no longer be added.
 - **Change Settings:** Open the _Side Window_ with `Ctrl + S` and click the `Settings` button.
-  - **Highlighter Link #Tag:** `Default` is #[[Roam-Highlights]] which will be added to the _Parent Block_ as `[` Page title `]` `(`URL`)` #[[Roam-Highlights]]
-  - **Page Title for Alias Link:** `Default` is the Browser _Page Title_. Used in the _Parent Block_ as `[` Page title `]` `(`URL`)`
+  - **Highlighter Link #Tag:** #[[Roam-Highlights]] is the `Default` which is added to the _Parent Block_ as `[` Page title `]` `(`URL`)` **#[[Roam-Highlights]]**
+  - **Page Title for Alias Link:** The Browser _Page Title_ is the `Default` which is used in the _Parent Block_ as `[` **Page Title** `]` `(`URL`)`
   - **How to handle Line Breaks within each Highlight**
-    - Options for handling `Line Breaks` (e.g., paragraphs, bullets, new line characters, etc.) within a single Highlight (see Demo #3 below)
+    - Options for handling `Line Breaks` (e.g., paragraphs, bullets, new line characters, etc.) within a single Highlight (see **Demo #3** below)
     - If you don't like the way `Line Breaks` are handled by default, here are the options you can switch between:
       1. **New bullets same level:** This is the `DEFAULT` Setting. Line breaks will create new bullets at the same hierarchy/level.
       2. **Nest under first Line Break:** Line breaks will create new bullets, but nested underneath the first Line of each Highlight.
-      3. **Ctrl + Shift + V same bullet:** Line breaks within a Highlight will stay in the same block/bullet but preserves each Line Break as if you added a _soft line break_ with `Ctrl + Enter` like how pasting with `Ctrl + Shift + V` does from Chrome.
-      4. **Replace with single space:** Line breaks are replaced with a _single space_ (i.e., " ") for concatenation into a single block/bullet, with minor identification of where the line breaks were (_single space_).
-      5. **Remove line breaks:** Line breaks are completely removed and NOT replaced with any characters which concatenates the Highlight into a single block/bullet without any identification of where the previous line breaks were.
+      3. **Ctrl + Shift + V same bullet:** Line breaks within a Highlight will stay in the same block/bullet but preserve each Line Break as if you added a _soft line break_ with `Ctrl + Enter` like how pasting with `Ctrl + Shift + V` works in Chrome.
+      4. **Replace with single space:** Line breaks are replaced with a _single space_ (i.e., " ") for concatenation into a single block/bullet.
+      5. **Remove line breaks:** Line breaks are completely removed and NOT replaced with any characters which concatenates the Highlight into a single block/bullet. __Note:__ _If there isn't already other "white space", this could cause the last word from the first line to be merged with the first word of the second line._
+
+If you have any issues, questions or feedback for improving the instructions, please open a GitHub Issue and post your thoughts. Thanks and enjoy!
 
 ## Demo 1 (real quick/simple)
 
