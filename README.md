@@ -41,7 +41,7 @@ Note: if you highlight something it will turn to yellow... then if you Ctrl + Cl
 
 ![KfZJYsYBuJ](https://user-images.githubusercontent.com/64155612/81620376-8d20aa00-93a0-11ea-8a6a-55d4d427f27c.gif)
 
-## Demo 5 (New "side window" that shows Highlighter clipboard and allows you to change settings)
+## Demo 5 (New "side window" showing Highlighter clipboard & Settings)
 
 ![](https://user-images.githubusercontent.com/64155612/82017697-91ff8b00-9638-11ea-81a4-14608213e6cd.gif)
 
