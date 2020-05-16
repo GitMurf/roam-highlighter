@@ -1,6 +1,6 @@
-//Version 1.7.8
+//Version 1.7.6 (firefox first publish)
 //Date: May 16, 2020
-var verNum = '1.7.8';
+var verNum = '1.7.6';
 var getPage = location.href;
 
 if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearch.com'))
@@ -241,26 +241,6 @@ else
         textInput.name = "textAreaInput";
         textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px';
         textInput.id = 'rmHLtextArea';
-        textInput.value = `
-Roam-highlighter Shortcut Keys
-
-*NOTE: For MACs, use "Command" instead of "Ctrl"
-
-[Ctrl + S]
-\t- Show/Hide Side Window (OR Click Extension button again)
-[Ctrl + X]
-\t- Highlight selected text
-\t- If no highlights, grabs just the [Page Title](URL)
-\t- To remove part of a highlight, select text and press [Ctrl + X]
-[Alt + Click]
-\t- Removes an entire highlight
-[Ctrl + Q]
-\t- Remove all highlights on the page
-[Double-Click] a Single Word (has to be highlighted already)
-\t- Adds [[Double Brackets]] for Roam "Page Linking"
-[Hold Alt while Selecting Text] (must already be highlighted)
-\t- Adds [[Double Brackets]] around selection for Roam "Page Linking"
-`;
         divTextElem.appendChild(textInput);
     document.body.appendChild(divElem);
 
