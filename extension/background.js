@@ -1,3 +1,3 @@
-chrome.browserAction.onClicked.addListener(function(activeTab) {
-    chrome.tabs.executeScript(null, {file: "highlighter.js"});
+browser.browserAction.onClicked.addListener(function(activeTab) {
+    browser.tabs.executeScript(null, {file: "highlighter.js"});
 });
