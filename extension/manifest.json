@@ -1,7 +1,7 @@
 {
 "manifest_version": 2,
-"version": "1.1",
-"name": "Roam-Highlighter",
+"version": "1.7.5",
+"name": "Roam-highlighter",
 "description": "Highlight text on page to copy to Roam",
 "icons":
     {
@@ -20,6 +20,6 @@
     ],
 "browser_action":
     {
-        "default_icon": "images/highlighter.orig.png" //,        "default_popup": "popup.html"
+        "default_icon": "images/highlighter.orig.png"
     }
 }
