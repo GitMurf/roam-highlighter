@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Roam-highlighter Options</title>
+</head>
+<body>
+
+<h1>Line Breaks</h1>
+<select id="linebreaks">
+ <option value="0">1</option>
+ <option value="1">2</option>
+ <option value="2">3</option>
+ <option value="3">4</option>
+</select>
+<br>
+
+<div><span>4 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)</span></div>
+<ul>
+    <li>Set to 1 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level</li>
+    <li>Set to 2 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight</li>
+    <li>Set to 3 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting</li>
+    <li>Set to 4 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks</li>
+</ul>
+
+<button id="saveOptions">Save</button>
+<script type="text/javascript" src="options.js"></script>
+
+</body>
+</html>
