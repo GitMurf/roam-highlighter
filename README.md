@@ -2,7 +2,7 @@
 
 Now you can officially install the Extension from the Chrome Web Store here: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
 
-This Highlighter extension is meant for use with the Roam Research note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use!
+This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use!
 
 ## How to Use the Highlighter
 
@@ -40,6 +40,8 @@ This Highlighter extension is meant for use with the Roam Research note taking a
       5. **Remove line breaks:** Line breaks are completely removed and NOT replaced with any characters which concatenates the Highlight into a single block/bullet. __Note:__ _If there isn't already other "white space", this could cause the last word from the first line to be merged with the first word of the second line._
 
 If you have any issues, questions or feedback for improving the instructions, please open a GitHub Issue and post your thoughts. Thanks and enjoy!
+
+## NOTE: Other than Demo #5, the following were before I implemented the "Side Window" (but still demonstrate the purpose of the Roam-highlighter tool)
 
 ## Demo 1 (real quick/simple)
 
