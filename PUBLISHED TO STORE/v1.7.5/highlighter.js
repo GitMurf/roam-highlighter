@@ -1,6 +1,6 @@
-//Version 1.7.6 (firefox first publish)
+//Version 1.7.5 (firefox first publish)
 //Date: May 16, 2020
-var verNum = '1.7.6';
+var verNum = '1.7.5';
 var getPage = location.href;
 
 if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearch.com'))
@@ -183,9 +183,7 @@ else
 
             if(butWrap.innerHTML == "Wrap")
             {
-                //textInput.style.whiteSpace = "normal";
-                //Changed for firefox compatibility
-                textInput.style.whiteSpace = "pre-wrap";
+                textInput.style.whiteSpace = "normal";
                 butWrap.innerHTML = 'Un-Wrap';
             }
             else
