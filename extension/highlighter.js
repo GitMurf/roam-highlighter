@@ -346,7 +346,7 @@ else
     }
 
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
-    function updateClipboard() {
+    function updateClipboard(event) {
         //Get page title and URL and put in Roam format [Page Title](URL)
         var reference = `[${pageTitle}](${location.href}) ${pageRef}`;
         reference = reference.trim();
@@ -861,7 +861,7 @@ else
         writeToConsole("BEFORE RUNNING UPDATECLIPBOARD");
         //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
         clickEvent = 0;
-        updateClipboard();
+        updateClipboard(e);
         e.preventDefault();
     }
     );
@@ -959,8 +959,8 @@ else
                         var divTest = document.createRange();
                         //divTest = window.getSelection();
                         //console.log(theSelection);
-                        divTest.setStart(theSelection.baseNode, theSelection.baseOffset);
-                        divTest.setEnd(theSelection.extentNode, theSelection.extentOffset);
+                        divTest.setStart(theSelection.anchorNode, theSelection.anchorOffset);
+                        divTest.setEnd(theSelection.focusNode, theSelection.focusOffset);
                         //console.log(divTest);
                         var subSelection = divTest;
                         var selectedText = subSelection.extractContents();
@@ -1021,27 +1021,27 @@ else
                 var theSelection = window.getSelection();
                 var theSelectionString = theSelection.toString();
                 writeToConsole(theSelectionString);
-                writeToConsole(theSelection.baseNode,1,0);
-                writeToConsole(theSelection.baseOffset);
-                writeToConsole(theSelection.extentNode,1,0);
-                writeToConsole(theSelection.extentOffset);
+                writeToConsole(theSelection.anchorNode,1,0);
+                writeToConsole(theSelection.anchorOffset);
+                writeToConsole(theSelection.focusNode,1,0);
+                writeToConsole(theSelection.focusOffset);
                 if(theSelectionString.length > 0)
                 {
                     var divTest = document.createRange();
                     //If there is a single bolded word on webpage it is its own element and the selection then will extend into next element with double click when adding extra space
-                    if(theSelection.baseNode != theSelection.extentNode)
+                    if(theSelection.anchorNode != theSelection.focusNode)
                     {
                         if(theSelectionString.substring(0,1) == " ")
                         {
                             //Extra space at beginning of word which means the full word should be in the extendNode instead
-                            divTest.setStart(theSelection.extentNode, 0);
-                            divTest.setEnd(theSelection.extentNode, theSelection.extentOffset);
+                            divTest.setStart(theSelection.focusNode, 0);
+                            divTest.setEnd(theSelection.focusNode, theSelection.focusOffset);
                         }
                         else
                         {
-                            //Extra space at end of word which means the full word should be in the baseNode
-                            divTest.setStart(theSelection.baseNode, theSelection.baseOffset);
-                            divTest.setEnd(theSelection.baseNode, theSelection.baseNode.length);
+                            //Extra space at end of word which means the full word should be in the anchorNode
+                            divTest.setStart(theSelection.anchorNode, theSelection.anchorOffset);
+                            divTest.setEnd(theSelection.anchorNode, theSelection.anchorNode.length);
                         }
                     }
                     else
@@ -1049,8 +1049,8 @@ else
                         //Fix the selection in case it extends a character and grabs space character in front or after the word
                         if(theSelectionString.substring(0,1) == " "){var addOffset = 1;}else{var addOffset = 0;}
                         if(theSelectionString.substring(theSelectionString.length - 1) == " "){var subOffset = 1;}else{var subOffset = 0;}
-                        divTest.setStart(theSelection.baseNode, theSelection.baseOffset + addOffset);
-                        divTest.setEnd(theSelection.extentNode, theSelection.extentOffset - subOffset);
+                        divTest.setStart(theSelection.anchorNode, theSelection.anchorOffset + addOffset);
+                        divTest.setEnd(theSelection.focusNode, theSelection.focusOffset - subOffset);
                     }
                     document.getSelection().removeAllRanges();
                     document.getSelection().addRange(divTest);
@@ -1064,17 +1064,17 @@ else
                 writeToConsole(theSelection,1,0);
                 if(theSelection.toString().length > 0)
                 {
-                    writeToConsole(theSelection.baseNode,1,0);
-                    writeToConsole(theSelection.baseOffset);
-                    writeToConsole(theSelection.extentNode,1,0);
-                    writeToConsole(theSelection.extentOffset);
+                    writeToConsole(theSelection.anchorNode,1,0);
+                    writeToConsole(theSelection.anchorOffset);
+                    writeToConsole(theSelection.focusNode,1,0);
+                    writeToConsole(theSelection.focusOffset);
                     writeToConsole(curElement.title);
                     //Create new SPAN element for the page reference highlight
                     var divTest = document.createRange();
                     //divTest = window.getSelection();
                     //console.log(theSelection);
-                    divTest.setStart(theSelection.baseNode, theSelection.baseOffset);
-                    divTest.setEnd(theSelection.extentNode, theSelection.extentOffset);
+                    divTest.setStart(theSelection.anchorNode, theSelection.anchorOffset);
+                    divTest.setEnd(theSelection.focusNode, theSelection.focusOffset);
                     //console.log(divTest);
                     var subSelection = divTest;
                     var selectedText = subSelection.extractContents();
