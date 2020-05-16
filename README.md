@@ -69,6 +69,12 @@ Install the extenstion from the Chrome Web Store at: [Roam-highlighter Extension
 
 [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp) testing this link.
 
+## Contributors
+
+* @GitMur - me :) [GitMurf](https://github.com/GitMurf)
+* @sai-prasanna - Ported over to Firefox Extension/Add-on... Thanks!
+* @[sai-prasanna](https://github.com/sai-prasanna) - Ported over to Firefox Extension/Add-on... Thanks!
+
 ## Acknowledgments
 
 * Thanks to @anthilemoon with [+Roam bookmarklet](https://github.com/anthilemoon/plus-roam)
