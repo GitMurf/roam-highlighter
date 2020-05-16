@@ -135,6 +135,49 @@ else
                     document.execCommand('cut');
                 });
 
+                formElem.appendChild(document.createElement('br'));
+                formElem.appendChild(document.createElement('br'));
+                var spanElem1 = document.createElement('span');
+                    spanElem1.innerHTML = 'Important Links and Resources';
+                    spanElem1.style.cssText = 'font-weight:bold;color:red';
+                    formElem.appendChild(spanElem1);
+
+                formElem.appendChild(document.createElement('br'));
+                formElem.appendChild(document.createElement('br'));
+                var link1 = document.createElement('a');
+                    link1.innerText = 'Detailed Instructions and Shortcuts';
+                    link1.href = 'https://github.com/GitMurf/roam-highlighter#how-to-use-the-highlighter';
+                    //link1.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link1);
+
+                formElem.appendChild(document.createElement('br'));
+                var link2 = document.createElement('a');
+                    link2.innerText = 'Demos and Videos';
+                    link2.href = 'https://github.com/GitMurf/roam-highlighter#note-other-than-demo-5-the-following-were-before-i-implemented-the-side-window-but-still-demonstrate-the-purpose-of-the-roam-highlighter-tool';
+                    //link2.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link2);
+
+                formElem.appendChild(document.createElement('br'));
+                var link3 = document.createElement('a');
+                    link3.innerText = 'Report a Bug/Issue';
+                    link3.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+                    //link3.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link3);
+
+                formElem.appendChild(document.createElement('br'));
+                var link4 = document.createElement('a');
+                    link4.innerText = 'Submit an Idea or Feature Request';
+                    link4.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+                    //link4.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link4);
+
+                formElem.appendChild(document.createElement('br'));
+                var link5 = document.createElement('a');
+                    link5.innerText = 'Ask a Question';
+                    link5.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+                    //link5.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link5);
+
     var butSett = document.createElement('button');
         butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
         butSett.innerHTML = 'Settings';
@@ -247,18 +290,29 @@ Roam-highlighter Shortcut Keys
 *NOTE: For MACs, use "Command" instead of "Ctrl"
 
 [Ctrl + S]
+
 \t- Show/Hide Side Window (OR Click Extension button again)
+
 [Ctrl + X]
-\t- Highlight selected text
+
+\t- Highlights selected text
 \t- If no highlights, grabs just the [Page Title](URL)
 \t- To remove part of a highlight, select text and press [Ctrl + X]
+
 [Alt + Click]
+
 \t- Removes an entire highlight
+
 [Ctrl + Q]
+
 \t- Remove all highlights on the page
+
 [Double-Click] a Single Word (has to be highlighted already)
+
 \t- Adds [[Double Brackets]] for Roam "Page Linking"
+
 [Hold Alt while Selecting Text] (must already be highlighted)
+
 \t- Adds [[Double Brackets]] around selection for Roam "Page Linking"
 `;
         divTextElem.appendChild(textInput);
