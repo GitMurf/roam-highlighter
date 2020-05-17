@@ -105,7 +105,44 @@ else
                 selElem.options.add( new Option("Remove line breaks","4") );
                 selElem.style.cssText = 'padding:3px';
                 selElem.id = 'rmHLsel';
+                selElem.name = 'rmHLsel';
                 formElem.appendChild(selElem);
+
+            formElem.appendChild(document.createElement('br'));
+            formElem.appendChild(document.createElement('br'));
+            var labelElem4 = document.createElement('label');
+                labelElem4.innerHTML = 'Show the Clipboard in:';
+                labelElem4.style.cssText = 'margin-right:20px';
+                //labelElem4.htmlFor = "rmHLcbType1";
+                formElem.appendChild(labelElem4);
+
+            //formElem.appendChild(document.createElement('br'));
+            //formElem.appendChild(document.createElement('br'));
+            var cbElem1 = document.createElement('input');
+                cbElem1.setAttribute("type", "checkbox");
+                cbElem1.style.cssText = 'vertical-align:middle';
+                cbElem1.id = 'rmHLcbType1';
+                cbElem1.name = 'rmHLcbType1';
+                cbElem1.checked = true;
+                formElem.appendChild(cbElem1);
+            var labelElem5 = document.createElement('label');
+                labelElem5.innerHTML = 'Plain Text';
+                labelElem5.htmlFor = "rmHLcbType1";
+                labelElem5.style.cssText = 'margin-left:5px';
+                formElem.appendChild(labelElem5);
+
+            var cbElem2 = document.createElement('input');
+                cbElem2.setAttribute("type", "checkbox");
+                cbElem2.style.cssText = 'vertical-align:middle;margin-left:20px';
+                cbElem2.id = 'rmHLcbType2';
+                cbElem2.name = 'rmHLcbType2';
+                cbElem2.checked = false;
+                formElem.appendChild(cbElem2);
+            var labelElem6 = document.createElement('label');
+                labelElem6.innerHTML = 'HTML';
+                labelElem6.htmlFor = "rmHLcbType2";
+                labelElem6.style.cssText = 'margin-left:5px';
+                formElem.appendChild(labelElem6);
 
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
@@ -125,9 +162,9 @@ else
                     pageRef = tbElem.value;
                     pageTitle = textElem2.value;
                     sameBlock = Number(selElem.value);
-                    console.log(pageRef);
-                    console.log(pageTitle);
-                    console.log(sameBlock);
+                    //console.log(pageRef);
+                    //console.log(pageTitle);
+                    //console.log(sameBlock);
 
                     //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
                     //We already have the "cut" event listener set to run our code, so this should activate it
@@ -641,11 +678,19 @@ Roam-highlighter Shortcut Keys
         writeToConsole("UPDATED THE CLIPBOARD");
         //textInput.value = 'tESTING MAKING empty';
         htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>').split("</ul>").join('\n</ul>').split("</li>").join('\n<li>');
+
         textInput.value = "";
-        textInput.value += '\n'
-        textInput.value += plainConcatHighlights;
-        textInput.value += '\n'
-        textInput.value += htmlConcatHighlights;
+        if(cbElem1.checked)
+        {
+            textInput.value += '\n'
+            textInput.value += plainConcatHighlights;
+        }
+        if(cbElem2.checked)
+        {
+            textInput.value += '\n'
+            textInput.value += htmlConcatHighlights;
+        }
+
         textInput.value += '\n'
         return;
     }
