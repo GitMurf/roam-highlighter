@@ -991,7 +991,7 @@ Roam-highlighter Shortcut Keys
     document.addEventListener('keydown', function (evt) {
         var bMatchedKey = false;
         //Need to keep combined each separately or the evt.preventDefault(); will not work properly
-        if(evt.ctrlKey)
+        if(evt.ctrlKey || evt.metaKey)
         {
             //Get rid of all highlights on the page
             if(evt.key === 'q')
@@ -1055,7 +1055,7 @@ Roam-highlighter Shortcut Keys
         //var specialKeyHeld = evt.shiftKey;
         //var specialKeyHeld = evt.ctrlKey;
         var specialKeyHeld = evt.altKey;
-        //var specialKeyHeld = evt.metaKey;
+        //var specialKeyHeld = evt.metaKey; //metakey for Macs is Command key
         //console.log(curElement);
         //console.log(curElement.className);
         if(specialKeyHeld || evt.ctrlKey)
