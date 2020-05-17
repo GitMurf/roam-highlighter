@@ -1,0 +1,25 @@
+{
+"manifest_version": 2,
+"version": "1.8",
+"name": "Roam-highlighter",
+"description": "Highlight text on page to copy to Roam",
+"icons":
+    {
+        "16": "images/highlighter.16.png",
+        "48": "images/highlighter.48.png",
+        "128": "images/highlighter.128.png"
+    },
+"background":
+    {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+"permissions":
+    [
+        "activeTab"
+    ],
+"browser_action":
+    {
+        "default_icon": "images/highlighter.orig.png"
+    }
+}

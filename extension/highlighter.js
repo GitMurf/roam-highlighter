@@ -1,6 +1,6 @@
-//Version 1.7.6 (firefox first publish)
+//Version 1.8
 //Date: May 16, 2020
-var verNum = '1.7.6';
+var verNum = '1.8';
 var getPage = location.href;
 
 if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearch.com'))
@@ -105,7 +105,44 @@ else
                 selElem.options.add( new Option("Remove line breaks","4") );
                 selElem.style.cssText = 'padding:3px';
                 selElem.id = 'rmHLsel';
+                selElem.name = 'rmHLsel';
                 formElem.appendChild(selElem);
+
+            formElem.appendChild(document.createElement('br'));
+            formElem.appendChild(document.createElement('br'));
+            var labelElem4 = document.createElement('label');
+                labelElem4.innerHTML = 'Show the Clipboard in:';
+                labelElem4.style.cssText = 'margin-right:20px';
+                //labelElem4.htmlFor = "rmHLcbType1";
+                formElem.appendChild(labelElem4);
+
+            //formElem.appendChild(document.createElement('br'));
+            //formElem.appendChild(document.createElement('br'));
+            var cbElem1 = document.createElement('input');
+                cbElem1.setAttribute("type", "checkbox");
+                cbElem1.style.cssText = 'vertical-align:middle';
+                cbElem1.id = 'rmHLcbType1';
+                cbElem1.name = 'rmHLcbType1';
+                cbElem1.checked = true;
+                formElem.appendChild(cbElem1);
+            var labelElem5 = document.createElement('label');
+                labelElem5.innerHTML = 'Plain Text';
+                labelElem5.htmlFor = "rmHLcbType1";
+                labelElem5.style.cssText = 'margin-left:5px';
+                formElem.appendChild(labelElem5);
+
+            var cbElem2 = document.createElement('input');
+                cbElem2.setAttribute("type", "checkbox");
+                cbElem2.style.cssText = 'vertical-align:middle;margin-left:20px';
+                cbElem2.id = 'rmHLcbType2';
+                cbElem2.name = 'rmHLcbType2';
+                cbElem2.checked = false;
+                formElem.appendChild(cbElem2);
+            var labelElem6 = document.createElement('label');
+                labelElem6.innerHTML = 'HTML';
+                labelElem6.htmlFor = "rmHLcbType2";
+                labelElem6.style.cssText = 'margin-left:5px';
+                formElem.appendChild(labelElem6);
 
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
@@ -125,15 +162,58 @@ else
                     pageRef = tbElem.value;
                     pageTitle = textElem2.value;
                     sameBlock = Number(selElem.value);
-                    console.log(pageRef);
-                    console.log(pageTitle);
-                    console.log(sameBlock);
+                    //console.log(pageRef);
+                    //console.log(pageTitle);
+                    //console.log(sameBlock);
 
                     //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
                     //We already have the "cut" event listener set to run our code, so this should activate it
                     clickEvent = 1;
                     document.execCommand('cut');
                 });
+
+                formElem.appendChild(document.createElement('br'));
+                formElem.appendChild(document.createElement('br'));
+                var spanElem1 = document.createElement('span');
+                    spanElem1.innerHTML = 'Important Links and Resources';
+                    spanElem1.style.cssText = 'font-weight:bold;color:red';
+                    formElem.appendChild(spanElem1);
+
+                formElem.appendChild(document.createElement('br'));
+                formElem.appendChild(document.createElement('br'));
+                var link1 = document.createElement('a');
+                    link1.innerText = 'Detailed Instructions and Shortcuts';
+                    link1.href = 'https://github.com/GitMurf/roam-highlighter#how-to-use-the-highlighter';
+                    //link1.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link1);
+
+                formElem.appendChild(document.createElement('br'));
+                var link2 = document.createElement('a');
+                    link2.innerText = 'Demos and Videos';
+                    link2.href = 'https://github.com/GitMurf/roam-highlighter#note-other-than-demo-5-the-following-were-before-i-implemented-the-side-window-but-still-demonstrate-the-purpose-of-the-roam-highlighter-tool';
+                    //link2.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link2);
+
+                formElem.appendChild(document.createElement('br'));
+                var link3 = document.createElement('a');
+                    link3.innerText = 'Report a Bug/Issue';
+                    link3.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+                    //link3.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link3);
+
+                formElem.appendChild(document.createElement('br'));
+                var link4 = document.createElement('a');
+                    link4.innerText = 'Submit an Idea or Feature Request';
+                    link4.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+                    //link4.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link4);
+
+                formElem.appendChild(document.createElement('br'));
+                var link5 = document.createElement('a');
+                    link5.innerText = 'Ask a Question';
+                    link5.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+                    //link5.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link5);
 
     var butSett = document.createElement('button');
         butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
@@ -241,6 +321,37 @@ else
         textInput.name = "textAreaInput";
         textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px';
         textInput.id = 'rmHLtextArea';
+        textInput.value = `
+Roam-highlighter Shortcut Keys
+
+*NOTE: For MACs, use "Command" instead of "Ctrl"
+
+[Ctrl + S]
+
+\t- Show/Hide Side Window (OR Click Extension button again)
+
+[Ctrl + X]
+
+\t- Highlights selected text
+\t- If no highlights, grabs just the [Page Title](URL)
+\t- To remove part of a highlight, select text and press [Ctrl + X]
+
+[Alt + Click]
+
+\t- Removes an entire highlight
+
+[Ctrl + Q]
+
+\t- Remove all highlights on the page
+
+[Double-Click] a Single Word (has to be highlighted already)
+
+\t- Adds [[Double Brackets]] for Roam "Page Linking"
+
+[Hold Alt while Selecting Text] (must already be highlighted)
+
+\t- Adds [[Double Brackets]] around selection for Roam "Page Linking"
+`;
         divTextElem.appendChild(textInput);
     document.body.appendChild(divElem);
 
@@ -567,11 +678,19 @@ else
         writeToConsole("UPDATED THE CLIPBOARD");
         //textInput.value = 'tESTING MAKING empty';
         htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>').split("</ul>").join('\n</ul>').split("</li>").join('\n<li>');
+
         textInput.value = "";
-        textInput.value += '\n'
-        textInput.value += plainConcatHighlights;
-        textInput.value += '\n'
-        textInput.value += htmlConcatHighlights;
+        if(cbElem1.checked)
+        {
+            textInput.value += '\n'
+            textInput.value += plainConcatHighlights;
+        }
+        if(cbElem2.checked)
+        {
+            textInput.value += '\n'
+            textInput.value += htmlConcatHighlights;
+        }
+
         textInput.value += '\n'
         return;
     }
