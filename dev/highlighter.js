@@ -1,6 +1,6 @@
-//Version 1.8
-//Date: May 16, 2020
-var verNum = '1.8';
+//Version 1.8.1
+//Date: May 17, 2020
+var verNum = '1.8.1';
 var getPage = location.href;
 
 if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearch.com'))
@@ -9,7 +9,7 @@ if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearc
     if(roamHighlighterLoaded == 1)
     {
         var divElemMain = document.getElementById("rmHLmain");
-        divElemMain.style.display = "block";
+        if(divElemMain.style.display != "none"){divElemMain.style.display = "none";}else{divElemMain.style.display = "block";}
     }
 }
 else
@@ -36,6 +36,7 @@ else
     //Setup the options/settings menu
     var divElem = document.createElement('div');
         divElem.id = 'rmHLmain';
+        divElem.style.display = "block";
         divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:30%;height:85%;opacity:0.8;z-index:9999';
     var divButtonsElem = document.createElement('div');
         divButtonsElem.id = 'rmHLdivButt';
@@ -322,7 +323,7 @@ else
         textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px';
         textInput.id = 'rmHLtextArea';
         textInput.value = `
-Roam-highlighter Shortcut Keys
+Roam-highlighter Shortcut Keys (v${verNum})
 
 *NOTE: For MACs, use "Command" instead of "Ctrl"
 
@@ -989,7 +990,6 @@ Roam-highlighter Shortcut Keys
 
     //Add listener to "paste" event (CTRL + V on Windows) to bring up option to change way line breaks are handled
     document.addEventListener('keydown', function (evt) {
-        var bMatchedKey = false;
         //Need to keep combined each separately or the evt.preventDefault(); will not work properly
         if(evt.ctrlKey || evt.metaKey)
         {
@@ -1038,7 +1038,14 @@ Roam-highlighter Shortcut Keys
             if(evt.key === 's')
             {
                 var divElemMain = document.getElementById("rmHLmain");
-                if(divElemMain.style.display == "block"){divElemMain.style.display = "none";}else{divElemMain.style.display = "block";}
+                if(divElemMain.style.display != "none")
+                {
+                    divElemMain.style.display = "none";
+                }
+                else
+                {
+                    divElemMain.style.display = "block";
+                }
                 evt.preventDefault();
             }
         }
