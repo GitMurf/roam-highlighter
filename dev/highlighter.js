@@ -494,6 +494,7 @@ else
         textInput.id = 'rmHLtextArea';
         textInput.value = `
 Roam-highlighter Shortcut Keys (v${verNum})
+*All settings are now saved tab to tab, session to session
 
 *NOTE: For MACs, use "Command" instead of "Ctrl"
 
@@ -1121,6 +1122,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         if (typeof elem.querySelectorAll !== "undefined")
                         {
                             var elemsInSameHighlight = elem.querySelectorAll(".roamJsHighlighter, .roamJsHighlighter pageLink");
+                            var m = 0;
                             for(var m = 0; m < elemsInSameHighlight.length; m++)
                             {
                                 var newCurElement = elemsInSameHighlight.item(m);
@@ -1135,6 +1137,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                         bRemoveHighlights = true;
                                     }
                                 }else{writeToConsole('NOT SELECTED newCurElement.className: ' + newCurElement,1);}
+                            }
+                            //If the current element itself is a highlight, then remove
+                            if(m == 0 && (elem.className == "roamJsHighlighter" || elem.className == "roamJsHighlighter pageLink"))
+                            {
+                                //Remove highlights
+                                removeHighlight(elem);
+                                bRemoveHighlights = true;
                             }
                         }
                     }else{writeToConsole('NOT SELECTED elem.className: ' + elem,1);}
