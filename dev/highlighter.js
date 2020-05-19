@@ -1,5 +1,5 @@
 //Version 1.8.1
-//Date: May 17, 2020
+//Date: May 18, 2020
 var verNum = '1.8.1';
 var getPage = location.href;
 
@@ -32,12 +32,14 @@ else
     //3 = Show all log items (Full Verbose)
     var debugMode = 0;
     var consoleTabLevel = '';
+    var sideWidth = "22%";
+    var sideHeight = "70%";
 
     //Setup the options/settings menu
     var divElem = document.createElement('div');
         divElem.id = 'rmHLmain';
         divElem.style.display = "block";
-        divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:30%;height:85%;opacity:0.8;z-index:9999';
+        divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999';
     var divButtonsElem = document.createElement('div');
         divButtonsElem.id = 'rmHLdivButt';
         divButtonsElem.style.cssText = 'width:100%';
@@ -313,7 +315,7 @@ else
                     divSetElem.style.display = "none";
                 }
 
-                divElemMain.style.width = "30%";
+                divElemMain.style.width = sideWidth;
                 butMax.innerHTML = 'Expand';
             }
         });
