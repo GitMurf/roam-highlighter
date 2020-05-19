@@ -204,7 +204,6 @@ else
                     var selElem = document.getElementById("rmHLsel");
                     var tbSizeW = document.getElementById("rmHLtbSize");
                     var tbSizeH = document.getElementById("rmHLtbSize2");
-                    var selElem = document.getElementById("rmHLsel");
                     var butSave = document.getElementById("rmHLsave");
 
                     pageRef = tbElem.value;
@@ -675,6 +674,17 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     htmlString = `<li>${tempString.trim()}</li>`;
                 }
             }
+            else if(sameBlock == 4)
+            {
+                //Instead of looping through line breaks below, replace line breaks with NOTHING to bring into same block (may merge words).
+                if(eachHighlight.trim().length > 0)
+                {
+                    tempString = eachHighlight.trim().replace(/(\r\n|\n|\r)/gm,"");
+                    tempString = tempString.replace(/\s+/g,"");
+                    plainText = `\t- ${tempString.trim()}\n`;
+                    htmlString = `<li>${tempString.trim()}</li>`;
+                }
+            }
             else
             {
                 //Loop through each line break within each highlight
@@ -712,11 +722,11 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 }
                                 break;
                             case 2:
-                                //Plain text can't handle the Ctrl + Enter "soft line breaks" so just do same as case 1 above nested bullets
+                                //Plain text can't handle the Ctrl + Enter "soft line breaks" but still want to show like that in the side window
                                 if(x > 0)
                                 {
                                     //Second line and on which is nested in the same bullet replicating ctrl + Enter
-                                    plainText += `\t\t- ${eachLine.trim()}\n`;
+                                    plainText += `${eachLine.trim()}\n`;
                                     htmlString += `\n${eachLine.trim()}`;
                                 }
                                 else
