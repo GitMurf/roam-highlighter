@@ -32,8 +32,8 @@ else
     //3 = Show all log items (Full Verbose)
     var debugMode = 0;
     var consoleTabLevel = '';
-    var sideWidth = "22%";
-    var sideHeight = "70%";
+    var sideWidth = "17%";
+    var sideHeight = "20%";
 
     //Setup the options/settings menu
     var divElem = document.createElement('div');
@@ -124,6 +124,36 @@ else
 
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
+            var labelElem7 = document.createElement('label');
+                labelElem7.innerHTML = 'Side Window Size (width minimum: 300px or 15%)';
+                //labelElem7.htmlFor = "rmHLtbSize";
+                formElem.appendChild(labelElem7);
+            formElem.appendChild(document.createElement('br'));
+            var labelElem8 = document.createElement('label');
+                labelElem8.innerHTML = 'W:';
+                labelElem8.htmlFor = "rmHLtbSize";
+                formElem.appendChild(labelElem8);
+            var tbSizeElem = document.createElement('input');
+                tbSizeElem.value = sideWidth;
+                tbSizeElem.id = 'rmHLtbSize';
+                tbSizeElem.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px';
+                tbSizeElem.name = "rmHLtbSize";
+                tbSizeElem.placeholder = "17%";
+                formElem.appendChild(tbSizeElem);
+            var labelElem9 = document.createElement('label');
+                labelElem9.innerHTML = 'H:';
+                labelElem9.htmlFor = "rmHLtbSize2";
+                formElem.appendChild(labelElem9);
+            var tbSizeElem2 = document.createElement('input');
+                tbSizeElem2.value = sideHeight;
+                tbSizeElem2.id = 'rmHLtbSize2';
+                tbSizeElem2.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px';
+                tbSizeElem2.name = "rmHLtbSize2";
+                tbSizeElem2.placeholder = "20%";
+                formElem.appendChild(tbSizeElem2);
+
+            formElem.appendChild(document.createElement('br'));
+            formElem.appendChild(document.createElement('br'));
             var labelElem4 = document.createElement('label');
                 labelElem4.innerHTML = 'Show the Clipboard in:';
                 labelElem4.style.cssText = 'margin-right:20px';
@@ -168,14 +198,20 @@ else
                 formElem.appendChild(butSave);
 
                 butSave.addEventListener("click", function(){
+                    var divElemMain = document.getElementById("rmHLmain");
                     var tbElem = document.getElementById("rmHLtb");
                     var textElem2 = document.getElementById("rmHLta2");
+                    var selElem = document.getElementById("rmHLsel");
+                    var tbSizeW = document.getElementById("rmHLtbSize");
+                    var tbSizeH = document.getElementById("rmHLtbSize2");
                     var selElem = document.getElementById("rmHLsel");
                     var butSave = document.getElementById("rmHLsave");
 
                     pageRef = tbElem.value;
                     pageTitle = textElem2.value;
                     sameBlock = Number(selElem.value);
+                    sideWidth = tbSizeW.value;
+                    sideHeight = tbSizeH.value;
                     //console.log(pageRef);
                     //console.log(pageTitle);
                     //console.log(sameBlock);
@@ -315,6 +351,7 @@ else
             if(butMax.innerHTML == "Expand")
             {
                 divElemMain.style.width = "80%";
+                divElemMain.style.height = "70%";
                 butMax.innerHTML = 'Shrink';
                 divElemMain.style.opacity = "1";
             }
@@ -327,6 +364,8 @@ else
                 }
 
                 divElemMain.style.width = sideWidth;
+                divElemMain.style.height =sideHeight;
+
                 butMax.innerHTML = 'Expand';
                 divElemMain.style.opacity = "0.8";
             }
