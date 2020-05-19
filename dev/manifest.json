@@ -1,6 +1,6 @@
 {
 "manifest_version": 2,
-"version": "1.7.8",
+"version": "1.9",
 "name": "Roam-highlighter-DEV",
 "description": "Highlight text on page to copy to Roam",
 "icons":
@@ -16,7 +16,8 @@
     },
 "permissions":
     [
-        "activeTab"
+        "activeTab",
+        "storage"
     ],
 "browser_action":
     {

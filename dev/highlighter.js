@@ -1,39 +1,152 @@
-//Version 1.8.1
-//Date: May 18, 2020
-var verNum = '1.8.1';
+//Version 1.9
+//Date: May 19, 2020
+var verNum = '1.9';
 var getPage = location.href;
 
+//Default settings in case no local storage saved
+var sameBlock = Number(0);
+var pageRef = "#[[Roam-Highlights]]";
+var sideWidth = "20%";
+var sideHeight = "60%";
+var pageTitle = document.title.toString();
+var showWindow = Number(1);
+var roamHighlighterLoaded;
+
+//-1 = Only for current item you are testing... never leave these permanently
+//0 = [Default] Don't show debug
+//1 = Show all log items marked logLevel = 1
+//2 = Show all log items marked logLevel 1 & 2
+//3 = Show all log items (Full Verbose)
+var debugMode = 0;
+var consoleTabLevel = '';
+
+function writeToConsole(textString, logLevel = 1, tabLevel = 1, alwaysShow = "no")
+{
+    if(alwaysShow == "yes" || (debugMode == -1 && logLevel == -1) || (debugMode == 1 && logLevel == 1) || (debugMode == 2 && logLevel <= 2) || debugMode == 3)
+    {
+        var finalTextString = textString;
+        if(tabLevel != 0){finalTextString = consoleTabLevel + textString;}
+        console.log(finalTextString);
+    }
+}
+
+//See if using Chrome or Firefox
+if(typeof userAgentString === "undefined")
+{
+    writeToConsole('userAgentString loaded',-1);
+    var userAgentString = navigator.userAgent;
+    var chromeAgent = userAgentString.indexOf("Chrome") > -1;
+    if(chromeAgent){var useBrowser = chrome}else{var useBrowser = browser}
+}
+
+async function getLocalStorageValue(varName)
+{
+    return new Promise((resolve, reject) => {
+        try
+        {
+            useBrowser.storage.local.get(varName, function (value){resolve(value);})
+        }
+        catch(ex)
+        {
+            reject(ex);
+        }
+    });
+}
+
+function setLocalStorageValue(varName, varValue)
+{
+    useBrowser.storage.local.set({[varName]:varValue}, function(){});
+}
+
+async function startFunction()
+{
+    writeToConsole("sameBlock: " + sameBlock,-1);
+    writeToConsole("pageRef: " + pageRef,-1);
+    writeToConsole("sideWidth: " + sideWidth,-1);
+    writeToConsole("sideHeight: " + sideHeight,-1);
+
+    //Array to loop through to get values from browser.storage.local
+    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow"];
+
+    for(var s = 0; s < settingsArray.length; s++)
+    {
+        var storageVar = settingsArray[s];
+        var storResult = await getLocalStorageValue(storageVar);
+        var storResult = await getLocalStorageValue(storageVar);
+        var varResult = storResult[Object.keys(storResult)[0]];
+        writeToConsole("storageVar: " + storageVar,-1);
+        writeToConsole("localStorageResult: " + varResult,-1);
+
+        switch(storageVar)
+        {
+            case "sameBlock":
+                if(varResult !== undefined){sameBlock = varResult;}
+                setLocalStorageValue("sameBlock", sameBlock);
+                break;
+            case "pageRef":
+                if(varResult !== undefined){pageRef = varResult;}
+                setLocalStorageValue("pageRef", pageRef);
+                break;
+            case "sideWidth":
+                if(varResult !== undefined){sideWidth = varResult;}
+                setLocalStorageValue("sideWidth", sideWidth);
+                break;
+            case "sideHeight":
+                if(varResult !== undefined){sideHeight = varResult;}
+                setLocalStorageValue("sideHeight", sideHeight);
+                break;
+            case "showWindow":
+                if(varResult !== undefined){showWindow = varResult;}
+                setLocalStorageValue("showWindow", showWindow);
+                break;
+        }
+    }
+
+    writeToConsole("sameBlock: " + sameBlock,-1);
+    writeToConsole("pageRef: " + pageRef,-1);
+    writeToConsole("sideWidth: " + sideWidth,-1);
+    writeToConsole("sideHeight: " + sideHeight,-1);
+    writeToConsole("showWindow: " + showWindow,-1);
+
+    mainFunction();
+
+    var sideWindow = document.getElementById("rmHLmain");
+    if(showWindow == 0){sideWindow.style.display = "none";}
+}
+
+startFunction();
+
+function mainFunction()
+{
 if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearch.com'))
 {
     //Variable already present/set so therefore do not need to run again as don't want to duplicate load the Javascript code
     if(roamHighlighterLoaded == 1)
     {
         var divElemMain = document.getElementById("rmHLmain");
-        if(divElemMain.style.display != "none"){divElemMain.style.display = "none";}else{divElemMain.style.display = "block";}
+        if(divElemMain.style.display != "none")
+        {
+            divElemMain.style.display = "none";
+            showWindow = 0;
+            setLocalStorageValue("showWindow", showWindow);
+        }
+        else
+        {
+            divElemMain.style.display = "block";
+            showWindow = 1;
+            setLocalStorageValue("showWindow", showWindow);
+        }
     }
 }
 else
 {
-    var sameBlock = Number(0);
-    var pageTitle = document.title.toString();
-    var pageRef = "#[[Roam-Highlights]]";
-    var roamHighlighterLoaded = 1;
+    roamHighlighterLoaded = 1;
     //Variable to see if starting by click event (to remove a highlight) OR by a 'cut' event by user adding a highlight
     var clickEvent = 0;
     //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
     var highlightCtr = 0;
 
     console.log('Loaded highlighter.js script v' + verNum);
-
-    //-1 = Only for current item you are testing... never leave these permanently
-    //0 = [Default] Don't show debug
-    //1 = Show all log items marked logLevel = 1
-    //2 = Show all log items marked logLevel 1 & 2
-    //3 = Show all log items (Full Verbose)
-    var debugMode = 0;
-    var consoleTabLevel = '';
-    var sideWidth = "17%";
-    var sideHeight = "20%";
 
     //Setup the options/settings menu
     var divElem = document.createElement('div');
@@ -211,9 +324,12 @@ else
                     sameBlock = Number(selElem.value);
                     sideWidth = tbSizeW.value;
                     sideHeight = tbSizeH.value;
-                    //console.log(pageRef);
-                    //console.log(pageTitle);
-                    //console.log(sameBlock);
+
+                    //Save to local storage to keep persistent
+                    setLocalStorageValue("pageRef", pageRef);
+                    setLocalStorageValue("sameBlock", sameBlock);
+                    setLocalStorageValue("sideWidth", sideWidth);
+                    setLocalStorageValue("sideHeight", sideHeight);
 
                     //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
                     //We already have the "cut" event listener set to run our code, so this should activate it
@@ -333,6 +449,8 @@ else
             var divElemMain = document.getElementById("rmHLmain");
             divElemMain.style.display = "none";
             //divElemMain.style.display = "block";
+            showWindow = 0;
+            setLocalStorageValue("showWindow", showWindow);
         });
 
     var butMax = document.createElement('button');
@@ -405,18 +523,9 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
 \t- Adds [[Double Brackets]] around selection for Roam "Page Linking"
 `;
-        divTextElem.appendChild(textInput);
-    document.body.appendChild(divElem);
 
-    function writeToConsole(textString, logLevel = 1, tabLevel = 1, alwaysShow = "no")
-    {
-        if(alwaysShow == "yes" || (debugMode == -1 && logLevel == -1) || (debugMode == 1 && logLevel == 1) || (debugMode == 2 && logLevel <= 2) || debugMode == 3)
-        {
-            var finalTextString = textString;
-            if(tabLevel != 0){finalTextString = consoleTabLevel + textString;}
-            console.log(finalTextString);
-        }
-    }
+    divTextElem.appendChild(textInput);
+    document.body.appendChild(divElem);
 
     function removeAllHighlights()
     {
@@ -1117,10 +1226,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 if(divElemMain.style.display != "none")
                 {
                     divElemMain.style.display = "none";
+                    showWindow = 0;
+                    setLocalStorageValue("showWindow", showWindow);
                 }
                 else
                 {
                     divElemMain.style.display = "block";
+                    showWindow = 1;
+                    setLocalStorageValue("showWindow", showWindow);
                 }
                 evt.preventDefault();
             }
@@ -1310,4 +1423,5 @@ Roam-highlighter Shortcut Keys (v${verNum})
             //console.log('Not previously highlighted');
         }
     });
+}
 }
