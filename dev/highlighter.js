@@ -72,6 +72,17 @@ else
                 tbElem.placeholder = "#[[Roam-Highlights]]";
                 formElem.appendChild(tbElem);
 
+            var butClearAll = document.createElement('button');
+                butClearAll.style.cssText = 'background-color:black;color:white;border-color:white;margin-left:30px';
+                butClearAll.innerHTML = 'Clear All Highlights';
+                butClearAll.name = 'rmHLclear';
+                butClearAll.id = 'rmHLclear';
+                formElem.appendChild(butClearAll);
+
+                butClearAll.addEventListener("click", function(){
+                    removeAllHighlights();
+                });
+
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
             var labelElem2 = document.createElement('label');
@@ -152,7 +163,7 @@ else
             var butSave = document.createElement('button');
                 butSave.style.cssText = 'background-color:black;color:white;border-color:white';
                 butSave.innerHTML = 'Save';
-                butSave.id = 'rmHLsave';
+                butSave.name = 'rmHLsave';
                 butSave.id = 'rmHLsave';
                 formElem.appendChild(butSave);
 
@@ -247,7 +258,7 @@ else
             }
             else
             {
-                divElemMain.style.opacity = "0.8";
+                //divElemMain.style.opacity = "0.8";
                 divTextElem.style.width = "100%";
                 divSetElem.style.display = "none";
                 //butMax.click();
@@ -305,18 +316,19 @@ else
             {
                 divElemMain.style.width = "80%";
                 butMax.innerHTML = 'Shrink';
+                divElemMain.style.opacity = "1";
             }
             else
             {
                 if(divSetElem.style.display == "block")
                 {
-                    divElemMain.style.opacity = "0.8";
                     divTextElem.style.width = "100%";
                     divSetElem.style.display = "none";
                 }
 
                 divElemMain.style.width = sideWidth;
                 butMax.innerHTML = 'Expand';
+                divElemMain.style.opacity = "0.8";
             }
         });
 
@@ -366,6 +378,51 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(tabLevel != 0){finalTextString = consoleTabLevel + textString;}
             console.log(finalTextString);
         }
+    }
+
+    function removeAllHighlights()
+    {
+        var prevText = "", nextText = "";
+        var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
+        for (var i = 0; i < elemHighlights.length; i++)
+        {
+            var curElement = elemHighlights.item(i);
+
+            //Check the previous and next siblings (i.e., the element before and after our highlight SPAN)
+            if(curElement.previousSibling !== null){prevText = curElement.previousSibling.textContent;}
+            if(curElement.nextSibling !== null){nextText = curElement.nextSibling.textContent;}
+            if(prevText.length > 0)
+            {
+                //If there is a previous sibling, then will append the highlighted text to that element to try and get HTML back to way it was before highlighter
+                if(nextText.length > 0)
+                {
+                    //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
+                    //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
+                    var newText = prevText + curElement.innerText + nextText;
+                    //console.log('new text: ', newText);
+                    curElement.previousSibling.textContent = newText;
+                    curElement.nextSibling.remove();
+                }else {
+                    var newText = prevText + curElement.innerText;
+                    //console.log('new text: ', newText);
+                    curElement.previousSibling.textContent = newText;
+                }
+            }
+            else
+            {
+                var newText = curElement.innerText + nextText;
+                //console.log('new text: ', newText);
+                curElement.nextSibling.textContent = newText;
+            }
+
+            // remove the empty element that had the highlights before
+            curElement.remove();
+        }
+
+        //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+        //We already have the "cut" event listener set to run our code, so this should activate it
+        clickEvent = 1;
+        document.execCommand('cut');
     }
 
     //Remove a highlight based on given element variable
@@ -1001,39 +1058,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 removeAllHlOpt = Number(prompt("Do you want to remove all Highlights from this page?\n0 = No\n1 = Yes", 1));
                 if(removeAllHlOpt != 0 && removeAllHlOpt != 1){removeAllHl = Number(0);}else{removeAllHl = Number(removeAllHlOpt);}
                 if(removeAllHlOpt == 0){return;}
-                var prevText = "", nextText = "";
-                var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
-                for (var i = 0; i < elemHighlights.length; i++)
-                {
-                    var curElement = elemHighlights.item(i);
-
-                    //Check the previous and next siblings (i.e., the element before and after our highlight SPAN)
-                    if(curElement.previousSibling !== null){prevText = curElement.previousSibling.textContent;}
-                    if(curElement.nextSibling !== null){nextText = curElement.nextSibling.textContent;}
-                    if(prevText.length > 0){
-                        //If there is a previous sibling, then will append the highlighted text to that element to try and get HTML back to way it was before highlighter
-                        if(nextText.length > 0)
-                        {
-                            //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
-                            //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
-                            var newText = prevText + curElement.innerText + nextText;
-                            //console.log('new text: ', newText);
-                            curElement.previousSibling.textContent = newText;
-                            curElement.nextSibling.remove();
-                        }else {
-                            var newText = prevText + curElement.innerText;
-                            //console.log('new text: ', newText);
-                            curElement.previousSibling.textContent = newText;
-                        }
-                    }else {
-                        var newText = curElement.innerText + nextText;
-                        //console.log('new text: ', newText);
-                        curElement.nextSibling.textContent = newText;
-                    }
-
-                    // remove the empty element that had the highlights before
-                    curElement.remove();
-                }
+                removeAllHighlights();
                 evt.preventDefault();
             }
 
