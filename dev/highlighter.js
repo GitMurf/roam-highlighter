@@ -1065,15 +1065,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
         //var specialKeyHeld = evt.ctrlKey;
         var specialKeyHeld = evt.altKey;
         //var specialKeyHeld = evt.metaKey; //metakey for Macs is Command key
-        //console.log(curElement);
-        //console.log(curElement.className);
         if(specialKeyHeld || evt.ctrlKey)
         {
             if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
             {
-                //console.log(curElement);
                 var bSelFound = 0;
-                if (typeof window.getSelection != "undefined")
+                if(typeof window.getSelection != "undefined") //If there is selected text
                 {
                     var theSelection = window.getSelection();
                     if(theSelection.toString().length > 0){bSelFound = 1;}
@@ -1081,17 +1078,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
                 if(bSelFound == 1)
                 {
-                    //console.log('selection: ', window.getSelection);
                     var theSelection = window.getSelection();
                     if(theSelection.toString().length > 0)
                     {
                         //Create new SPAN element for the page reference highlight
                         var divTest = document.createRange();
                         //divTest = window.getSelection();
-                        //console.log(theSelection);
                         divTest.setStart(theSelection.anchorNode, theSelection.anchorOffset);
                         divTest.setEnd(theSelection.focusNode, theSelection.focusOffset);
-                        //console.log(divTest);
                         var subSelection = divTest;
                         var selectedText = subSelection.extractContents();
                         //Create new HTML element SPAN
@@ -1110,13 +1104,20 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 {
                     //Remove highlights
                     var titleOfElement = curElement.title;
-                    var elemsInSameHighlight = document.querySelectorAll('[title="' + titleOfElement + '"]');
-
-                    for(var i = 0; i < elemsInSameHighlight.length; i++)
+                    if(curElement.className == 'roamJsHighlighter pageLink')
                     {
-                        curElement = elemsInSameHighlight.item(i);
-                        //call function to remove element
                         removeHighlight(curElement);
+                    }
+                    else
+                    {
+                        var elemsInSameHighlight = document.querySelectorAll('[title="' + titleOfElement + '"]');
+
+                        for(var i = 0; i < elemsInSameHighlight.length; i++)
+                        {
+                            curElement = elemsInSameHighlight.item(i);
+                            //call function to remove element
+                            removeHighlight(curElement);
+                        }
                     }
                 }
 
