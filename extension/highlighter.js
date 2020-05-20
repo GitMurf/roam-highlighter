@@ -1,6 +1,6 @@
-//Version 1.9.1
-//Date: May 19, 2020
-var verNum = '1.9.1';
+//Version 1.9.2
+//Date: May 20, 2020
+var verNum = '1.9.2';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -684,6 +684,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     || (prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == "[" && prevSibNodeName == "")
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == "]" && curHighlight.substring(0,1) == "(")
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ")" && curHighlight.substring(0,1) == "#")
+                    || (prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == " " && prevSibNodeName == "")
                 )
             )
             || (
@@ -955,7 +956,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             //OLD WAY (only first occurence replaced): tempString = tempString.replace("::","`::`").replace("[[","`[[`").replace("]]","`]]`").replace("#","`#`");
             //Using Split/Join allows to replace multiple instances of the characters you are looking to replace
 
-            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]");
+            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>");
             htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
