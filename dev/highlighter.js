@@ -1,6 +1,6 @@
-//Version 1.9.1
-//Date: May 19, 2020
-var verNum = '1.9.1';
+//Version 1.9.2
+//Date: May 20, 2020
+var verNum = '1.9.2';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -684,6 +684,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     || (prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == "[" && prevSibNodeName == "")
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == "]" && curHighlight.substring(0,1) == "(")
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ")" && curHighlight.substring(0,1) == "#")
+                    || (prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == " " && prevSibNodeName == "")
                 )
             )
             || (
