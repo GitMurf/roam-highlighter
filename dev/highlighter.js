@@ -60,10 +60,13 @@ function setLocalStorageValue(varName, varValue)
 
 async function startFunction()
 {
-    writeToConsole("sameBlock: " + sameBlock,-1);
-    writeToConsole("pageRef: " + pageRef,-1);
-    writeToConsole("sideWidth: " + sideWidth,-1);
-    writeToConsole("sideHeight: " + sideHeight,-1);
+    if(debugMode != 0)
+    {
+        writeToConsole("sameBlock: " + sameBlock,-1);
+        writeToConsole("pageRef: " + pageRef,-1);
+        writeToConsole("sideWidth: " + sideWidth,-1);
+        writeToConsole("sideHeight: " + sideHeight,-1);
+    }
 
     //Array to loop through to get values from browser.storage.local
     var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow"];
@@ -74,8 +77,11 @@ async function startFunction()
         var storResult = await getLocalStorageValue(storageVar);
         var storResult = await getLocalStorageValue(storageVar);
         var varResult = storResult[Object.keys(storResult)[0]];
-        writeToConsole("storageVar: " + storageVar,-1);
-        writeToConsole("localStorageResult: " + varResult,-1);
+        if(debugMode != 0)
+        {
+            writeToConsole("storageVar: " + storageVar,-1);
+            writeToConsole("localStorageResult: " + varResult,-1);
+        }
 
         switch(storageVar)
         {
@@ -102,11 +108,14 @@ async function startFunction()
         }
     }
 
-    writeToConsole("sameBlock: " + sameBlock,-1);
-    writeToConsole("pageRef: " + pageRef,-1);
-    writeToConsole("sideWidth: " + sideWidth,-1);
-    writeToConsole("sideHeight: " + sideHeight,-1);
-    writeToConsole("showWindow: " + showWindow,-1);
+    if(debugMode != 0)
+    {
+        writeToConsole("sameBlock: " + sameBlock,-1);
+        writeToConsole("pageRef: " + pageRef,-1);
+        writeToConsole("sideWidth: " + sideWidth,-1);
+        writeToConsole("sideHeight: " + sideHeight,-1);
+        writeToConsole("showWindow: " + showWindow,-1);
+    }
 
     mainFunction();
 
@@ -632,15 +641,19 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(prevSibNode == null){var prevSibNodeName = ""}else{var prevSibNodeName = prevSibNode.nodeName;}
         //var lastParNodeName = prevNode.parentElement.nodeName;
         var curHighlight = curNode.textContent;
-debugMode = 1;
-        writeToConsole('curHighlight: ' + curHighlight);
-        writeToConsole('parNodeName: ' + parNodeName);
-        writeToConsole('parOfparNodeName: ' + parOfparNodeName);
-        writeToConsole(prevNode,1,0);
-        writeToConsole('prevSibNodeName: ' + prevSibNodeName);
-        writeToConsole('prevNode.innerText: ' + prevNode.innerText);
-        writeToConsole('lastParNodeName: ' + lastParNodeName);
-debugMode = 0;
+        if(debugMode != 0)
+        {
+            writeToConsole('curHighlight: ' + curHighlight);
+            writeToConsole(curNode,1,0);
+            writeToConsole('parNodeName: ' + parNodeName);
+            writeToConsole('parOfparNodeName: ' + parOfparNodeName);
+            writeToConsole(prevNode,1,0);
+            writeToConsole('prevSibNodeName: ' + prevSibNodeName);
+            writeToConsole('prevNode.innerText: ' + prevNode.innerText);
+            writeToConsole('prevNodeParent.innerText: ' + prevNode.parentElement.innerText);
+            writeToConsole('lastParNodeName: ' + lastParNodeName);
+        }
+
         if(
             (
                 (
@@ -648,7 +661,10 @@ debugMode = 0;
                     || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "I" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
                 )
                 && (
-                    prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "(" || prevNode.innerText.substring(prevNode.innerText.length - 1) == '"' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '“' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '”'
+                    prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "(" || prevNode.innerText.substring(prevNode.innerText.length - 1) == '"' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '“' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '”' || prevNode.innerText.substring(prevNode.innerText.length - 1) == "[" || prevNode.innerText.substring(prevNode.innerText.length - 1) == ":"
+                    || (prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == "[" && prevSibNodeName == "")
+                    || (prevNode.innerText.substring(prevNode.innerText.length - 1) == "]" && curHighlight.substring(0,1) == "(")
+                    || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ")" && curHighlight.substring(0,1) == "#")
                 )
             )
             || (
@@ -657,10 +673,10 @@ debugMode = 0;
                     || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
                 )
                 && (
-                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“'
+                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']'
                 )
             )
-            || parNodeName == "SUP" || parOfparNodeName == "SUP"
+            || parNodeName == "SUP" || parOfparNodeName == "SUP" || curHighlight.substring(0,1) == "."
         )
         {
             return true;
@@ -671,9 +687,10 @@ debugMode = 0;
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
     function updateClipboard(event) {
         //Get page title and URL and put in Roam format [Page Title](URL)
+        pageTitle = pageTitle.split("[").join("(").split("]").join(")");
         var reference = `[${pageTitle}](${location.href}) ${pageRef}`;
         reference = reference.trim();
-        writeToConsole('reference: ' + reference);
+        if(debugMode != 0){writeToConsole('reference: ' + reference);}
 
         var plainConcatHighlights = "";
         var htmlConcatHighlights = "";
@@ -683,7 +700,7 @@ debugMode = 0;
         //Get all the highlighted elements based off class name roamJsHighlighter
         //var elemHighlights = document.getElementsByClassName("roamJsHighlighter");
         var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
-        writeToConsole(elemHighlights,3,0);
+        if(debugMode != 0){writeToConsole(elemHighlights,3,0);}
         for (var i = 0; i < elemHighlights.length; i++)
         {
             var tempString = "";
@@ -691,23 +708,22 @@ debugMode = 0;
             var plainText = "";
             //title = 'HL:' + highlightCtr;
             var elemTitle = elemHighlights.item(i).title.split(":")[1];
-            writeToConsole('elemTitle: ' + elemTitle,3);
+            if(debugMode != 0){writeToConsole('elemTitle: ' + elemTitle,3);}
             //var elemTabs = elemHighlights.item(i).getAttribute('hltabs');
             var elemSpan = elemHighlights.item(i);
-            writeToConsole(elemSpan,3,0);
+            if(debugMode != 0){writeToConsole(elemSpan,3,0);}
             eachHighlight = elemSpan.textContent;
             origHighlight = eachHighlight;
-            writeToConsole('eachHighlight: ' + eachHighlight,3);
+            if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight,3);}
             var parNodeName = elemSpan.parentElement.nodeName;
-            writeToConsole(elemSpan.parentElement,1,0);
-            writeToConsole('parNodeName: ' + parNodeName,3);
+            if(debugMode != 0){writeToConsole(elemSpan.parentElement,1,0);}
+            if(debugMode != 0){writeToConsole('parNodeName: ' + parNodeName,3);}
             if(parNodeName == "A")
             {
                 var eachLink = elemSpan.parentElement;
                 var linkTextToUse = eachLink.innerText;
                 //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
-                linkTextToUse = linkTextToUse.replace('[', '');
-                linkTextToUse = linkTextToUse.replace(']', '');
+                linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
                 var linkHref = eachLink.href;
                 //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
                 linkHref = linkHref.split("#").join("|HASHTAG|")
@@ -721,7 +737,9 @@ debugMode = 0;
                     var foundALink = `[${linkTextToUse}]`;
                 }
 
-                writeToConsole(`Here: [${eachLink.innerText}](${eachLink.href})`);
+                foundALink = foundALink.split(")]").join("|)|]");
+
+                if(debugMode != 0){writeToConsole(`Here: [${eachLink.innerText}](${eachLink.href})`);}
                 eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
             }
 
@@ -736,15 +754,20 @@ debugMode = 0;
                 while(elemTitle == elemHighlights.item(i+1).title.split(":")[1])
                 {
                     var elemSpan = elemHighlights.item(i+1);
-                    writeToConsole('elemSpan.title: ' + elemSpan.title);
-                    writeToConsole('prevNode.title: ' + prevNode.title);
+                    if(debugMode != 0)
+                    {
+                        writeToConsole('elemSpan.title: ' + elemSpan.title);
+                        writeToConsole('prevNode.title: ' + prevNode.title);
+                    }
                     var newHighlight = elemSpan.textContent;
                     var classFound = elemSpan.className;
                     parNodeName = elemSpan.parentElement.nodeName;
-
-                    writeToConsole('newHighlight: ' + newHighlight,3);
-                    writeToConsole('while loop elemSpan.parentElement.nodeName: ' + parNodeName,3)
-                    writeToConsole(elemSpan.parentElement,1,0);
+                    if(debugMode != 0)
+                    {
+                        writeToConsole('newHighlight: ' + newHighlight,3);
+                        writeToConsole('while loop elemSpan.parentElement.nodeName: ' + parNodeName,3)
+                        writeToConsole(elemSpan.parentElement,1,0);
+                    }
                     var bIsSameLine = true;
 
                     if(classFound == 'roamJsHighlighter pageLink')
@@ -752,18 +775,24 @@ debugMode = 0;
                         bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
                         lastParNodeName = parNodeName;
                         prevNode = elemSpan;
-                        writeToConsole('newHighlight: ' + newHighlight);
-                        writeToConsole('lastMainSpanText: ' + lastMainSpanText);
+                        if(debugMode != 0)
+                        {
+                            writeToConsole('newHighlight: ' + newHighlight);
+                            writeToConsole('lastMainSpanText: ' + lastMainSpanText);
+                        }
                         //first try to get rid of ** or __ or ` for bold or italics or code since can't format a page link
                         var replaceLastText = lastMainSpanText.replace('**' + newHighlight + '**', newHighlight);
                         replaceLastText = replaceLastText.replace('__' + newHighlight + '__', newHighlight);
                         replaceLastText = replaceLastText.replace('`' + newHighlight + '`', newHighlight);
                         replaceLastText = replaceLastText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
-                        writeToConsole('replaceLastText: ' + replaceLastText);
-                        writeToConsole('lastMainSpanText: ' + lastMainSpanText);
-                        writeToConsole('eachHighlight: ' + eachHighlight);
+                        if(debugMode != 0)
+                        {
+                            writeToConsole('replaceLastText: ' + replaceLastText);
+                            writeToConsole('lastMainSpanText: ' + lastMainSpanText);
+                            writeToConsole('eachHighlight: ' + eachHighlight);
+                        }
                         eachHighlight = eachHighlight.replace(lastMainSpanText,replaceLastText);
-                        writeToConsole('eachHighlight: ' + eachHighlight);
+                        if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
                         lastMainSpanText = replaceLastText;
                     }
                     else
@@ -778,8 +807,7 @@ debugMode = 0;
                             var eachLink = elemSpan.parentElement;
                             var linkTextToUse = eachLink.innerText;
                             //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
-                            linkTextToUse = linkTextToUse.replace('[', '');
-                            linkTextToUse = linkTextToUse.replace(']', '');
+                            linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
                             var linkHref = eachLink.href;
                             //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
                             linkHref = linkHref.split("#").join("|HASHTAG|")
@@ -793,20 +821,22 @@ debugMode = 0;
                                 var foundALink = `[${linkTextToUse}]`;
                             }
 
-                            writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);
+                            foundALink = foundALink.split(")]").join("|)|]");
+
+                            if(debugMode != 0){writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);}
                             newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
                         }
 
                         if(bIsSameLine){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
                         lastMainSpanText = newHighlight;
                     }
-                    writeToConsole('newHighlight: ' + newHighlight);
-                    writeToConsole('eachHighlight: ' + eachHighlight);
+                    if(debugMode != 0){writeToConsole('newHighlight: ' + newHighlight);}
+                    if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
                     i++;
                     if(i + 1 >= elemHighlights.length){break;}
                 }
             }
-            writeToConsole("LINE BREAK OPTION SET TO: " + sameBlock);
+            if(debugMode != 0){writeToConsole("LINE BREAK OPTION SET TO: " + sameBlock);}
             if(sameBlock == 3)
             {
                 //Instead of looping through line breaks below, replace line breaks with a SPACE to bring into same block.
@@ -906,8 +936,8 @@ debugMode = 0;
             //OLD WAY (only first occurence replaced): tempString = tempString.replace("::","`::`").replace("[[","`[[`").replace("]]","`]]`").replace("#","`#`");
             //Using Split/Join allows to replace multiple instances of the characters you are looking to replace
 
-            plainText = plainText.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#");
-            htmlString = htmlString.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#");
+            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]");
+            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
@@ -928,7 +958,7 @@ debugMode = 0;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
         clipboardDataEvt.setData('text/html', htmlConcatHighlights);
         var textInput = document.getElementById("rmHLtextArea");
-        writeToConsole("UPDATED THE CLIPBOARD");
+        if(debugMode != 0){writeToConsole("UPDATED THE CLIPBOARD");}
         //textInput.value = 'tESTING MAKING empty';
         htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>').split("</ul>").join('\n</ul>').split("</li>").join('\n<li>');
 
@@ -951,10 +981,10 @@ debugMode = 0;
     //Add listener to "cut" event (CTRL + X on Windows) for highlighting trigger
     document.addEventListener('cut', function (e)
     {
-        writeToConsole("start CUT");
+        if(debugMode != 0){writeToConsole("start CUT");}
         if(clickEvent == 0)
         {
-            writeToConsole("INSIDE CLICKEVENT = 0");
+            if(debugMode != 0){writeToConsole("INSIDE CLICKEVENT = 0");}
             //Variables for parsing selected elements for highlight
             var foundStartOfSelection = 0;
             var foundEnd = 0;
@@ -1014,7 +1044,7 @@ debugMode = 0;
 
                 newSpan.appendChild(selectedText);
                 subSelection.insertNode(newSpan);
-                writeToConsole("NEW SPAN CREATED: " + newSpan);
+                if(debugMode != 0){writeToConsole("NEW SPAN CREATED: " + newSpan);}
                 if(thisIsFirst == 1)
                 {
                     thisIsFirst = 0;
@@ -1028,29 +1058,32 @@ debugMode = 0;
                 //Since creating new elements we have to make sure we skip any highlighted because otherwise an infinite loop
                 if(elemInput.className == "roamJsHighlighter"){return;}
                 var thisHierarchyLevel = hierarchyLevel + ':' + elemInput.nodeName;
-                writeToConsole("FIND LOWEST NODE: " + thisHierarchyLevel,3);
+                if(debugMode != 0){writeToConsole("FIND LOWEST NODE: " + thisHierarchyLevel,3);}
                 var inputNodeName = elemInput.nodeName;
-                writeToConsole("elemInput.childNodes.length: " + elemInput.childNodes.length,3);
-                writeToConsole(elemInput.childNodes, 3, 0);
+                if(debugMode != 0)
+                {
+                    writeToConsole("elemInput.childNodes.length: " + elemInput.childNodes.length,3);
+                    writeToConsole(elemInput.childNodes, 3, 0);
+                }
                 if(elemInput.childNodes.length > 0)
                 {
                     for(var k=0, newElemInput; newElemInput = elemInput.childNodes[k]; k++)
                     {
                         if(selection.containsNode(newElemInput, true))
                         {
-                            writeToConsole(`hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);
+                            if(debugMode != 0){writeToConsole(`hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);}
                             //thisHierarchyLevel += ':' + newElemInput.nodeName;
                             findLowestNode(newElemInput, thisHierarchyLevel);
                         }
                         else
                         {
-                            writeToConsole(`NOT SELECTED: hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);
+                            if(debugMode != 0){writeToConsole(`NOT SELECTED: hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);}
                         }
                     }
                 }
                 else
                 {
-                    writeToConsole("FIND LOWEST NODE: NO CHILDREN",3);
+                    if(debugMode != 0){writeToConsole("FIND LOWEST NODE: NO CHILDREN",3);}
                     //if(inputNodeName == '#text'){inputNodeText = elemInput.textContent;}else{inputNodeText = elemInput.innerHTML;}
                     if(inputNodeName == '#text'){inputNodeText = elemInput.textContent;}else{inputNodeText = elemInput.innerHTML;}
                     if (typeof inputNodeText == "undefined"){inputNodeText = '';}
@@ -1060,7 +1093,7 @@ debugMode = 0;
                         var startPos = 0;
                         var endPos = inputNodeText.length;
                         var resultText = inputNodeText;
-                        writeToConsole(`RETURNED hierarchyLevel: ${thisHierarchyLevel}`);
+                        if(debugMode != 0){writeToConsole(`RETURNED hierarchyLevel: ${thisHierarchyLevel}`);}
                         if(foundStartOfSelection == 0)
                         {
                             if(startCont.textContent.trim() == inputNodeText.trim())
@@ -1076,7 +1109,7 @@ debugMode = 0;
                         {
                             if(endCont.textContent.trim() == inputNodeText.trim())
                             {
-                                writeToConsole(`******* FOUND THE END ********`,3);
+                                if(debugMode != 0){writeToConsole(`******* FOUND THE END ********`,3);}
                                 resultText = endCont.textContent.substring(0, endOff);
                                 foundEnd = 1;
                                 endPos = endOff;
@@ -1086,7 +1119,7 @@ debugMode = 0;
 
                         if(foundStartOfSelection == 1){createSpanElement(elemInput, startPos, elemInput, endPos);}
                     }
-                    writeToConsole(`ENDING hierarchyLevel: ${thisHierarchyLevel} | inputNodeName: ${inputNodeName} | inputNodeText: ${inputNodeText}`,3);
+                    if(debugMode != 0){writeToConsole(`ENDING hierarchyLevel: ${thisHierarchyLevel} | inputNodeName: ${inputNodeName} | inputNodeText: ${inputNodeText}`,3);}
                 }
 
                 return;
@@ -1111,16 +1144,19 @@ debugMode = 0;
                     break;
             }
 
-            writeToConsole('range:');
-            writeToConsole(range,1,0);
-            writeToConsole('startCont: ' + startCont);
-            writeToConsole('startOffset: ' + startOff);
-            writeToConsole('endCont: ' + endCont);
-            writeToConsole('endOffset: ' + endOff);
-            writeToConsole('allWithinRangeParent:');
-            writeToConsole(allWithinRangeParent,1,0);
-            writeToConsole('allWithinRangeParent.childNodes:');
-            writeToConsole(allWithinRangeParent.childNodes,1,0);
+            if(debugMode != 0)
+            {
+                writeToConsole('range:');
+                writeToConsole(range,1,0);
+                writeToConsole('startCont: ' + startCont);
+                writeToConsole('startOffset: ' + startOff);
+                writeToConsole('endCont: ' + endCont);
+                writeToConsole('endOffset: ' + endOff);
+                writeToConsole('allWithinRangeParent:');
+                writeToConsole(allWithinRangeParent,1,0);
+                writeToConsole('allWithinRangeParent.childNodes:');
+                writeToConsole(allWithinRangeParent.childNodes,1,0);
+            }
 
             var bRemoveHighlights = false;
             //If only one html element selected
@@ -1149,8 +1185,11 @@ debugMode = 0;
                 //Quickly loop through each selected element to see if any are already highlighted
                 for(var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
                 {
-                    writeToConsole(elem,1,0);
-                    writeToConsole('elem.className: ' + elem.className,1);
+                    if(debugMode != 0)
+                    {
+                        writeToConsole(elem,1,0);
+                        writeToConsole('elem.className: ' + elem.className,1);
+                    }
                     if(selection.containsNode(elem, true))
                     {
                         if (typeof elem.querySelectorAll !== "undefined")
@@ -1160,8 +1199,11 @@ debugMode = 0;
                             for(var m = 0; m < elemsInSameHighlight.length; m++)
                             {
                                 var newCurElement = elemsInSameHighlight.item(m);
-                                writeToConsole(newCurElement,1,0);
-                                writeToConsole('newCurElement.className: ' + newCurElement.className,1);
+                                if(debugMode != 0)
+                                {
+                                    writeToConsole(newCurElement,1,0);
+                                    writeToConsole('newCurElement.className: ' + newCurElement.className,1);
+                                }
                                 if(selection.containsNode(newCurElement, true))
                                 {
                                     if(newCurElement.className == "roamJsHighlighter" || newCurElement.className == "roamJsHighlighter pageLink")
@@ -1203,16 +1245,22 @@ debugMode = 0;
 
                     //Set to loglevel 2 if H1, H2, H3, H4 Header elements... otherwise loglevel 3
                     if(elementNodeName == 'H1' || elementNodeName == 'H2' || elementNodeName == 'H3' || elementNodeName == 'H4'){tempLogLevel = 2;}else{tempLogLevel = 3;}
-                    writeToConsole(`i: ${i} | elementText: ${elementText}`, tempLogLevel);
-                    writeToConsole(`i: ${i} | elementInnerHtml: ${elem.innerHTML}`, 3);
+                    if(debugMode != 0)
+                    {
+                        writeToConsole(`i: ${i} | elementText: ${elementText}`, tempLogLevel);
+                        writeToConsole(`i: ${i} | elementInnerHtml: ${elem.innerHTML}`, 3);
+                    }
 
                     //Check to see if the Element is part of the selected text, otherwise skip
                     if(selection.containsNode(elem, true))
                     {
                         consoleTabLevel = '\t';
-                        writeToConsole("This element was at least partially found in the Selected Text by the user");
-                        writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`);
-                        writeToConsole(`i: ${i} | elementText: ${elementText}`)
+                        if(debugMode != 0)
+                        {
+                            writeToConsole("This element was at least partially found in the Selected Text by the user");
+                            writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`);
+                            writeToConsole(`i: ${i} | elementText: ${elementText}`)
+                        }
 
                         //Recursively drill down to the #text value
                         var newCtr = 1;
@@ -1234,9 +1282,11 @@ debugMode = 0;
                     }
                     consoleTabLevel = '';
                 }
-
-                writeToConsole(`allTextFound: ${allTextFound}`);
-                writeToConsole(`Ended i Loop at: ${i}`);
+                if(debugMode != 0)
+                {
+                    writeToConsole(`allTextFound: ${allTextFound}`);
+                    writeToConsole(`Ended i Loop at: ${i}`);
+                }
             }
         }
 
@@ -1368,11 +1418,14 @@ debugMode = 0;
     //Add Double Click event to allow for page linking to a single word since double click will highlight the word you are clicking already
     document.addEventListener('dblclick', function(evt) {
         var curElement = evt.target || evt.srcElement;
-        //console.log(curElement);
-        //console.log(curElement.className);
-        writeToConsole("****** DOUBLE CLICK *******");
-        writeToConsole(curElement,1,0);
-        writeToConsole(curElement.className);
+
+        if(debugMode != 0)
+        {
+            writeToConsole("****** DOUBLE CLICK *******");
+            writeToConsole(curElement,1,0);
+            writeToConsole(curElement.className);
+        }
+
         if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
         {
             //console.log(curElement);
@@ -1381,11 +1434,14 @@ debugMode = 0;
             {
                 var theSelection = window.getSelection();
                 var theSelectionString = theSelection.toString();
-                writeToConsole(theSelectionString);
-                writeToConsole(theSelection.anchorNode,1,0);
-                writeToConsole(theSelection.anchorOffset);
-                writeToConsole(theSelection.focusNode,1,0);
-                writeToConsole(theSelection.focusOffset);
+                if(debugMode != 0)
+                {
+                    writeToConsole(theSelectionString);
+                    writeToConsole(theSelection.anchorNode,1,0);
+                    writeToConsole(theSelection.anchorOffset);
+                    writeToConsole(theSelection.focusNode,1,0);
+                    writeToConsole(theSelection.focusOffset);
+                }
                 if(theSelectionString.length > 0)
                 {
                     var divTest = document.createRange();
@@ -1425,11 +1481,14 @@ debugMode = 0;
                 writeToConsole(theSelection,1,0);
                 if(theSelection.toString().length > 0)
                 {
-                    writeToConsole(theSelection.anchorNode,1,0);
-                    writeToConsole(theSelection.anchorOffset);
-                    writeToConsole(theSelection.focusNode,1,0);
-                    writeToConsole(theSelection.focusOffset);
-                    writeToConsole(curElement.title);
+                    if(debugMode != 0)
+                    {
+                        writeToConsole(theSelection.anchorNode,1,0);
+                        writeToConsole(theSelection.anchorOffset);
+                        writeToConsole(theSelection.focusNode,1,0);
+                        writeToConsole(theSelection.focusOffset);
+                        writeToConsole(curElement.title);
+                    }
                     //Create new SPAN element for the page reference highlight
                     var divTest = document.createRange();
                     //divTest = window.getSelection();
