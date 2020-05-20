@@ -627,23 +627,25 @@ Roam-highlighter Shortcut Keys (v${verNum})
     //This function looks at current and previous "node" aka highlight aka span element to decide whether it should actually be on the same line or not
     function isSameLine(curNode, prevNode, lastParNodeName) {
         var parNodeName = curNode.parentElement.nodeName;
+        var parOfparNodeName = curNode.parentElement.parentElement.nodeName;
         var prevSibNode = curNode.previousElementSibling;
             if(prevSibNode == null){var prevSibNodeName = ""}else{var prevSibNodeName = prevSibNode.nodeName;}
         //var lastParNodeName = prevNode.parentElement.nodeName;
         var curHighlight = curNode.textContent;
-
+debugMode = 1;
         writeToConsole('curHighlight: ' + curHighlight);
         writeToConsole('parNodeName: ' + parNodeName);
+        writeToConsole('parOfparNodeName: ' + parOfparNodeName);
         writeToConsole(prevNode,1,0);
         writeToConsole('prevSibNodeName: ' + prevSibNodeName);
         writeToConsole('prevNode.innerText: ' + prevNode.innerText);
         writeToConsole('lastParNodeName: ' + lastParNodeName);
-
+debugMode = 0;
         if(
             (
                 (
-                    (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
-                    || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
+                    (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                    || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "I" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
                 )
                 && (
                     prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "(" || prevNode.innerText.substring(prevNode.innerText.length - 1) == '"' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '“' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '”'
@@ -651,14 +653,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
             )
             || (
                 (
-                    (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
-                    || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                    (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "I" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
+                    || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
                 )
                 && (
                     curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“'
                 )
             )
-            || parNodeName == "SUP"
+            || parNodeName == "SUP" || parOfparNodeName == "SUP"
         )
         {
             return true;
@@ -702,7 +704,23 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(parNodeName == "A")
             {
                 var eachLink = elemSpan.parentElement;
-                var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
+                var linkTextToUse = eachLink.innerText;
+                //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
+                linkTextToUse = linkTextToUse.replace('[', '');
+                linkTextToUse = linkTextToUse.replace(']', '');
+                var linkHref = eachLink.href;
+                //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
+                linkHref = linkHref.split("#").join("|HASHTAG|")
+
+                if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
+                {
+                    var foundALink = `[${linkTextToUse}](${linkHref})`;
+                }
+                else
+                {
+                    var foundALink = `[${linkTextToUse}]`;
+                }
+
                 writeToConsole(`Here: [${eachLink.innerText}](${eachLink.href})`);
                 eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
             }
@@ -758,7 +776,23 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         if(parNodeName == "A")
                         {
                             var eachLink = elemSpan.parentElement;
-                            var foundALink = `[${eachLink.innerText}](${eachLink.href})`;
+                            var linkTextToUse = eachLink.innerText;
+                            //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
+                            linkTextToUse = linkTextToUse.replace('[', '');
+                            linkTextToUse = linkTextToUse.replace(']', '');
+                            var linkHref = eachLink.href;
+                            //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
+                            linkHref = linkHref.split("#").join("|HASHTAG|")
+
+                            if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
+                            {
+                                var foundALink = `[${linkTextToUse}](${linkHref})`;
+                            }
+                            else
+                            {
+                                var foundALink = `[${linkTextToUse}]`;
+                            }
+
                             writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);
                             newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
                         }
@@ -872,8 +906,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
             //OLD WAY (only first occurence replaced): tempString = tempString.replace("::","`::`").replace("[[","`[[`").replace("]]","`]]`").replace("#","`#`");
             //Using Split/Join allows to replace multiple instances of the characters you are looking to replace
 
-            plainText = plainText.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]");
-            htmlString = htmlString.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]");
+            plainText = plainText.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#");
+            htmlString = htmlString.split("::").join("`::`").split("[[").join("`[[`").split("]]").join("`]]`").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
