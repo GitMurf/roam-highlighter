@@ -161,7 +161,7 @@ else
     var divElem = document.createElement('div');
         divElem.id = 'rmHLmain';
         divElem.style.display = "block";
-        divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999';
+        divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999;font-size:12px;line-height:normal';
     var divButtonsElem = document.createElement('div');
         divButtonsElem.id = 'rmHLdivButt';
         divButtonsElem.style.cssText = 'width:100%';
@@ -184,18 +184,19 @@ else
             var labelElem = document.createElement('label');
                 labelElem.innerHTML = 'Highlighter Link #Tag';
                 labelElem.htmlFor = "rmHLtb";
+                labelElem.style.cssText = 'font-size:12px;line-height:normal';
                 formElem.appendChild(labelElem);
             formElem.appendChild(document.createElement('br'));
             var tbElem = document.createElement('input');
                 tbElem.value = pageRef;
                 tbElem.id = 'rmHLtb';
-                tbElem.style.cssText = 'padding-left:5px';
+                tbElem.style.cssText = 'padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
                 tbElem.name = "rmHLtb";
                 tbElem.placeholder = "#[[Roam-Highlights]]";
                 formElem.appendChild(tbElem);
 
             var butClearAll = document.createElement('button');
-                butClearAll.style.cssText = 'background-color:black;color:white;border-color:white;margin-left:30px';
+                butClearAll.style.cssText = 'background-color:black;color:white;border-color:white;margin-left:30px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
                 butClearAll.innerHTML = 'Clear All Highlights';
                 butClearAll.name = 'rmHLclear';
                 butClearAll.id = 'rmHLclear';
@@ -210,12 +211,13 @@ else
             var labelElem2 = document.createElement('label');
                 labelElem2.innerHTML = 'Page Title for Alias Link';
                 labelElem2.htmlFor = "rmHLta2";
+                labelElem2.style.cssText = 'font-size:12px;line-height:normal';
                 formElem.appendChild(labelElem2);
             formElem.appendChild(document.createElement('br'));
             var textElem2 = document.createElement('textarea');
                 textElem2.value = pageTitle;
                 textElem2.id = 'rmHLta2';
-                textElem2.style.cssText = 'width:90%';
+                textElem2.style.cssText = 'width:90%;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px';
                 textElem2.rows = 3;
                 textElem2.name = "rmHLta2";
                 //textElem2.placeholder = "#[[Roam-Highlights]]";
@@ -231,6 +233,7 @@ else
             var labelElem3 = document.createElement('label');
                 labelElem3.innerHTML = 'How to handle Line Breaks within each Highlight';
                 labelElem3.htmlFor = "rmHLsel";
+                labelElem3.style.cssText = 'font-size:12px;line-height:normal';
                 formElem.appendChild(labelElem3);
             formElem.appendChild(document.createElement('br'));
             var selElem = document.createElement('select');
@@ -239,7 +242,7 @@ else
                 selElem.options.add( new Option("Ctrl + Shift + V same bullet","2") );
                 selElem.options.add( new Option("Replace with single space","3") );
                 selElem.options.add( new Option("Remove line breaks","4") );
-                selElem.style.cssText = 'padding:3px';
+                selElem.style.cssText = 'padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer';
                 selElem.id = 'rmHLsel';
                 selElem.name = 'rmHLsel';
                 formElem.appendChild(selElem);
@@ -248,28 +251,31 @@ else
             formElem.appendChild(document.createElement('br'));
             var labelElem7 = document.createElement('label');
                 labelElem7.innerHTML = 'Side Window Size (width minimum: 300px or 15%)';
+                labelElem7.style.cssText = 'font-size:12px;line-height:normal';
                 //labelElem7.htmlFor = "rmHLtbSize";
                 formElem.appendChild(labelElem7);
             formElem.appendChild(document.createElement('br'));
             var labelElem8 = document.createElement('label');
                 labelElem8.innerHTML = 'W:';
                 labelElem8.htmlFor = "rmHLtbSize";
+                labelElem8.style.cssText = 'font-size:12px;line-height:normal';
                 formElem.appendChild(labelElem8);
             var tbSizeElem = document.createElement('input');
                 tbSizeElem.value = sideWidth;
                 tbSizeElem.id = 'rmHLtbSize';
-                tbSizeElem.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px';
+                tbSizeElem.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
                 tbSizeElem.name = "rmHLtbSize";
                 tbSizeElem.placeholder = "17%";
                 formElem.appendChild(tbSizeElem);
             var labelElem9 = document.createElement('label');
                 labelElem9.innerHTML = 'H:';
                 labelElem9.htmlFor = "rmHLtbSize2";
+                labelElem9.style.cssText = 'font-size:12px;line-height:normal';
                 formElem.appendChild(labelElem9);
             var tbSizeElem2 = document.createElement('input');
                 tbSizeElem2.value = sideHeight;
                 tbSizeElem2.id = 'rmHLtbSize2';
-                tbSizeElem2.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px';
+                tbSizeElem2.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
                 tbSizeElem2.name = "rmHLtbSize2";
                 tbSizeElem2.placeholder = "20%";
                 formElem.appendChild(tbSizeElem2);
@@ -278,7 +284,7 @@ else
             formElem.appendChild(document.createElement('br'));
             var labelElem4 = document.createElement('label');
                 labelElem4.innerHTML = 'Show the Clipboard in:';
-                labelElem4.style.cssText = 'margin-right:20px';
+                labelElem4.style.cssText = 'margin-right:20px;font-size:12px;line-height:normal';
                 //labelElem4.htmlFor = "rmHLcbType1";
                 formElem.appendChild(labelElem4);
 
@@ -286,7 +292,7 @@ else
             //formElem.appendChild(document.createElement('br'));
             var cbElem1 = document.createElement('input');
                 cbElem1.setAttribute("type", "checkbox");
-                cbElem1.style.cssText = 'vertical-align:middle';
+                cbElem1.style.cssText = 'vertical-align:middle;font-size:12px;line-height:normal';
                 cbElem1.id = 'rmHLcbType1';
                 cbElem1.name = 'rmHLcbType1';
                 cbElem1.checked = true;
@@ -294,12 +300,12 @@ else
             var labelElem5 = document.createElement('label');
                 labelElem5.innerHTML = 'Plain Text';
                 labelElem5.htmlFor = "rmHLcbType1";
-                labelElem5.style.cssText = 'margin-left:5px';
+                labelElem5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal';
                 formElem.appendChild(labelElem5);
 
             var cbElem2 = document.createElement('input');
                 cbElem2.setAttribute("type", "checkbox");
-                cbElem2.style.cssText = 'vertical-align:middle;margin-left:20px';
+                cbElem2.style.cssText = 'vertical-align:middle;margin-left:20px;font-size:12px;line-height:normal';
                 cbElem2.id = 'rmHLcbType2';
                 cbElem2.name = 'rmHLcbType2';
                 cbElem2.checked = false;
@@ -307,13 +313,13 @@ else
             var labelElem6 = document.createElement('label');
                 labelElem6.innerHTML = 'HTML';
                 labelElem6.htmlFor = "rmHLcbType2";
-                labelElem6.style.cssText = 'margin-left:5px';
+                labelElem6.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal';
                 formElem.appendChild(labelElem6);
 
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
             var butSave = document.createElement('button');
-                butSave.style.cssText = 'background-color:black;color:white;border-color:white';
+                butSave.style.cssText = 'background-color:black;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
                 butSave.innerHTML = 'Save';
                 butSave.name = 'rmHLsave';
                 butSave.id = 'rmHLsave';
@@ -350,7 +356,7 @@ else
                 formElem.appendChild(document.createElement('br'));
                 var spanElem1 = document.createElement('span');
                     spanElem1.innerHTML = 'Important Links and Resources';
-                    spanElem1.style.cssText = 'font-weight:bold;color:red';
+                    spanElem1.style.cssText = 'font-weight:bold;color:red;font-size:12px;line-height:normal';
                     formElem.appendChild(spanElem1);
 
                 formElem.appendChild(document.createElement('br'));
@@ -358,6 +364,7 @@ else
                 var link1 = document.createElement('a');
                     link1.innerText = 'Detailed Instructions and Shortcuts';
                     link1.href = 'https://github.com/GitMurf/roam-highlighter#how-to-use-the-highlighter';
+                    link1.style.cssText = 'font-size:12px;line-height:normal';
                     //link1.style.cssText = 'font-weight:bold;';
                     formElem.appendChild(link1);
 
@@ -365,6 +372,7 @@ else
                 var link2 = document.createElement('a');
                     link2.innerText = 'Demos and Videos';
                     link2.href = 'https://github.com/GitMurf/roam-highlighter#note-other-than-demo-5-the-following-were-before-i-implemented-the-side-window-but-still-demonstrate-the-purpose-of-the-roam-highlighter-tool';
+                    link2.style.cssText = 'font-size:12px;line-height:normal';
                     //link2.style.cssText = 'font-weight:bold;';
                     formElem.appendChild(link2);
 
@@ -372,6 +380,7 @@ else
                 var link3 = document.createElement('a');
                     link3.innerText = 'Report a Bug/Issue';
                     link3.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+                    link3.style.cssText = 'font-size:12px;line-height:normal';
                     //link3.style.cssText = 'font-weight:bold;';
                     formElem.appendChild(link3);
 
@@ -379,6 +388,7 @@ else
                 var link4 = document.createElement('a');
                     link4.innerText = 'Submit an Idea or Feature Request';
                     link4.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+                    link4.style.cssText = 'font-size:12px;line-height:normal';
                     //link4.style.cssText = 'font-weight:bold;';
                     formElem.appendChild(link4);
 
@@ -386,11 +396,12 @@ else
                 var link5 = document.createElement('a');
                     link5.innerText = 'Ask a Question';
                     link5.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+                    link5.style.cssText = 'font-size:12px;line-height:normal';
                     //link5.style.cssText = 'font-weight:bold;';
                     formElem.appendChild(link5);
 
     var butSett = document.createElement('button');
-        butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
+        butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
         butSett.innerHTML = 'Settings';
         butSett.id = 'rmHLsettings';
         divButtonsElem.appendChild(butSett);
@@ -426,7 +437,7 @@ else
         });
 
     var butWrap = document.createElement('button');
-        butWrap.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
+        butWrap.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
         butWrap.innerHTML = 'Wrap';
         butWrap.id = 'rmHLwrap';
         divButtonsElem.appendChild(butWrap);
@@ -450,7 +461,7 @@ else
         });
 
     var butHide = document.createElement('button');
-        butHide.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
+        butHide.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
         butHide.innerHTML = 'Hide';
         divButtonsElem.appendChild(butHide);
 
@@ -463,7 +474,7 @@ else
         });
 
     var butMax = document.createElement('button');
-        butMax.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%';
+        butMax.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
         butMax.innerHTML = 'Expand';
         butMax.id = 'rmHLexpand';
         divButtonsElem.appendChild(butMax);
@@ -499,7 +510,7 @@ else
 
     var textInput = document.createElement("textarea");
         textInput.name = "textAreaInput";
-        textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px';
+        textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
         textInput.id = 'rmHLtextArea';
         textInput.value = `
 Roam-highlighter Shortcut Keys (v${verNum})
