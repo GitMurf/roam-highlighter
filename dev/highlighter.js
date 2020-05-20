@@ -971,7 +971,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var textInput = document.getElementById("rmHLtextArea");
         if(debugMode != 0){writeToConsole("UPDATED THE CLIPBOARD");}
         //textInput.value = 'tESTING MAKING empty';
-        htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>').split("</ul>").join('\n</ul>').split("</li>").join('\n<li>');
+        htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>').split("</ul>").join('\n</ul>').split("</li>").join('\n</li>');
 
         textInput.value = "";
         if(cbElem1.checked)
