@@ -1,4 +1,4 @@
-//Version 1.9
+//Version 1.9 (Chrome Store)
 //Date: May 19, 2020
 var verNum = '1.9';
 var getPage = location.href;
