@@ -630,16 +630,24 @@ Roam-highlighter Shortcut Keys (v${verNum})
     function convertFormat(eachHighlight, elemSpan) {
         var parNodeName = elemSpan.parentElement.nodeName;
         var parElemText = elemSpan.parentElement.innerText;
+        var foundHeader = elemSpan.getAttribute('hlheader'); //Red text selected by user
+        var bFoundHeader = false;
 
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = '__' + eachHighlight + '__';}
         if(parNodeName == "CODE"){eachHighlight = "`" + eachHighlight + "`";}
         if(eachHighlight == parElemText)
         {
-            if(parNodeName == "H1"){eachHighlight = '<h1>' + eachHighlight + '</h1>';}
-            if(parNodeName == "H2"){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
-            if(parNodeName == "H3"){eachHighlight = '<h3>' + eachHighlight + '</h3>';}
+            if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3")
+            {
+                bFoundHeader = true;
+                if(parNodeName == "H1"){eachHighlight = '<h1>' + eachHighlight + '</h1>';}
+                if(parNodeName == "H2"){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
+                if(parNodeName == "H3"){eachHighlight = '<h3>' + eachHighlight + '</h3>';}
+            }
         }
+
+        if(foundHeader == 1 && bFoundHeader == false){eachHighlight = '<h6>' + eachHighlight + '</h6>';}
 
         return eachHighlight;
     }
@@ -964,6 +972,35 @@ Roam-highlighter Shortcut Keys (v${verNum})
             plainConcatHighlights = '- ' + reference + '\n' + plainConcatHighlights;
             htmlConcatHighlights = '<ul><li>' + reference + '<ul>' + htmlConcatHighlights + '</ul></li></ul>';
         }
+
+        //lOOP THROUGH EACH LINE LOOKING FOR HEADER ROWS TO INDENT UNDER
+        htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("<h1>").join('\n<h1>').split("<h2>").join('\n<h2>').split("<h3>").join('\n<h3>').split("<h4>").join('\n<h4>').split("<h5>").join('\n<h5>') //.split("<h6>").join('\n<h6>')
+        var lineBreaks = htmlConcatHighlights.trim().split(/[\r\n]+/);
+
+        var indentLevel = 0;
+        var htmlConcatHighlights = "";
+        for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
+        {
+            var elemType = eachLine.substring(0,4);
+            if(elemType == '<h1>' || elemType == '<h2>' || elemType == '<h3>' || elemType == '<h4>' || elemType == '<h5>')
+            {
+                if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                indentLevel++;
+            }
+
+            if(eachLine.substring(0,8) == '<li><h6>')
+            {
+                //In case multi element part line and added manually header H6 for indent, need to remove all <h6></h6> stuff and add on just ends so not multiple
+                eachLine = eachLine.split("<h6>").join('').split("</h6>").join('').split("<li>").join('').split("</li>").join('');
+                eachLine = '<li><h6>' + eachLine + '</h6></li>';
+                if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                indentLevel++;
+            }
+            //if(eachLine.substring(0,4) == '<h1>'){eachLine = eachLine.replace('</li>','</li><ul>');}
+            writeToConsole(eachLine);
+            htmlConcatHighlights = htmlConcatHighlights + eachLine;
+        }
+        writeToConsole(htmlConcatHighlights);
 
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
@@ -1412,6 +1449,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     }
                 }
 
+                evt.preventDefault();
                 //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
                 //We already have the "cut" event listener set to run our code, so this should activate it
                 clickEvent = 1;
@@ -1422,6 +1460,31 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 //Commenting this out because when writing to console it actually prevents a quick highlight after selecting text
                 //and trying to use ctrl + x "cut" to trigger a highlight if you do it too quickly because when you highlight you are clicking first
                 //console.log('Not previously highlighted');
+            }
+        }
+    });
+
+    document.addEventListener('contextmenu', function(evt) {
+        var curElement = evt.target || evt.srcElement;
+        var specialKeyHeld = evt.altKey;
+        if(specialKeyHeld || evt.ctrlKey)
+        {
+            if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
+            {
+                var titleOfElement = curElement.title;
+                var elemsInSameHighlight = document.querySelectorAll('[title="' + titleOfElement + '"]');
+
+                for(var i = 0; i < elemsInSameHighlight.length; i++)
+                {
+                    eachElement = elemsInSameHighlight.item(i);
+                    eachElement.setAttribute("hlHeader", "1");
+                    eachElement.style.setProperty("color", "red", "important");
+                }
+                evt.preventDefault();
+                //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+                //We already have the "cut" event listener set to run our code, so this should activate it
+                clickEvent = 1;
+                document.execCommand('cut');
             }
         }
     });
@@ -1538,3 +1601,42 @@ Roam-highlighter Shortcut Keys (v${verNum})
     });
 }
 }
+
+/* TEST/SAMPLE/TROUBLESHOOTING CODE
+
+    ******************************
+    CODE TO PASTE IN HTML TEXT YOU WANT ADDED TO THE CLIPBOARD TO TEST IMPORT INTO ROAM
+    ******************************
+        document.addEventListener('cut', function (e)
+        {
+            var clipboardDataEvt = e.clipboardData;
+            plainConcatHighlights = 'blah';
+
+            clipboardDataEvt.setData('text/plain', plainConcatHighlights);
+            clipboardDataEvt.setData('text/html', htmlConcatHighlights);
+            e.preventDefault();
+        });
+
+
+        htmlConcatHighlights =
+        `<ul>
+        	<li>[GitMurf/roam-highlighter: Chrome highlighter that quickly and easily puts your highlights into Roam format for easy pasting into your notes.](https://github.com/GitMurf/roam-highlighter#roam-highlighter) #[[Roam-Highlights]]
+        <ul>
+        	<li><h1>roam-highlighter</h1><ul>
+        </li>
+        	<li>Now you can officially install the Extension from the Chrome Web Store here: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
+        </li>
+        	<li>This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use!
+        </li>
+        	</ul><li><h2>How to Use the Highlighter</h2><ul>
+        </li>
+        	<li>**Note:**__I am a Windows guy. While I try to document MAC specific shortcuts below, if you have any issues please google the Windows command I list to look for the MAC alternative, and whether it works or not, please open an Issue in Github letting me know what you tried so I can update the instructions accordingly and/or make a fix to the code to include a good MAC alternative. Thanks!__
+        </li>
+        	<li>Install Chrome Extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
+        </li></ul>
+        </ul>
+        </li>
+        </ul>
+        `;
+
+*/
