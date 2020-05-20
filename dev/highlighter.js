@@ -1,6 +1,6 @@
-//Version 1.9
+//Version 1.9.1
 //Date: May 19, 2020
-var verNum = '1.9';
+var verNum = '1.9.1';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -641,9 +641,9 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3")
             {
                 bFoundHeader = true;
-                if(parNodeName == "H1"){eachHighlight = '<h1>' + eachHighlight + '</h1>';}
-                if(parNodeName == "H2"){eachHighlight = '<h2>' + eachHighlight + '</h2>';}
-                if(parNodeName == "H3"){eachHighlight = '<h3>' + eachHighlight + '</h3>';}
+                if(parNodeName == "H1"){eachHighlight = '||h1||' + eachHighlight + '</h1>';}
+                if(parNodeName == "H2"){eachHighlight = '||h2||' + eachHighlight + '</h2>';}
+                if(parNodeName == "H3"){eachHighlight = '||h3||' + eachHighlight + '</h3>';}
             }
         }
 
@@ -956,7 +956,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             //Using Split/Join allows to replace multiple instances of the characters you are looking to replace
 
             plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]");
-            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]");
+            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
@@ -974,7 +974,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         }
 
         //lOOP THROUGH EACH LINE LOOKING FOR HEADER ROWS TO INDENT UNDER
-        htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("<h1>").join('\n<h1>').split("<h2>").join('\n<h2>').split("<h3>").join('\n<h3>').split("<h4>").join('\n<h4>').split("<h5>").join('\n<h5>') //.split("<h6>").join('\n<h6>')
+        htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("<h1>").join('\n<h1>').split("<h2>").join('\n<h2>').split("<h3>").join('\n<h3>') //.split("<h4>").join('\n<h4>').split("<h5>").join('\n<h5>') //.split("<h6>").join('\n<h6>')
         var lineBreaks = htmlConcatHighlights.trim().split(/[\r\n]+/);
 
         var indentLevel = 0;
