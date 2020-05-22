@@ -11,18 +11,19 @@ var textInput = document.createElement("textarea");
 divElem.appendChild(textInput);
 document.body.appendChild(divElem);
 
-var myHighlights = document.querySelectorAll('.a-size-base-plus.a-color-base, .kp-notebook-metadata');
+var myHighlights = document.querySelectorAll('.a-size-base-plus.a-color-base, .kp-notebook-metadata, div#annotations .kp-notebook-cover-image-border');
 var textString = "";
 var tmpString = "";
 var hlLocation = "";
 var hlColor = "";
+var coverImg = "";
 //var titleElem = document.getElementById('');
 //var bookTitle = "";
 for(var i = 0; i < myHighlights.length; i++)
 {
     var curElement = myHighlights.item(i);
     var curText = curElement.innerText.toString().trim();
-    if(curText != "")
+    if(curText != "" || curElement.nodeName == 'IMG')
     {
 
         if(curElement.nodeName == 'H3') //Title
@@ -34,7 +35,13 @@ for(var i = 0; i < myHighlights.length; i++)
         {
             //onsole.log('\tAuthor: ', curElement.innerText.toString().trim());
             textString += 'Author:: ' + curText + '\n';
+            textString += coverImg + '\n';
             textString += '#Kindle-highlights\n';
+        }
+        if(curElement.nodeName == 'IMG' && curElement.classList.contains("kp-notebook-cover-image-border")) //Cover art
+        {
+            //onsole.log('\tAuthor: ', curElement.innerText.toString().trim());
+            coverImg = '![](' + curElement.src + ')';
         }
         if(curElement.id == 'highlight') //Highlight
         {
