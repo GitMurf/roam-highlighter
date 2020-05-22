@@ -1,6 +1,6 @@
-//Version 1.9.2
-//Date: May 20, 2020
-var verNum = '1.9.2';
+//Version 1.9.3
+//Date: May 21, 2020
+var verNum = '1.9.3';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -11,6 +11,7 @@ var sideHeight = "60%";
 var pageTitle = document.title.toString();
 var showWindow = Number(1);
 var roamHighlighterLoaded;
+var veryFirstRun = 1;
 
 //-1 = Only for current item you are testing... never leave these permanently
 //0 = [Default] Don't show debug
@@ -966,10 +967,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
         //Check if no highlights and just want the page name in Roam link format [Page Title](URL)
         if(plainConcatHighlights == "" || htmlConcatHighlights == "")
         {
+            var bOnlyPageRef = true;
             plainConcatHighlights = reference;
             htmlConcatHighlights = reference;
         }
         else {
+            var bOnlyPageRef = false;
             plainConcatHighlights = '- ' + reference + '\n' + plainConcatHighlights;
             htmlConcatHighlights = '<ul><li>' + reference + '<ul>' + htmlConcatHighlights + '</ul></li></ul>';
         }
@@ -1013,19 +1016,25 @@ Roam-highlighter Shortcut Keys (v${verNum})
         //textInput.value = 'tESTING MAKING empty';
         htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>') //.split("</ul>").join('\n</ul>').split("</li>").join('\n</li>');
 
-        textInput.value = "";
-        if(cbElem1.checked)
+        //If just activating extension, no highlights yet, and just want the page title and URL then don't update textarea as want to keep instructions in window
+        if(bOnlyPageRef == false || veryFirstRun == 0)
         {
+            textInput.value = "";
+            if(cbElem1.checked)
+            {
+                textInput.value += '\n'
+                textInput.value += plainConcatHighlights;
+            }
+            if(cbElem2.checked)
+            {
+                textInput.value += '\n'
+                textInput.value += htmlConcatHighlights;
+            }
+
             textInput.value += '\n'
-            textInput.value += plainConcatHighlights;
-        }
-        if(cbElem2.checked)
-        {
-            textInput.value += '\n'
-            textInput.value += htmlConcatHighlights;
         }
 
-        textInput.value += '\n'
+        veryFirstRun = 0;
         return;
     }
 
@@ -1349,7 +1358,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
     }
     );
 
-    //Add listener to "paste" event (CTRL + V on Windows) to bring up option to change way line breaks are handled
+    //Add listener for ctrl/meta + q and s
     document.addEventListener('keydown', function (evt) {
         //Need to keep combined each separately or the evt.preventDefault(); will not work properly
         if(evt.ctrlKey || evt.metaKey)
@@ -1602,6 +1611,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
             //console.log('Not previously highlighted');
         }
     });
+
+    //Run during initial activation of highlighter in order to have by default the [Page Title](URL)
+    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+    //We already have the "cut" event listener set to run our code, so this should activate it
+    clickEvent = 1;
+    document.execCommand('cut');
 }
 }
 
