@@ -1,3 +1,16 @@
+var divElem = document.createElement('div');
+    divElem.id = 'kindleMain';
+    divElem.style.display = "block";
+    divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:50%;height:50%;opacity:1;z-index:9999;font-size:12px;line-height:normal';
+
+var textInput = document.createElement("textarea");
+    textInput.name = "kindleTextArea";
+    textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
+    textInput.id = 'kindleTextArea';
+
+divElem.appendChild(textInput);
+document.body.appendChild(divElem);
+
 var myHighlights = document.querySelectorAll('.a-size-base-plus.a-color-base, .kp-notebook-metadata');
 var textString = "";
 var tmpString = "";
@@ -21,7 +34,7 @@ for(var i = 0; i < myHighlights.length; i++)
         {
             //onsole.log('\tAuthor: ', curElement.innerText.toString().trim());
             textString += 'Author:: ' + curText + '\n';
-            textString += '#Highlights\n';
+            textString += '#Kindle-highlights\n';
         }
         if(curElement.id == 'highlight') //Highlight
         {
@@ -47,4 +60,5 @@ for(var i = 0; i < myHighlights.length; i++)
 }
 
 //console.log(textString);
-window.prompt("Text:",textString);
+//window.prompt("Text:",textString);
+textInput.value = textString;
