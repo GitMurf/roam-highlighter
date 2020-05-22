@@ -23,6 +23,7 @@ for(var i = 0; i < myHighlights.length; i++)
 {
     var curElement = myHighlights.item(i);
     var curText = curElement.innerText.toString().trim();
+    curText = curText.trim().replace(/(\r\n|\n|\r)/gm," ");
     if(curText != "" || curElement.nodeName == 'IMG')
     {
 
