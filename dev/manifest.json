@@ -1,6 +1,6 @@
 {
 "manifest_version": 2,
-"version": "1.9.2",
+"version": "1.9.3",
 "name": "Roam-highlighter-DEV",
 "description": "Highlight text on page to copy to Roam",
 "icons":
@@ -22,5 +22,31 @@
 "browser_action":
     {
         "default_icon": "images/highlighter.orig.png"
+    },
+"commands": {
+    "_execute_browser_action": {
+        "suggested_key": {
+            "default": "Alt+X"
+        },
+        "description": "Activates highlighter and shows/hides Side Window"
+    },
+    "remove-all-highlights": {
+        "suggested_key": {
+            "default": "Ctrl+Q"
+        },
+        "description": "Clears all the current highlights on the page"
+    },
+    "add-double-brackets": {
+        "suggested_key": {
+            "default": "Ctrl+B"
+        },
+        "description": "Add double brackets around selected text in Highlight for Roam page linking"
+    },
+    "convert-to-header": {
+        "suggested_key": {
+            "default": "Alt+H"
+        },
+        "description": "Select any text from a highlighted item and mark as Header so bullets are indented under it."
     }
+}
 }

@@ -7,7 +7,7 @@ var getPage = location.href;
 var sameBlock = Number(0);
 var pageRef = "#[[Roam-Highlights]]";
 var sideWidth = "20%";
-var sideHeight = "60%";
+var sideHeight = "30%";
 var pageTitle = document.title.toString();
 var showWindow = Number(1);
 var roamHighlighterLoaded;
@@ -551,6 +551,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
     function removeAllHighlights()
     {
+        console.log("running");
         var prevText = "", nextText = "";
         var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
         for (var i = 0; i < elemHighlights.length; i++)
@@ -1365,42 +1366,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
     }
     );
 
-    //Add listener for ctrl/meta + q and s
-    document.addEventListener('keydown', function (evt) {
-        //Need to keep combined each separately or the evt.preventDefault(); will not work properly
-        if(evt.ctrlKey || evt.metaKey)
-        {
-            //Get rid of all highlights on the page
-            if(evt.key === 'q')
-            {
-                removeAllHlOpt = Number(prompt("Do you want to remove all Highlights from this page?\n0 = No\n1 = Yes", 1));
-                if(removeAllHlOpt != 0 && removeAllHlOpt != 1){removeAllHl = Number(0);}else{removeAllHl = Number(removeAllHlOpt);}
-                if(removeAllHlOpt == 0){return;}
-                removeAllHighlights();
-                evt.preventDefault();
-            }
-
-            if(evt.key === 's')
-            {
-                var divElemMain = document.getElementById("rmHLmain");
-                if(divElemMain.style.display != "none")
-                {
-                    divElemMain.style.display = "none";
-                    showWindow = 0;
-                    setLocalStorageValue("showWindow", showWindow);
-                }
-                else
-                {
-                    divElemMain.style.display = "block";
-                    showWindow = 1;
-                    setLocalStorageValue("showWindow", showWindow);
-                }
-                evt.preventDefault();
-            }
-        }
-    }
-    );
-
     //Add click event to allow for "erasing" of previous highlights you don't want anymore. Simply click anywhere inside the highlight
     //Or if you selected text then it will try and add page linking for Roam
     //Lastly if you hold ctrl and click then it will add page link for that single word you clicked
@@ -1625,6 +1590,77 @@ Roam-highlighter Shortcut Keys (v${verNum})
     clickEvent = 1;
     document.execCommand('cut');
 }
+
+    useBrowser.extension.onMessage.addListener(function(request, sender, sendResponse){
+        if(request.callFunction === 'removeAllHighlights')
+        {
+            if(confirm("Remove all highlights from the current page?")){removeAllHighlights();}
+        }
+
+        if(request.callFunction === 'addDoubleBrackets')
+        {
+            var theSelection = window.getSelection();
+            var curElement = theSelection.anchorNode.parentElement;
+            if(theSelection.toString().length > 0)
+            {
+                if(curElement.className === "roamJsHighlighter")
+                {
+                    //Create new SPAN element for the page reference highlight
+                    var divTest = document.createRange();
+                    //divTest = window.getSelection();
+                    divTest.setStart(theSelection.anchorNode, theSelection.anchorOffset);
+                    divTest.setEnd(theSelection.focusNode, theSelection.focusOffset);
+                    var subSelection = divTest;
+                    var selectedText = subSelection.extractContents();
+                    //Create new HTML element SPAN
+                    var newSpanTag = document.createElement("span");
+                    //Adding !important to CSS to account for Dark Theme extensions that override styles... otherwise can't see highlights in dark mode
+                    newSpanTag.style.setProperty("background-color", "aqua", "important");
+                    newSpanTag.style.setProperty("color", "black", "important");
+                    //Set class for the new SPAN element so you can loop through the highlights later to copy to clipboard
+                    newSpanTag.className = "roamJsHighlighter pageLink";
+                    newSpanTag.title = curElement.title;
+                    newSpanTag.appendChild(selectedText);
+                    subSelection.insertNode(newSpanTag);
+
+                    //Clear the original user mouse selection
+                    document.getSelection().removeAllRanges();
+
+                    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+                    //We already have the "cut" event listener set to run our code, so this should activate it
+                    clickEvent = 1;
+                    document.execCommand('cut');
+                }
+            }
+        }
+
+        if(request.callFunction === 'convertToHeader')
+        {
+            var theSelection = window.getSelection();
+            var curElement = theSelection.anchorNode.parentElement;
+
+            if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
+            {
+                var titleOfElement = curElement.title;
+                var elemsInSameHighlight = document.querySelectorAll('[title="' + titleOfElement + '"]');
+
+                for(var i = 0; i < elemsInSameHighlight.length; i++)
+                {
+                    eachElement = elemsInSameHighlight.item(i);
+                    eachElement.setAttribute("hlHeader", "1");
+                    eachElement.style.setProperty("color", "red", "important");
+                }
+
+                //Clear the original user mouse selection
+                document.getSelection().removeAllRanges();
+
+                //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+                //We already have the "cut" event listener set to run our code, so this should activate it
+                clickEvent = 1;
+                document.execCommand('cut');
+            }
+        }
+    });
 }
 
 /* TEST/SAMPLE/TROUBLESHOOTING CODE

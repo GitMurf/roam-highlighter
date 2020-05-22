@@ -1,16 +1,28 @@
-//1.7.6
-let userAgentString = navigator.userAgent;
-let chromeAgent = userAgentString.indexOf("Chrome") > -1;
-let firefoxAgent = userAgentString.indexOf("Firefox") > -1;
-if(chromeAgent)
-{
-    chrome.browserAction.onClicked.addListener(function(activeTab) {
-        chrome.tabs.executeScript(null, {file: "highlighter.js"});
+//1.9.3
+var userAgentString = navigator.userAgent;
+var chromeAgent = userAgentString.indexOf("Chrome") > -1;
+if(chromeAgent){var useBrowser = chrome}else{var useBrowser = browser}
+
+useBrowser.browserAction.onClicked.addListener(function(activeTab) {
+    useBrowser.tabs.executeScript(null, {file: "highlighter.js"});
+
+    useBrowser.commands.onCommand.addListener(function (command) {
+        if(command == "remove-all-highlights") {
+            useBrowser.tabs.query({active: true, currentWindow: true}, function(tabs){
+                useBrowser.tabs.sendMessage(tabs[0].id, {'callFunction': 'removeAllHighlights'});
+            });
+        }
+        else if(command == "add-double-brackets") {
+            useBrowser.tabs.query({active: true, currentWindow: true}, function(tabs){
+                useBrowser.tabs.sendMessage(tabs[0].id, {'callFunction': 'addDoubleBrackets'});
+            });
+        }
+        else if(command == "convert-to-header") {
+            useBrowser.tabs.query({active: true, currentWindow: true}, function(tabs){
+                useBrowser.tabs.sendMessage(tabs[0].id, {'callFunction': 'convertToHeader'});
+            });
+        }else {
+            //alert("No Match To Commands!");
+        }
     });
-}
-else if (firefoxAgent)
-{
-    browser.browserAction.onClicked.addListener(function(activeTab) {
-        browser.tabs.executeScript(null, {file: "highlighter.js"});
-    });
-}
+});

@@ -1,16 +1,17 @@
-//Version 1.9.2
-//Date: May 20, 2020
-var verNum = '1.9.2';
+//Version 1.9.3
+//Date: May 21, 2020
+var verNum = '1.9.3';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
 var sameBlock = Number(0);
 var pageRef = "#[[Roam-Highlights]]";
 var sideWidth = "20%";
-var sideHeight = "60%";
+var sideHeight = "30%";
 var pageTitle = document.title.toString();
 var showWindow = Number(1);
 var roamHighlighterLoaded;
+var veryFirstRun = 1;
 
 //-1 = Only for current item you are testing... never leave these permanently
 //0 = [Default] Don't show debug
@@ -550,6 +551,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
     function removeAllHighlights()
     {
+        console.log("running");
         var prevText = "", nextText = "";
         var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
         for (var i = 0; i < elemHighlights.length; i++)
@@ -660,41 +662,48 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(prevSibNode == null){var prevSibNodeName = ""}else{var prevSibNodeName = prevSibNode.nodeName;}
         //var lastParNodeName = prevNode.parentElement.nodeName;
         var curHighlight = curNode.textContent;
+        //debugMode = 1;
         if(debugMode != 0)
         {
             writeToConsole('curHighlight: ' + curHighlight);
+            writeToConsole('curHighlight (1st char): "' + curHighlight.substring(0,1) + '"');
             writeToConsole(curNode,1,0);
             writeToConsole('parNodeName: ' + parNodeName);
             writeToConsole('parOfparNodeName: ' + parOfparNodeName);
+            writeToConsole(curNode.parentElement.parentElement,1,0);
             writeToConsole(prevNode,1,0);
             writeToConsole('prevSibNodeName: ' + prevSibNodeName);
             writeToConsole('prevNode.innerText: ' + prevNode.innerText);
+            writeToConsole('prevNode.innerText (last 1 char): "' + prevNode.innerText.substring(prevNode.innerText.length - 1) + '"');
             writeToConsole('prevNodeParent.innerText: ' + prevNode.parentElement.innerText);
             writeToConsole('lastParNodeName: ' + lastParNodeName);
         }
+        //debugMode = 0;
 
         if(
             (
                 (
-                    (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
-                    || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "EM" || prevSibNodeName == "I" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
+                    (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "KBD" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                    || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "KBD" || prevSibNodeName == "EM" || prevSibNodeName == "I" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
                 )
                 && (
-                    prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "(" || prevNode.innerText.substring(prevNode.innerText.length - 1) == '"' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '“' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '”' || prevNode.innerText.substring(prevNode.innerText.length - 1) == "[" || prevNode.innerText.substring(prevNode.innerText.length - 1) == ":"
+                    prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "(" || prevNode.innerText.substring(prevNode.innerText.length - 1) == '"' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '“' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '”' || prevNode.innerText.substring(prevNode.innerText.length - 1) == "[" || prevNode.innerText.substring(prevNode.innerText.length - 1) == ":" || prevNode.innerText.substring(prevNode.innerText.length - 1) == "+" || prevNode.innerText.substring(prevNode.innerText.length - 1) == "–" || prevNode.innerText.substring(prevNode.innerText.length - 1) == "-"
                     || (prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == "[" && prevSibNodeName == "")
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == "]" && curHighlight.substring(0,1) == "(")
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ")" && curHighlight.substring(0,1) == "#")
                     || (prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == " " && prevSibNodeName == "")
                 )
+                && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
             )
             || (
                 (
-                    (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "EM" || lastParNodeName == "I" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
-                    || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
+                    (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "KBD" || lastParNodeName == "EM" || lastParNodeName == "I" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
+                    || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "KBD" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
                 )
                 && (
-                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']'
+                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']' || curHighlight.substring(0,1) == '+' || curHighlight.substring(0,1) == "–" || curHighlight.substring(0,1) == "-"
                 )
+                && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
             )
             || parNodeName == "SUP" || parOfparNodeName == "SUP" || curHighlight.substring(0,1) == "."
         )
@@ -966,10 +975,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
         //Check if no highlights and just want the page name in Roam link format [Page Title](URL)
         if(plainConcatHighlights == "" || htmlConcatHighlights == "")
         {
+            var bOnlyPageRef = true;
             plainConcatHighlights = reference;
             htmlConcatHighlights = reference;
         }
         else {
+            var bOnlyPageRef = false;
             plainConcatHighlights = '- ' + reference + '\n' + plainConcatHighlights;
             htmlConcatHighlights = '<ul><li>' + reference + '<ul>' + htmlConcatHighlights + '</ul></li></ul>';
         }
@@ -1013,19 +1024,25 @@ Roam-highlighter Shortcut Keys (v${verNum})
         //textInput.value = 'tESTING MAKING empty';
         htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>') //.split("</ul>").join('\n</ul>').split("</li>").join('\n</li>');
 
-        textInput.value = "";
-        if(cbElem1.checked)
+        //If just activating extension, no highlights yet, and just want the page title and URL then don't update textarea as want to keep instructions in window
+        if(bOnlyPageRef == false || veryFirstRun == 0)
         {
+            textInput.value = "";
+            if(cbElem1.checked)
+            {
+                textInput.value += '\n'
+                textInput.value += plainConcatHighlights;
+            }
+            if(cbElem2.checked)
+            {
+                textInput.value += '\n'
+                textInput.value += htmlConcatHighlights;
+            }
+
             textInput.value += '\n'
-            textInput.value += plainConcatHighlights;
-        }
-        if(cbElem2.checked)
-        {
-            textInput.value += '\n'
-            textInput.value += htmlConcatHighlights;
         }
 
-        textInput.value += '\n'
+        veryFirstRun = 0;
         return;
     }
 
@@ -1349,42 +1366,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
     }
     );
 
-    //Add listener to "paste" event (CTRL + V on Windows) to bring up option to change way line breaks are handled
-    document.addEventListener('keydown', function (evt) {
-        //Need to keep combined each separately or the evt.preventDefault(); will not work properly
-        if(evt.ctrlKey || evt.metaKey)
-        {
-            //Get rid of all highlights on the page
-            if(evt.key === 'q')
-            {
-                removeAllHlOpt = Number(prompt("Do you want to remove all Highlights from this page?\n0 = No\n1 = Yes", 1));
-                if(removeAllHlOpt != 0 && removeAllHlOpt != 1){removeAllHl = Number(0);}else{removeAllHl = Number(removeAllHlOpt);}
-                if(removeAllHlOpt == 0){return;}
-                removeAllHighlights();
-                evt.preventDefault();
-            }
-
-            if(evt.key === 's')
-            {
-                var divElemMain = document.getElementById("rmHLmain");
-                if(divElemMain.style.display != "none")
-                {
-                    divElemMain.style.display = "none";
-                    showWindow = 0;
-                    setLocalStorageValue("showWindow", showWindow);
-                }
-                else
-                {
-                    divElemMain.style.display = "block";
-                    showWindow = 1;
-                    setLocalStorageValue("showWindow", showWindow);
-                }
-                evt.preventDefault();
-            }
-        }
-    }
-    );
-
     //Add click event to allow for "erasing" of previous highlights you don't want anymore. Simply click anywhere inside the highlight
     //Or if you selected text then it will try and add page linking for Roam
     //Lastly if you hold ctrl and click then it will add page link for that single word you clicked
@@ -1602,7 +1583,84 @@ Roam-highlighter Shortcut Keys (v${verNum})
             //console.log('Not previously highlighted');
         }
     });
+
+    //Run during initial activation of highlighter in order to have by default the [Page Title](URL)
+    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+    //We already have the "cut" event listener set to run our code, so this should activate it
+    clickEvent = 1;
+    document.execCommand('cut');
 }
+
+    useBrowser.extension.onMessage.addListener(function(request, sender, sendResponse){
+        if(request.callFunction === 'removeAllHighlights')
+        {
+            if(confirm("Remove all highlights from the current page?")){removeAllHighlights();}
+        }
+
+        if(request.callFunction === 'addDoubleBrackets')
+        {
+            var theSelection = window.getSelection();
+            var curElement = theSelection.anchorNode.parentElement;
+            if(theSelection.toString().length > 0)
+            {
+                if(curElement.className === "roamJsHighlighter")
+                {
+                    //Create new SPAN element for the page reference highlight
+                    var divTest = document.createRange();
+                    //divTest = window.getSelection();
+                    divTest.setStart(theSelection.anchorNode, theSelection.anchorOffset);
+                    divTest.setEnd(theSelection.focusNode, theSelection.focusOffset);
+                    var subSelection = divTest;
+                    var selectedText = subSelection.extractContents();
+                    //Create new HTML element SPAN
+                    var newSpanTag = document.createElement("span");
+                    //Adding !important to CSS to account for Dark Theme extensions that override styles... otherwise can't see highlights in dark mode
+                    newSpanTag.style.setProperty("background-color", "aqua", "important");
+                    newSpanTag.style.setProperty("color", "black", "important");
+                    //Set class for the new SPAN element so you can loop through the highlights later to copy to clipboard
+                    newSpanTag.className = "roamJsHighlighter pageLink";
+                    newSpanTag.title = curElement.title;
+                    newSpanTag.appendChild(selectedText);
+                    subSelection.insertNode(newSpanTag);
+
+                    //Clear the original user mouse selection
+                    document.getSelection().removeAllRanges();
+
+                    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+                    //We already have the "cut" event listener set to run our code, so this should activate it
+                    clickEvent = 1;
+                    document.execCommand('cut');
+                }
+            }
+        }
+
+        if(request.callFunction === 'convertToHeader')
+        {
+            var theSelection = window.getSelection();
+            var curElement = theSelection.anchorNode.parentElement;
+
+            if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
+            {
+                var titleOfElement = curElement.title;
+                var elemsInSameHighlight = document.querySelectorAll('[title="' + titleOfElement + '"]');
+
+                for(var i = 0; i < elemsInSameHighlight.length; i++)
+                {
+                    eachElement = elemsInSameHighlight.item(i);
+                    eachElement.setAttribute("hlHeader", "1");
+                    eachElement.style.setProperty("color", "red", "important");
+                }
+
+                //Clear the original user mouse selection
+                document.getSelection().removeAllRanges();
+
+                //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+                //We already have the "cut" event listener set to run our code, so this should activate it
+                clickEvent = 1;
+                document.execCommand('cut');
+            }
+        }
+    });
 }
 
 /* TEST/SAMPLE/TROUBLESHOOTING CODE
