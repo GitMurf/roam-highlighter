@@ -1,6 +1,6 @@
-//Version 1.9.4
+//Version 1.9.4.1
 //Date: May 22, 2020
-var verNum = '1.9.4';
+var verNum = '1.9.4.1';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
