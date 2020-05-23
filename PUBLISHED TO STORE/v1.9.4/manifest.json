@@ -1,7 +1,7 @@
 {
 "manifest_version": 2,
 "version": "1.9.4",
-"name": "Roam-highlighter-DEV",
+"name": "Roam-highlighter",
 "description": "Highlight text on page to copy to Roam",
 "icons":
     {
