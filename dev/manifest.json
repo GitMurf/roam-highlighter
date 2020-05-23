@@ -1,6 +1,6 @@
 {
 "manifest_version": 2,
-"version": "1.9.3",
+"version": "1.9.4",
 "name": "Roam-highlighter-DEV",
 "description": "Highlight text on page to copy to Roam",
 "icons":
@@ -32,19 +32,19 @@
     },
     "remove-all-highlights": {
         "suggested_key": {
-            "default": "Ctrl+Q"
+            "default": "Alt+Q"
         },
         "description": "Clears all the current highlights on the page"
     },
     "add-double-brackets": {
         "suggested_key": {
-            "default": "Ctrl+B"
+            "default": "Alt+Z"
         },
         "description": "Add double brackets around selected text in Highlight for Roam page linking"
     },
     "convert-to-header": {
         "suggested_key": {
-            "default": "Alt+H"
+            "default": "Alt+A"
         },
         "description": "Select any text from a highlighted item and mark as Header so bullets are indented under it."
     }

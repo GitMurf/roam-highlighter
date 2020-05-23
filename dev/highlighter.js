@@ -1,6 +1,6 @@
-//Version 1.9.3
-//Date: May 21, 2020
-var verNum = '1.9.3';
+//Version 1.9.4
+//Date: May 22, 2020
+var verNum = '1.9.4';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -185,7 +185,7 @@ else
             var labelElem = document.createElement('label');
                 labelElem.innerHTML = 'Highlighter Link #Tag';
                 labelElem.htmlFor = "rmHLtb";
-                labelElem.style.cssText = 'font-size:12px;line-height:normal';
+                labelElem.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
                 formElem.appendChild(labelElem);
             formElem.appendChild(document.createElement('br'));
             var tbElem = document.createElement('input');
@@ -212,7 +212,7 @@ else
             var labelElem2 = document.createElement('label');
                 labelElem2.innerHTML = 'Page Title for Alias Link';
                 labelElem2.htmlFor = "rmHLta2";
-                labelElem2.style.cssText = 'font-size:12px;line-height:normal';
+                labelElem2.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
                 formElem.appendChild(labelElem2);
             formElem.appendChild(document.createElement('br'));
             var textElem2 = document.createElement('textarea');
@@ -234,7 +234,7 @@ else
             var labelElem3 = document.createElement('label');
                 labelElem3.innerHTML = 'How to handle Line Breaks within each Highlight';
                 labelElem3.htmlFor = "rmHLsel";
-                labelElem3.style.cssText = 'font-size:12px;line-height:normal';
+                labelElem3.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
                 formElem.appendChild(labelElem3);
             formElem.appendChild(document.createElement('br'));
             var selElem = document.createElement('select');
@@ -252,14 +252,14 @@ else
             formElem.appendChild(document.createElement('br'));
             var labelElem7 = document.createElement('label');
                 labelElem7.innerHTML = 'Side Window Size (width minimum: 300px or 15%)';
-                labelElem7.style.cssText = 'font-size:12px;line-height:normal';
+                labelElem7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
                 //labelElem7.htmlFor = "rmHLtbSize";
                 formElem.appendChild(labelElem7);
             formElem.appendChild(document.createElement('br'));
             var labelElem8 = document.createElement('label');
                 labelElem8.innerHTML = 'W:';
                 labelElem8.htmlFor = "rmHLtbSize";
-                labelElem8.style.cssText = 'font-size:12px;line-height:normal';
+                labelElem8.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
                 formElem.appendChild(labelElem8);
             var tbSizeElem = document.createElement('input');
                 tbSizeElem.value = sideWidth;
@@ -271,7 +271,7 @@ else
             var labelElem9 = document.createElement('label');
                 labelElem9.innerHTML = 'H:';
                 labelElem9.htmlFor = "rmHLtbSize2";
-                labelElem9.style.cssText = 'font-size:12px;line-height:normal';
+                labelElem9.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
                 formElem.appendChild(labelElem9);
             var tbSizeElem2 = document.createElement('input');
                 tbSizeElem2.value = sideHeight;
@@ -285,7 +285,7 @@ else
             formElem.appendChild(document.createElement('br'));
             var labelElem4 = document.createElement('label');
                 labelElem4.innerHTML = 'Show the Clipboard in:';
-                labelElem4.style.cssText = 'margin-right:20px;font-size:12px;line-height:normal';
+                labelElem4.style.cssText = 'margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold';
                 //labelElem4.htmlFor = "rmHLcbType1";
                 formElem.appendChild(labelElem4);
 
@@ -301,7 +301,7 @@ else
             var labelElem5 = document.createElement('label');
                 labelElem5.innerHTML = 'Plain Text';
                 labelElem5.htmlFor = "rmHLcbType1";
-                labelElem5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal';
+                labelElem5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold';
                 formElem.appendChild(labelElem5);
 
             var cbElem2 = document.createElement('input');
@@ -314,7 +314,7 @@ else
             var labelElem6 = document.createElement('label');
                 labelElem6.innerHTML = 'HTML';
                 labelElem6.htmlFor = "rmHLcbType2";
-                labelElem6.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal';
+                labelElem6.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold';
                 formElem.appendChild(labelElem6);
 
             formElem.appendChild(document.createElement('br'));
@@ -488,8 +488,8 @@ else
 
             if(butMax.innerHTML == "Expand")
             {
-                divElemMain.style.width = "80%";
-                divElemMain.style.height = "70%";
+                divElemMain.style.width = "90%";
+                divElemMain.style.height = "90%";
                 butMax.innerHTML = 'Shrink';
                 divElemMain.style.opacity = "1";
             }
@@ -517,31 +517,32 @@ else
 Roam-highlighter Shortcut Keys (v${verNum})
 *All settings are now saved tab to tab, session to session
 
-*NOTE: For MACs, use "Command" instead of "Ctrl"
+[ALT + X]
 
-[Ctrl + S]
-
-\t- Show/Hide Side Window (OR Click Extension button again)
+\t- Activate Extension and Show/Hide Side Window
 
 [Ctrl + X]
 
 \t- Highlights selected text
-\t- If no highlights, grabs just the [Page Title](URL)
 \t- To remove part of a highlight, select text and press [Ctrl + X]
 
 [Alt + Click]
 
 \t- Removes an entire highlight
 
-[Ctrl + Q]
+[ALT + Q]
 
 \t- Remove all highlights on the page
+
+[ALT + A]
+
+\t- Makes selected highlighted a "header"; highlights following will nest until another highlight is selected as a "header"
 
 [Double-Click] a Single Word (has to be highlighted already)
 
 \t- Adds [[Double Brackets]] for Roam "Page Linking"
 
-[Hold Alt while Selecting Text] (must already be highlighted)
+[ALT + Z] (must already be highlighted)
 
 \t- Adds [[Double Brackets]] around selection for Roam "Page Linking"
 `;
@@ -551,7 +552,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
     function removeAllHighlights()
     {
-        console.log("running");
+        //console.log("running");
         var prevText = "", nextText = "";
         var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
         for (var i = 0; i < elemHighlights.length; i++)
@@ -964,9 +965,11 @@ Roam-highlighter Shortcut Keys (v${verNum})
             //For some special Roam stuff add single ticks ` around it like :: attributes so it doesn't try to create pages/attributes in Roam when pasted
             //OLD WAY (only first occurence replaced): tempString = tempString.replace("::","`::`").replace("[[","`[[`").replace("]]","`]]`").replace("#","`#`");
             //Using Split/Join allows to replace multiple instances of the characters you are looking to replace
+            plainText = plainText.split(")]]").join("^)^]^");
+            htmlString = htmlString.split(")]]").join("^)^]^");
 
-            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>");
-            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>");
+            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]");
+            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]");;
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
@@ -1584,14 +1587,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         }
     });
 
-    //Run during initial activation of highlighter in order to have by default the [Page Title](URL)
-    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
-    //We already have the "cut" event listener set to run our code, so this should activate it
-    clickEvent = 1;
-    document.execCommand('cut');
-}
-
-    useBrowser.extension.onMessage.addListener(function(request, sender, sendResponse){
+    useBrowser.runtime.onMessage.addListener(function(request, sender, sendResponse){
         if(request.callFunction === 'removeAllHighlights')
         {
             if(confirm("Remove all highlights from the current page?")){removeAllHighlights();}
@@ -1661,6 +1657,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
         }
     });
+
+    //Run during initial activation of highlighter in order to have by default the [Page Title](URL)
+    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+    //We already have the "cut" event listener set to run our code, so this should activate it
+    clickEvent = 1;
+    document.execCommand('cut');
+}
 }
 
 /* TEST/SAMPLE/TROUBLESHOOTING CODE
