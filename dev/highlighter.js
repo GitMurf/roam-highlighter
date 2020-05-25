@@ -641,7 +641,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var foundHeader = elemSpan.getAttribute('hlheader'); //Red text selected by user
         var bFoundHeader = false;
         var bFoundUlBullet = false;
-        debugMode = 1;
+        //debugMode = 1;
         if(debugMode != 0)
         {
             writeToConsole('');
@@ -654,169 +654,134 @@ Roam-highlighter Shortcut Keys (v${verNum})
             writeToConsole('parParParElemText: ' + parParParElemText);
             writeToConsole('parParParParNodeName: ' + parParParParNodeName);
             writeToConsole('parParParParElemText: ' + parParParParElemText);
-            writeToConsole('end of UL/LI: ' + parParParElemText.substring(parParParElemText.length - eachHighlight.length));
-            writeToConsole('end of UL/LI2: ' + parParParParElemText.substring(parParParParElemText.length - eachHighlight.length));
         }
-        debugMode = 0;
+        //debugMode = 0;
 
         var origEachHighlight = eachHighlight;
 
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = '__' + eachHighlight + '__';}
         if(parNodeName == "CODE"){eachHighlight = "`" + eachHighlight + "`";}
-        if(origEachHighlight == parElemText || origEachHighlight == parParElemText)
-        {
-            if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3" || parParNodeName == "H1" || parParNodeName == "H2" || parParNodeName == "H3")
+        //if(origEachHighlight == parElemText || origEachHighlight == parParElemText || origEachHighlight == parParParElemText)
+        //{
+            if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3" || parParNodeName == "H1" || parParNodeName == "H2" || parParNodeName == "H3" || parParParNodeName == "H1" || parParParNodeName == "H2" || parParParNodeName == "H3")
             {
                 bFoundHeader = true;
-                if(parNodeName == "H1" || parParNodeName == "H1"){eachHighlight = '||h1||' + eachHighlight + '</h1>';}
-                if(parNodeName == "H2" || parParNodeName == "H2"){eachHighlight = '||h2||' + eachHighlight + '</h2>';}
-                if(parNodeName == "H3" || parParNodeName == "H3"){eachHighlight = '||h3||' + eachHighlight + '</h3>';}
+                if(parNodeName == "H1" || parParNodeName == "H1" || parParParNodeName == "H1"){eachHighlight = '||h1||' + eachHighlight;}
+                if(parNodeName == "H2" || parParNodeName == "H2" || parParParNodeName == "H2"){eachHighlight = '||h2||' + eachHighlight;}
+                if(parNodeName == "H3" || parParNodeName == "H3" || parParParNodeName == "H3"){eachHighlight = '||h3||' + eachHighlight;}
             }
-        }
+        //}
 
         //Adding indent for bullet list sub bullets when there is no "other" element directly around text like Bold/Italics etc.
         if(parNodeName == 'LI' && (parParNodeName == 'UL' || parParNodeName == 'OL'))
         {
             bFoundUlBullet == true;
             var parParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-            var parParParParParElemText = "";
-            if(parParParParParNodeName != 'DIV' && parParParParParNodeName != 'BODY' && parParParParParNodeName != 'ARTICLE'){parParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
+            var parParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
 
-var parParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-var parParParParParParElemText = "";
-if(parParParParParParNodeName != 'DIV' && parParParParParParNodeName != 'BODY' && parParParParParParNodeName != 'ARTICLE'){parParParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
+            var newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+            if(newParElement != null)
+            {
+                var parParParParParParParNodeName = newParElement.nodeName;
 
-var parParParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-var parParParParParParParElemText = "";
-if(parParParParParParParNodeName != 'DIV' && parParParParParParParNodeName != 'BODY' && parParParParParParParNodeName != 'ARTICLE'){parParParParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
+                newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                if(newParElement != null)
+                {
+                    var parParParParParParParParNodeName = newParElement.nodeName;
+                    newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    if(newParElement != null){var parParParParParParParParParNodeName = newParElement.nodeName;}else{var parParParParParParParParParNodeName = "NULL";}
+                }
+                else
+                {
+                    var parParParParParParParParNodeName = "NULL";
+                    var parParParParParParParParParNodeName = "NULL";
+                }
+            }
+            else
+            {
+                var parParParParParParParNodeName = "NULL";
+                var parParParParParParParParNodeName = "NULL";
+                var parParParParParParParParParNodeName = "NULL";
+            }
 
-var parParParParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-var parParParParParParParParElemText = "";
-if(parParParParParParParParNodeName != 'DIV' && parParParParParParParParNodeName != 'BODY' && parParParParParParParParNodeName != 'ARTICLE'){parParParParParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
+            var levelsDeep = 1;
+            if(parParParNodeName == 'LI' && (parParParParNodeName == 'UL' || parParParParNodeName == 'OL')){levelsDeep = 2;}
+            if(parParParParParNodeName == 'LI' && (parParParParParParNodeName == 'UL' || parParParParParParNodeName == 'OL')){levelsDeep = 3;}
+            if(parParParParParParParNodeName == 'LI' && (parParParParParParParParNodeName == 'UL' || parParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
 
-var parParParParParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-var parParParParParParParParParElemText = "";
-if(parParParParParParParParParNodeName != 'DIV' && parParParParParParParParParNodeName != 'BODY' && parParParParParParParParParNodeName != 'ARTICLE'){parParParParParParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
-
-console.log('1: ',parNodeName);
-console.log('2: ',parParNodeName);
-console.log('3: ',parParParNodeName);
-console.log('4: ',parParParParNodeName);
-console.log('5: ',parParParParParNodeName);
-console.log('6: ',parParParParParParNodeName);
-console.log('7: ',parParParParParParParNodeName);
-console.log('8: ',parParParParParParParParNodeName);
-console.log('9: ',parParParParParParParParParNodeName);
-
-var levelsDeep = 1;
-if(parParParNodeName == 'LI' && (parParParParNodeName == 'UL' || parParParParNodeName == 'OL')){levelsDeep = 2;}
-if(parParParParParNodeName == 'LI' && (parParParParParParNodeName == 'UL' || parParParParParParNodeName == 'OL')){levelsDeep = 3;}
-if(parParParParParParParNodeName == 'LI' && (parParParParParParParParNodeName == 'UL' || parParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
-console.log('levels deep: ',levelsDeep);
-
-switch (levelsDeep)
-{
-    case 1:
-        eachHighlight = '||ul-one||' + eachHighlight;
-        break;
-    case 2:
-        eachHighlight = '||ul-two||' + eachHighlight;
-        break;
-    case 3:
-        eachHighlight = '||ul-three||' + eachHighlight;
-        break;
-    case 4:
-        eachHighlight = '||ul-four||' + eachHighlight;
-        break;
-    default:
-        eachHighlight = '||ul-four||' + eachHighlight;
-        break;
-}
-
-/*
-            bFoundUlBullet == true;
-            var bFoundFirstLi = false; //See if first LI in a UL list
-            if(parParElemText.substring(0,parElemText.length) == parElemText){bFoundFirstLi = true;}
-
-            var bFoundLastLi = false; //See if last LI item in UL list
-            if(parParParNodeName == 'LI' && parParParElemText.substring(parParParElemText.length - origEachHighlight.length) == origEachHighlight){bFoundLastLi = true;}
-
-            if(bFoundFirstLi){eachHighlight = '||ul-first||' + eachHighlight;}else{eachHighlight = '||li||' + eachHighlight;}
-
-            if(bFoundLastLi){eachHighlight = eachHighlight + '||/ul||';}
-*/
-}else if(parParNodeName == 'LI' && (parParParNodeName == 'UL' || parParParNodeName == 'OL') && parNodeName != 'LI') //Adding indent for bullet list sub bullets when there is Bold/Italics etc. around text (one level deeper of parent elements to access)
+            switch (levelsDeep)
+            {
+                case 1:
+                    eachHighlight = '||ul-one||' + eachHighlight;
+                    break;
+                case 2:
+                    eachHighlight = '||ul-two||' + eachHighlight;
+                    break;
+                case 3:
+                    eachHighlight = '||ul-three||' + eachHighlight;
+                    break;
+                case 4:
+                    eachHighlight = '||ul-four||' + eachHighlight;
+                    break;
+                default:
+                    eachHighlight = '||ul-four||' + eachHighlight;
+                    break;
+            }
+        }else if(parParNodeName == 'LI' && (parParParNodeName == 'UL' || parParParNodeName == 'OL') && parNodeName != 'LI') //Adding indent for bullet list sub bullets when there is Bold/Italics etc. around text (one level deeper of parent elements to access)
         {
             bFoundUlBullet == true;
             var parParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-            var parParParParParElemText = "";
-            if(parParParParParNodeName != 'DIV' && parParParParParNodeName != 'BODY' && parParParParParNodeName != 'ARTICLE'){parParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
+            var parParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
 
-var parParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-var parParParParParParElemText = "";
-if(parParParParParParNodeName != 'DIV' && parParParParParParNodeName != 'BODY' && parParParParParParNodeName != 'ARTICLE'){parParParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
+            var newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+            if(newParElement != null)
+            {
+                var parParParParParParParNodeName = newParElement.nodeName;
 
-var parParParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-var parParParParParParParElemText = "";
-if(parParParParParParParNodeName != 'DIV' && parParParParParParParNodeName != 'BODY' && parParParParParParParNodeName != 'ARTICLE'){parParParParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
+                newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                if(newParElement != null)
+                {
+                    var parParParParParParParParNodeName = newParElement.nodeName;
+                    newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    if(newParElement != null){var parParParParParParParParParNodeName = newParElement.nodeName;}else{var parParParParParParParParParNodeName = "NULL";}
+                }
+                else
+                {
+                    var parParParParParParParParNodeName = "NULL";
+                    var parParParParParParParParParNodeName = "NULL";
+                }
+            }
+            else
+            {
+                var parParParParParParParNodeName = "NULL";
+                var parParParParParParParParNodeName = "NULL";
+                var parParParParParParParParParNodeName = "NULL";
+            }
 
-var parParParParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-var parParParParParParParParElemText = "";
-if(parParParParParParParParNodeName != 'DIV' && parParParParParParParParNodeName != 'BODY' && parParParParParParParParNodeName != 'ARTICLE'){parParParParParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
+            var levelsDeep = 1;
+            if(parParParParNodeName == 'LI' && (parParParParParNodeName == 'UL' || parParParParParNodeName == 'OL')){levelsDeep = 2;}
+            if(parParParParParParNodeName == 'LI' && (parParParParParParParNodeName == 'UL' || parParParParParParParNodeName == 'OL')){levelsDeep = 3;}
+            if(parParParParParParParParNodeName == 'LI' && (parParParParParParParParParNodeName == 'UL' || parParParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
 
-var parParParParParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
-var parParParParParParParParParElemText = "";
-if(parParParParParParParParParNodeName != 'DIV' && parParParParParParParParParNodeName != 'BODY' && parParParParParParParParParNodeName != 'ARTICLE'){parParParParParParParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;}
-
-console.log('1: ',parNodeName);
-console.log('2: ',parParNodeName);
-console.log('3: ',parParParNodeName);
-console.log('4: ',parParParParNodeName);
-console.log('5: ',parParParParParNodeName);
-console.log('6: ',parParParParParParNodeName);
-console.log('7: ',parParParParParParParNodeName);
-console.log('8: ',parParParParParParParParNodeName);
-console.log('9: ',parParParParParParParParParNodeName);
-
-var levelsDeep = 1;
-if(parParParParNodeName == 'LI' && (parParParParParNodeName == 'UL' || parParParParParNodeName == 'OL')){levelsDeep = 2;}
-if(parParParParParParNodeName == 'LI' && (parParParParParParParNodeName == 'UL' || parParParParParParParNodeName == 'OL')){levelsDeep = 3;}
-if(parParParParParParParParNodeName == 'LI' && (parParParParParParParParParNodeName == 'UL' || parParParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
-console.log('levels deep: ',levelsDeep);
-
-switch (levelsDeep)
-{
-    case 1:
-        eachHighlight = '||ul-one||' + eachHighlight;
-        break;
-    case 2:
-        eachHighlight = '||ul-two||' + eachHighlight;
-        break;
-    case 3:
-        eachHighlight = '||ul-three||' + eachHighlight;
-        break;
-    case 4:
-        eachHighlight = '||ul-four||' + eachHighlight;
-        break;
-    default:
-        eachHighlight = '||ul-four||' + eachHighlight;
-        break;
-}
-
-/*
-console.log(parParParParElemText.substring(parParParParElemText.length - origEachHighlight.length));
-            bFoundUlBullet == true;
-            var bFoundFirstLi = false; //See if first LI in a UL list
-            if(parParParElemText.substring(0,parParElemText.length) == parParElemText){bFoundFirstLi = true;}
-
-            var bFoundLastLi = false; //See if last LI item in UL list
-            if(parParParParNodeName == 'LI' && parParParParElemText.substring(parParParParElemText.length - origEachHighlight.length) == origEachHighlight){bFoundLastLi = true;}
-
-            if(bFoundFirstLi){eachHighlight = '||ul-first||' + eachHighlight;}else{eachHighlight = '||li||' + eachHighlight;}
-
-            if(bFoundLastLi){eachHighlight = eachHighlight + '||/ul||';}
-*/
+            switch (levelsDeep)
+            {
+                case 1:
+                    eachHighlight = '||ul-one||' + eachHighlight;
+                    break;
+                case 2:
+                    eachHighlight = '||ul-two||' + eachHighlight;
+                    break;
+                case 3:
+                    eachHighlight = '||ul-three||' + eachHighlight;
+                    break;
+                case 4:
+                    eachHighlight = '||ul-four||' + eachHighlight;
+                    break;
+                default:
+                    eachHighlight = '||ul-four||' + eachHighlight;
+                    break;
+            }
         }
 
         if(foundHeader == 1 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '<h6>' + eachHighlight + '</h6>';}
@@ -873,7 +838,7 @@ console.log(parParParParElemText.substring(parParParParElemText.length - origEac
                     || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "KBD" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
                 )
                 && (
-                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']' || curHighlight.substring(0,1) == '+' || curHighlight.substring(0,1) == "–" || curHighlight.substring(0,1) == "-" || curHighlight.substring(0,1) == "'"
+                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']' || curHighlight.substring(0,1) == '+' || curHighlight.substring(0,1) == "–" || curHighlight.substring(0,1) == "-" || curHighlight.substring(0,1) == "'" || curHighlight.substring(0,1) == '"'
                 )
                 && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
             )
@@ -1145,7 +1110,7 @@ console.log(parParParParElemText.substring(parParParParElemText.length - origEac
             htmlString = htmlString.split(")]]").join("^)^]^");
 
             plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]").split("||ul-one||").join("").split("||ul-two||").join("").split("||ul-three||").join("").split("||ul-four||").join("").split(":**__").join(":** __").split(":****").join(":** **");
-            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]").split(":**__").join(":** __").split(":****").join(":** **");
+            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("^)^]^").join(")]]").split(":**__").join(":** __").split(":****").join(":** **");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
@@ -1172,13 +1137,35 @@ console.log(parParParParElemText.substring(parParParParElemText.length - origEac
         var ulList = 0;
         var levelNumber = 0;
         var lastLevelNumber = 0;
+        var rootBullet = 0;
         var htmlConcatHighlights = "";
         for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
         {
-            var elemType = eachLine.substring(0,4);
-            if(elemType == '<h1>' || elemType == '<h2>' || elemType == '<h3>' || elemType == '<h4>' || elemType == '<h5>')
+            //debugMode = 1;
+            if(debugMode != 0){writeToConsole(x);}
+            if(debugMode != 0){writeToConsole(eachLine);}
+            //var elemType = eachLine.substring(0,4);
+            //if(elemType == '<h1>' || elemType == '<h2>' || elemType == '<h3>' || elemType == '<h4>' || elemType == '<h5>')
+            //{
+            if(eachLine.substring(0,10) == '<li>||h1||')
             {
-                if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                eachLine = eachLine.split("||h1||").join('').split("<li>").join('').split("</li>").join('');
+                //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                if(indentLevel == 0){eachLine = '<li><h1>' + eachLine + '</h1></li><ul>';}else{eachLine = '</ul><li><h1>' + eachLine + '</h1></li><ul>';}
+                indentLevel++;
+            }
+            if(eachLine.substring(0,10) == '<li>||h2||')
+            {
+                eachLine = eachLine.split("||h2||").join('').split("<li>").join('').split("</li>").join('');
+                //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                if(indentLevel == 0){eachLine = '<li><h2>' + eachLine + '</h2></li><ul>';}else{eachLine = '</ul><li><h2>' + eachLine + '</h2></li><ul>';}
+                indentLevel++;
+            }
+            if(eachLine.substring(0,10) == '<li>||h3||')
+            {
+                eachLine = eachLine.split("||h3||").join('').split("<li>").join('').split("</li>").join('');
+                //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                if(indentLevel == 0){eachLine = '<li><h3>' + eachLine + '</h3></li><ul>';}else{eachLine = '</ul><li><h3>' + eachLine + '</h3></li><ul>';}
                 indentLevel++;
             }
 
@@ -1191,22 +1178,34 @@ console.log(parParParParElemText.substring(parParParParElemText.length - origEac
                 indentLevel++;
             }
 
-            if(eachLine.substring(0,9) == '<li>||ul-')
+            //if(eachLine.substring(0,9) == '<li>||ul-')
+            if(eachLine.indexOf('||ul-') > -1)
             {
+                if(debugMode != 0){writeToConsole(eachLine.substring(0,9));}
+                /*
+                if(eachLine.substring(0,12) == '<li>||ul-one'){levelNumber = 1;}
+                if(eachLine.substring(0,12) == '<li>||ul-two'){levelNumber = 2;}
+                if(eachLine.substring(0,12) == '<li>||ul-thr'){levelNumber = 3;}
+                if(eachLine.substring(0,12) == '<li>||ul-fou'){levelNumber = 4;}
+                */
 
-console.log('ul: ',eachLine.substring(0,12));
-console.log('last level: ',lastLevelNumber);
-if(eachLine.substring(0,12) == '<li>||ul-one'){levelNumber = 1; console.log('first level');}
-if(eachLine.substring(0,12) == '<li>||ul-two'){levelNumber = 2; console.log('second level');}
-if(eachLine.substring(0,12) == '<li>||ul-thr'){levelNumber = 3; console.log('third level');}
-if(eachLine.substring(0,12) == '<li>||ul-fou'){levelNumber = 4; console.log('fourth level');}
+                if(eachLine.indexOf('||ul-one') > -1){levelNumber = 1;}
+                if(eachLine.indexOf('||ul-two') > -1){levelNumber = 2;}
+                if(eachLine.indexOf('||ul-thr') > -1){levelNumber = 3;}
+                if(eachLine.indexOf('||ul-fou') > -1){levelNumber = 4;}
 
-console.log(eachLine);
-//In case multi element part line and added UL for indent, need to remove all ||ul|| stuff and add on just ends so not multiple
-eachLine = eachLine.split("||ul-one||").join('').split("||ul-two||").join('').split("||ul-three||").join('').split("||ul-four||").join('').split("<li>").join('').split("</li>").join('');
-console.log(eachLine);
+                //First item under the page reference / link and opening UL so if it is bullet, then move the levels back one because it is now "root"
+                if(x == 2)
+                {
+                    rootBullet = levelNumber;
+                    lastLevelNumber = levelNumber;
+                }
 
-console.log('UL List level: ',ulList);
+                if(levelNumber < rootBullet){levelNumber = rootBullet;}
+
+                //In case multi element part line and added UL for indent, need to remove all ||ul|| stuff and add on just ends so not multiple
+                eachLine = eachLine.split("||ul-one||").join('').split("||ul-two||").join('').split("||ul-three||").join('').split("||ul-four||").join('').split("<li>").join('').split("</li>").join('');
+
                 if(levelNumber - lastLevelNumber > 0)
                 {
                     eachLine = '<ul><li>' + eachLine + '</li>'
@@ -1229,17 +1228,13 @@ console.log('UL List level: ',ulList);
                 {
                     eachLine = '<li>' + eachLine + '</li>';
                 }
-console.log('UL List level after: ',ulList);
 
-console.log(eachLine);
-                //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
-                //indentLevel++;
                 lastLevelNumber = levelNumber;
-                //ulList++;
             }
             else
             {
                 levelNumber = 0;
+                rootBullet = 0;
                 if(levelNumber - lastLevelNumber < 0)
                 {
                     while(ulList > 0)
@@ -1251,9 +1246,9 @@ console.log(eachLine);
                 lastLevelNumber = levelNumber;
             }
 
-            //if(eachLine.substring(0,4) == '<h1>'){eachLine = eachLine.replace('</li>','</li><ul>');}
-            writeToConsole(eachLine);
+            if(debugMode != 0){writeToConsole(eachLine);}
             htmlConcatHighlights = htmlConcatHighlights + eachLine;
+            //debugMode = 0;
         }
 
         if(indentLevel > 0){htmlConcatHighlights = htmlConcatHighlights + '</ul>';}
@@ -1265,10 +1260,8 @@ console.log(eachLine);
         }
 
         htmlConcatHighlights = htmlConcatHighlights + '</ul>';
-console.log(htmlConcatHighlights);
         htmlConcatHighlights = htmlConcatHighlights.split("<ul><ul>").join('<ul>');
-console.log(htmlConcatHighlights);
-        writeToConsole(htmlConcatHighlights);
+        if(debugMode != 0){writeToConsole(htmlConcatHighlights);}
 
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
