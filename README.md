@@ -4,6 +4,20 @@ Now you can officially install the Extension from the Chrome Web Store here: [Ro
 
 This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use!
 
+Start with this.
+
+Here is a bulleted list:
+- One
+- Two
+  - Two-one
+    - Two-one-one
+      - Two-one-one-one
+    - Two-one-two
+  - Two-two
+- Three
+
+No More bullets
+
 ## Release Notes
 
 v1.9 released to the Chrome Store. I thought I would tell you what all was updated! I pretty much implemented everyone's requests/features/fixes from the past week, so If I missed any, please let me know. Hopefully you guys will really like the new stuff!
