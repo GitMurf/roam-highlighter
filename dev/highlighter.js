@@ -1193,15 +1193,22 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 if(eachLine.indexOf('||ul-two') > -1){levelNumber = 2;}
                 if(eachLine.indexOf('||ul-thr') > -1){levelNumber = 3;}
                 if(eachLine.indexOf('||ul-fou') > -1){levelNumber = 4;}
+                var origLevelNumber = levelNumber;
 
                 //First item under the page reference / link and opening UL so if it is bullet, then move the levels back one because it is now "root"
                 if(x == 2)
                 {
                     rootBullet = levelNumber;
                     lastLevelNumber = levelNumber;
+                    ulList = levelNumber;
                 }
 
-                if(levelNumber < rootBullet){levelNumber = rootBullet;}
+                if(levelNumber < rootBullet)
+                {
+                    levelNumber = rootBullet;
+                    rootBullet = origLevelNumber;
+                    ulList = origLevelNumber;
+                }
 
                 //In case multi element part line and added UL for indent, need to remove all ||ul|| stuff and add on just ends so not multiple
                 eachLine = eachLine.split("||ul-one||").join('').split("||ul-two||").join('').split("||ul-three||").join('').split("||ul-four||").join('').split("<li>").join('').split("</li>").join('');
@@ -1229,7 +1236,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     eachLine = '<li>' + eachLine + '</li>';
                 }
 
-                lastLevelNumber = levelNumber;
+                lastLevelNumber = origLevelNumber;
             }
             else
             {
@@ -1263,6 +1270,30 @@ Roam-highlighter Shortcut Keys (v${verNum})
         htmlConcatHighlights = htmlConcatHighlights.split("<ul><ul>").join('<ul>');
         if(debugMode != 0){writeToConsole(htmlConcatHighlights);}
 
+        //lOOP THROUGH EACH LINE OF HTML TO MAKE THE PLAIN TEXT INDENT LIKE IT
+        var loopHtml = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("</ul>").join('\n</ul>')
+        var lineBreaks = loopHtml.trim().split(/[\r\n]+/);
+
+        var newPlainText = "";
+        var indentCtr = 0;
+        for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
+        {
+            if(eachLine.substring(0,4) == '<ul>'){indentCtr++;}
+            if(eachLine.substring(0,5) == '</ul>'){indentCtr--;}
+            if(eachLine.substring(0,4) == '<li>')
+            {
+                eachLine = eachLine.split("<li>").join('').split("</li>").join('');
+                var indentSpaces = "";
+                var tmpIndentCtr = indentCtr;
+                while(tmpIndentCtr > 0)
+                {
+                    indentSpaces = indentSpaces + '    ';
+                    tmpIndentCtr--;
+                }
+                newPlainText += '\n' + indentSpaces + '- ' + eachLine;
+            }
+        }
+
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
         clipboardDataEvt.setData('text/html', htmlConcatHighlights);
@@ -1278,7 +1309,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(cbElem1.checked)
             {
                 textInput.value += '\n'
-                textInput.value += plainConcatHighlights;
+                textInput.value += newPlainText;
             }
             if(cbElem2.checked)
             {
