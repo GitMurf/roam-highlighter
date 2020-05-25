@@ -1,6 +1,5 @@
-//Version 1.9.4.1
-//Date: May 22, 2020
-var verNum = '1.9.4.1';
+//Date: May 23, 2020
+var verNum = '1.9.5';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -552,7 +551,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
     function removeAllHighlights()
     {
-        //console.log("running");
         var prevText = "", nextText = "";
         var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
         for (var i = 0; i < elemHighlights.length; i++)
@@ -570,19 +568,16 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
                     //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
                     var newText = prevText + curElement.innerText + nextText;
-                    //console.log('new text: ', newText);
                     curElement.previousSibling.textContent = newText;
                     curElement.nextSibling.remove();
                 }else {
                     var newText = prevText + curElement.innerText;
-                    //console.log('new text: ', newText);
                     curElement.previousSibling.textContent = newText;
                 }
             }
             else
             {
                 var newText = curElement.innerText + nextText;
-                //console.log('new text: ', newText);
                 curElement.nextSibling.textContent = newText;
             }
 
@@ -611,17 +606,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
                 //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
                 var newText = prevText + curElement.innerText + nextText;
-                //console.log('new text: ', newText);
                 curElement.previousSibling.textContent = newText;
                 curElement.nextSibling.remove();
             }else {
                 var newText = prevText + curElement.innerText;
-                //console.log('new text: ', newText);
                 curElement.previousSibling.textContent = newText;
             }
         }else {
             var newText = curElement.innerText + nextText;
-            //console.log('new text: ', newText);
             curElement.nextSibling.textContent = newText;
         }
 
@@ -632,21 +624,30 @@ Roam-highlighter Shortcut Keys (v${verNum})
     //This function adds Roam markdown formatting based on Element type (e.g., <STRONG> --> **text**)
     function convertFormat(eachHighlight, elemSpan) {
         var parNodeName = elemSpan.parentElement.nodeName;
+        var parParNodeName = elemSpan.parentElement.parentElement.nodeName;
         var parElemText = elemSpan.parentElement.innerText;
+        var parParElemText = elemSpan.parentElement.parentElement.innerText;
         var foundHeader = elemSpan.getAttribute('hlheader'); //Red text selected by user
         var bFoundHeader = false;
+        //debugMode = 1;
+        writeToConsole(parNodeName)
+        writeToConsole(parParElemText)
+        writeToConsole(elemSpan.parentElement.parentElement.nodeName)
+        writeToConsole(eachHighlight)
+        writeToConsole(parElemText)
+        //debugMode = 0;
 
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = '__' + eachHighlight + '__';}
         if(parNodeName == "CODE"){eachHighlight = "`" + eachHighlight + "`";}
-        if(eachHighlight == parElemText)
+        if(eachHighlight == parElemText || eachHighlight == parParElemText)
         {
-            if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3")
+            if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3" || parParNodeName == "H1" || parParNodeName == "H2" || parParNodeName == "H3")
             {
                 bFoundHeader = true;
-                if(parNodeName == "H1"){eachHighlight = '||h1||' + eachHighlight + '</h1>';}
-                if(parNodeName == "H2"){eachHighlight = '||h2||' + eachHighlight + '</h2>';}
-                if(parNodeName == "H3"){eachHighlight = '||h3||' + eachHighlight + '</h3>';}
+                if(parNodeName == "H1" || parParNodeName == "H1"){eachHighlight = '||h1||' + eachHighlight + '</h1>';}
+                if(parNodeName == "H2" || parParNodeName == "H2"){eachHighlight = '||h2||' + eachHighlight + '</h2>';}
+                if(parNodeName == "H3" || parParNodeName == "H3"){eachHighlight = '||h3||' + eachHighlight + '</h3>';}
             }
         }
 
@@ -702,11 +703,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "KBD" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
                 )
                 && (
-                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']' || curHighlight.substring(0,1) == '+' || curHighlight.substring(0,1) == "–" || curHighlight.substring(0,1) == "-"
+                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']' || curHighlight.substring(0,1) == '+' || curHighlight.substring(0,1) == "–" || curHighlight.substring(0,1) == "-" || curHighlight.substring(0,1) == "'"
                 )
                 && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
             )
             || parNodeName == "SUP" || parOfparNodeName == "SUP" || curHighlight.substring(0,1) == "."
+            || curNode.parentElement.parentElement.className == "mw-editsection"
         )
         {
             return true;
@@ -784,84 +786,89 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 while(elemTitle == elemHighlights.item(i+1).title.split(":")[1])
                 {
                     var elemSpan = elemHighlights.item(i+1);
-                    if(debugMode != 0)
-                    {
-                        writeToConsole('elemSpan.title: ' + elemSpan.title);
-                        writeToConsole('prevNode.title: ' + prevNode.title);
-                    }
-                    var newHighlight = elemSpan.textContent;
-                    var classFound = elemSpan.className;
-                    parNodeName = elemSpan.parentElement.nodeName;
-                    if(debugMode != 0)
-                    {
-                        writeToConsole('newHighlight: ' + newHighlight,3);
-                        writeToConsole('while loop elemSpan.parentElement.nodeName: ' + parNodeName,3)
-                        writeToConsole(elemSpan.parentElement,1,0);
-                    }
-                    var bIsSameLine = true;
-
-                    if(classFound == 'roamJsHighlighter pageLink')
-                    {
-                        bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
-                        lastParNodeName = parNodeName;
-                        prevNode = elemSpan;
-                        if(debugMode != 0)
-                        {
-                            writeToConsole('newHighlight: ' + newHighlight);
-                            writeToConsole('lastMainSpanText: ' + lastMainSpanText);
-                        }
-                        //first try to get rid of ** or __ or ` for bold or italics or code since can't format a page link
-                        var replaceLastText = lastMainSpanText.replace('**' + newHighlight + '**', newHighlight);
-                        replaceLastText = replaceLastText.replace('__' + newHighlight + '__', newHighlight);
-                        replaceLastText = replaceLastText.replace('`' + newHighlight + '`', newHighlight);
-                        replaceLastText = replaceLastText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
-                        if(debugMode != 0)
-                        {
-                            writeToConsole('replaceLastText: ' + replaceLastText);
-                            writeToConsole('lastMainSpanText: ' + lastMainSpanText);
-                            writeToConsole('eachHighlight: ' + eachHighlight);
-                        }
-                        eachHighlight = eachHighlight.replace(lastMainSpanText,replaceLastText);
-                        if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
-                        lastMainSpanText = replaceLastText;
-                    }
+                    if(elemSpan.parentElement.parentElement.className == "mw-editsection")
+                    {}
                     else
                     {
-                        bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
-                        lastParNodeName = parNodeName;
-                        prevNode = elemSpan;
-                        newHighlight = convertFormat(newHighlight, elemSpan);
-
-                        if(parNodeName == "A")
+                        if(debugMode != 0)
                         {
-                            var eachLink = elemSpan.parentElement;
-                            var linkTextToUse = eachLink.innerText;
-                            //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
-                            linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
-                            var linkHref = eachLink.href;
-                            //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
-                            linkHref = linkHref.split("#").join("|HASHTAG|")
-
-                            if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
-                            {
-                                var foundALink = `[${linkTextToUse}](${linkHref})`;
-                            }
-                            else
-                            {
-                                var foundALink = `[${linkTextToUse}]`;
-                            }
-
-                            foundALink = foundALink.split(")]").join("|)|]");
-
-                            if(debugMode != 0){writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);}
-                            newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                            writeToConsole('elemSpan.title: ' + elemSpan.title);
+                            writeToConsole('prevNode.title: ' + prevNode.title);
                         }
+                        var newHighlight = elemSpan.textContent;
+                        var classFound = elemSpan.className;
+                        parNodeName = elemSpan.parentElement.nodeName;
+                        if(debugMode != 0)
+                        {
+                            writeToConsole('newHighlight: ' + newHighlight,3);
+                            writeToConsole('while loop elemSpan.parentElement.nodeName: ' + parNodeName,3)
+                            writeToConsole(elemSpan.parentElement,1,0);
+                        }
+                        var bIsSameLine = true;
 
-                        if(bIsSameLine){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
-                        lastMainSpanText = newHighlight;
+                        if(classFound == 'roamJsHighlighter pageLink')
+                        {
+                            bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
+                            lastParNodeName = parNodeName;
+                            prevNode = elemSpan;
+                            if(debugMode != 0)
+                            {
+                                writeToConsole('newHighlight: ' + newHighlight);
+                                writeToConsole('lastMainSpanText: ' + lastMainSpanText);
+                            }
+                            //first try to get rid of ** or __ or ` for bold or italics or code since can't format a page link
+                            var replaceLastText = lastMainSpanText.replace('**' + newHighlight + '**', newHighlight);
+                            replaceLastText = replaceLastText.replace('__' + newHighlight + '__', newHighlight);
+                            replaceLastText = replaceLastText.replace('`' + newHighlight + '`', newHighlight);
+                            replaceLastText = replaceLastText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
+                            if(debugMode != 0)
+                            {
+                                writeToConsole('replaceLastText: ' + replaceLastText);
+                                writeToConsole('lastMainSpanText: ' + lastMainSpanText);
+                                writeToConsole('eachHighlight: ' + eachHighlight);
+                            }
+                            eachHighlight = eachHighlight.replace(lastMainSpanText,replaceLastText);
+                            if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
+                            lastMainSpanText = replaceLastText;
+                        }
+                        else
+                        {
+                            bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
+                            lastParNodeName = parNodeName;
+                            prevNode = elemSpan;
+                            newHighlight = convertFormat(newHighlight, elemSpan);
+
+                            if(parNodeName == "A")
+                            {
+                                var eachLink = elemSpan.parentElement;
+                                var linkTextToUse = eachLink.innerText;
+                                //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
+                                linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
+                                var linkHref = eachLink.href;
+                                //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
+                                linkHref = linkHref.split("#").join("|HASHTAG|")
+
+                                if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
+                                {
+                                    var foundALink = `[${linkTextToUse}](${linkHref})`;
+                                }
+                                else
+                                {
+                                    var foundALink = `[${linkTextToUse}]`;
+                                }
+
+                                foundALink = foundALink.split(")]").join("|)|]");
+
+                                if(debugMode != 0){writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);}
+                                newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                            }
+
+                            if(bIsSameLine){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
+                            lastMainSpanText = newHighlight;
+                        }
+                        if(debugMode != 0){writeToConsole('newHighlight: ' + newHighlight);}
+                        if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
                     }
-                    if(debugMode != 0){writeToConsole('newHighlight: ' + newHighlight);}
-                    if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
                     i++;
                     if(i + 1 >= elemHighlights.length){break;}
                 }
@@ -897,7 +904,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 var lineCtr = 0;
                 for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
                 {
-                    //console.log('Line ',x,': "',eachLine,'"');
 
                     //Replace all double white spaces with single spaces
                     //NOTE: Do not use this AFTER the loop of each line break as it removes the line breaks needed for each Bullet
@@ -1065,7 +1071,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var selection = window.getSelection();
             //Create range from selected text
             var range = selection.getRangeAt(0);
-            //console.log(range);
             var allWithinRangeParent = range.commonAncestorContainer;
 
             var startCont = range.startContainer;
@@ -1446,7 +1451,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
             {
                 //Commenting this out because when writing to console it actually prevents a quick highlight after selecting text
                 //and trying to use ctrl + x "cut" to trigger a highlight if you do it too quickly because when you highlight you are clicking first
-                //console.log('Not previously highlighted');
             }
         }
     });
@@ -1489,7 +1493,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
         if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
         {
-            //console.log(curElement);
             var bSelFound = 0;
             if (typeof window.getSelection != "undefined")
             {
@@ -1553,10 +1556,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     //Create new SPAN element for the page reference highlight
                     var divTest = document.createRange();
                     //divTest = window.getSelection();
-                    //console.log(theSelection);
                     divTest.setStart(theSelection.anchorNode, theSelection.anchorOffset);
                     divTest.setEnd(theSelection.focusNode, theSelection.focusOffset);
-                    //console.log(divTest);
                     var subSelection = divTest;
                     var selectedText = subSelection.extractContents();
                     //Create new HTML element SPAN
@@ -1583,7 +1584,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
         {
             //Commenting this out because when writing to console it actually prevents a quick highlight after selecting text
             //and trying to use ctrl + x "cut" to trigger a highlight if you do it too quickly because when you highlight you are clicking first
-            //console.log('Not previously highlighted');
         }
     });
 
