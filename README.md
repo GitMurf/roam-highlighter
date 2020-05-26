@@ -15,19 +15,26 @@ This Highlighter extension is meant for use with the [Roam Research](https://roa
 - **Make Highlights:** Select text from any webpage and press `Ctrl + X` (_"cut" command_) to highlight.
   - Updates and changes automatically copy to the clipboard.
   - With the new _Side Window_ you will see changes reflected _Real Time_ to see what it will look like in Roam.
+  - [Demo 1](https://github.com/GitMurf/roam-highlighter#demo-1---activate-the-highlighter-extension-and-perform-a-simple-highlight)
 - **Copy Page Title & URL:** For a quick way to grab a _Link_ to a page in the `[` Page title `]` `(`URL`)` format for Roam without any highlights, simply use `Ctrl + X` without any Selection/Highlights and it will copy `[` Page title `]` `(`URL`)` to the clipboard.
   - Additionally, when you first activate the Highlighter with `Alt + X` or by `Clicking` the Extension Icon, by default the `[` Page title `]` `(`URL`)` will be saved to your clipboard for quick/easy pasting into Roam.
+- **Headers, Bullets, and nesting**
+  - [Demo 6](https://github.com/GitMurf/roam-highlighter#demo-6---auto-indents-bulleted-lists-and-headers) - Headers and Bulleted/Numbered Lists auto nest/indent.
+  - [Demo 7](https://github.com/GitMurf/roam-highlighter#demo-7---manually-add-header-to-nest-under) - Manually add "header" by selecting a highlight and pressing `Alt + A` which nests bullets after it.
 - **Removing Highlights**
   - **Single Highlight:** To remove a highlight use `Ctrl + Click` (Windows) or `Alt + Click` (MAC or Windows). This will remove all _"parts"_ (links, bullets, line breaks, etc.) of a section you Highlighted.
   - **Part of a Highlight:** If you just want to remove a _"part"_ of a Highlight (e.g., single bullet in a list), you can select the text of that _"part"_ and press `Ctrl + X` (_"cut" command_) to remove it, while preserving the rest of the Highlight.
   - **ALL Highlights:** Pressing `Alt + Q` will ask for confirmation to remove all Highlights from the current page. Or use the button from the _Settings_ window.
+  - [Demo 2](https://github.com/GitMurf/roam-highlighter#demo-2---removing-highlights)
 - **Adding [[Double Brackets]] for Page Linking/References in Roam**
   - For text that is already highlighted in Yellow, you can have [[Double Brackets]] added for _Page Linking_ in Roam.
   - Anything you choose to have [[Double Brackets]] added to will be highlighted in Blue. See the following:
     - **Single Word:** `Double-Click` a single word to add to Roam like: [[DoubleClickedWord]]
     - **Multiple Words:** Select multiple words from previously highlighted (Yellow) text and press `Alt + Z` to add to Roam like: [[Multiple Words]]
     - **Removing Linked References:** `Ctrl + Click` (Windows) or `Alt + Click` (MAC or Windows) any of the Blue highlights (page references) to turn it back to Yellow. [[Double Brackets]] will no longer be added.
+  - [Demo 4](https://github.com/GitMurf/roam-highlighter#demo-4---selecting-words-from-a-highlight-for-roam-page-linking)
 - **Change Settings:** Open the _Side Window_ with `Alt + X` and click the `Settings` button.
+  - [Demo 5](https://github.com/GitMurf/roam-highlighter#demo-5---side-window-settings)
   - **Highlighter Link #Tag:** #[[Roam-Highlights]] is the `Default` which is added to the _Parent Block_ as `[` Page title `]` `(`URL`)` **#[[Roam-Highlights]]**
   - **Page Title for Alias Link:** The Browser _Page Title_ is the `Default` which is used in the _Parent Block_ as `[` **Page Title** `]` `(`URL`)`
   - **How to handle Line Breaks within each Highlight**
@@ -38,6 +45,7 @@ This Highlighter extension is meant for use with the [Roam Research](https://roa
       3. **Ctrl + Shift + V same bullet:** Line breaks within a Highlight will stay in the same block/bullet but preserve each Line Break as if you added a _soft line break_ with `Ctrl + Enter` like how pasting with `Ctrl + Shift + V` works in Chrome.
       4. **Replace with single space:** Line breaks are replaced with a _single space_ (i.e., " ") for concatenation into a single block/bullet.
       5. **Remove line breaks:** Line breaks are completely removed and NOT replaced with any characters which concatenates the Highlight into a single block/bullet. __Note:__ _If there isn't already other "white space", this could cause the last word from the first line to be merged with the first word of the second line._
+- **Kindle Notes & Highlights Extraction:** [Demo 8](https://github.com/GitMurf/roam-highlighter#demo-8---extract-highlights-and-notes-from-kindle)
 
 If you have any issues, questions or feedback for improving the instructions, please [Open a GitHub Issue](https://github.com/GitMurf/roam-highlighter/issues/new) and post your thoughts. Thanks and enjoy!
 
