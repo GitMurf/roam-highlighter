@@ -26,25 +26,25 @@
 "commands": {
     "_execute_browser_action": {
         "suggested_key": {
-            "default": "Alt+X"
+            "default": "Alt+Shift+X"
         },
         "description": "Activates highlighter and shows/hides Side Window"
     },
     "remove-all-highlights": {
         "suggested_key": {
-            "default": "Alt+Q"
+            "default": "Alt+Shift+Q"
         },
         "description": "Clears all the current highlights on the page"
     },
     "add-double-brackets": {
         "suggested_key": {
-            "default": "Alt+Z"
+            "default": "Alt+Shift+Z"
         },
         "description": "Add double brackets around selected text in Highlight for Roam page linking"
     },
     "convert-to-header": {
         "suggested_key": {
-            "default": "Alt+A"
+            "default": "Alt+Shift+A"
         },
         "description": "Select any text from a highlighted item and mark as Header so bullets are indented under it."
     }
