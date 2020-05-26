@@ -57,7 +57,7 @@ If you have any issues, questions or feedback for improving the instructions, pl
 
 ![](https://user-images.githubusercontent.com/64155612/82860651-28e90480-9ecf-11ea-8c59-81ebc50a1687.gif)
 
-## Demo 3 - Options for handling Line Breaks in a Highlight
+## Demo 3 (Need to Record) - Options for handling Line Breaks in a Highlight
 
 ![]()
 
