@@ -37,7 +37,7 @@ This Highlighter extension is meant for use with the [Roam Research](https://roa
   - [Demo 5](https://github.com/GitMurf/roam-highlighter#demo-5---side-window-settings)
   - **Highlighter Link #Tag:** #[[Roam-Highlights]] is the `Default` which is added to the _Parent Block_ as `[` Page title `]` `(`URL`)` **#[[Roam-Highlights]]**
   - **Page Title for Alias Link:** The Browser _Page Title_ is the `Default` which is used in the _Parent Block_ as `[` **Page Title** `]` `(`URL`)`
-  - **How to handle Line Breaks within each Highlight**
+  - **How to handle Line Breaks within each Highlight**: [Demo 3](https://github.com/GitMurf/roam-highlighter/blob/master/README.md#demo-3-need-to-record---options-for-handling-line-breaks-in-a-highlight)
     - Options for handling `Line Breaks` (e.g., paragraphs, bullets, new line characters, etc.) within a single Highlight (see **Demo #3** below)
     - If you don't like the way `Line Breaks` are handled by default, here are the options you can switch between:
       1. **New bullets same level:** This is the `DEFAULT` Setting. Line breaks will create new bullets at the same hierarchy/level.
