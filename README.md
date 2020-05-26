@@ -1,5 +1,7 @@
 # Roam-highlighter
 
+For any **_Issues, Questions, Ideas, or Requests_** please use the GitHub Issue tracker: [Submit an Issue](https://github.com/GitMurf/roam-highlighter/issues/new)
+
 Install the Extension from the Chrome Web Store here: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp).
 
 For Firefox, see the [Getting Started](https://github.com/GitMurf/roam-highlighter/blob/master/README.md#getting-started) section below...
