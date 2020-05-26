@@ -1,6 +1,5 @@
-//Version 1.9.4.1
-//Date: May 22, 2020
-var verNum = '1.9.4.1';
+//Date: May 25, 2020
+var verNum = '1.9.5';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -153,6 +152,7 @@ else
     roamHighlighterLoaded = 1;
     //Variable to see if starting by click event (to remove a highlight) OR by a 'cut' event by user adding a highlight
     var clickEvent = 0;
+    var kindleClickEvent = 0;
     //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
     var highlightCtr = 0;
 
@@ -185,7 +185,7 @@ else
             var labelElem = document.createElement('label');
                 labelElem.innerHTML = 'Highlighter Link #Tag';
                 labelElem.htmlFor = "rmHLtb";
-                labelElem.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem);
             formElem.appendChild(document.createElement('br'));
             var tbElem = document.createElement('input');
@@ -207,12 +207,24 @@ else
                     removeAllHighlights();
                 });
 
+            var butExtractKindle = document.createElement('button');
+                butExtractKindle.style.cssText = 'background-color:black;color:white;border-color:white;margin-left:30px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
+                butExtractKindle.innerHTML = 'Kindle Highlights';
+                butExtractKindle.name = 'rmHLkindle';
+                butExtractKindle.id = 'rmHLkindle';
+                formElem.appendChild(butExtractKindle);
+
+                butExtractKindle.addEventListener("click", function(){
+                    kindleClickEvent = 1;
+                    document.execCommand('cut');
+                });
+
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
             var labelElem2 = document.createElement('label');
                 labelElem2.innerHTML = 'Page Title for Alias Link';
                 labelElem2.htmlFor = "rmHLta2";
-                labelElem2.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem2.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block-block';
                 formElem.appendChild(labelElem2);
             formElem.appendChild(document.createElement('br'));
             var textElem2 = document.createElement('textarea');
@@ -234,7 +246,7 @@ else
             var labelElem3 = document.createElement('label');
                 labelElem3.innerHTML = 'How to handle Line Breaks within each Highlight';
                 labelElem3.htmlFor = "rmHLsel";
-                labelElem3.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem3.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem3);
             formElem.appendChild(document.createElement('br'));
             var selElem = document.createElement('select');
@@ -252,14 +264,14 @@ else
             formElem.appendChild(document.createElement('br'));
             var labelElem7 = document.createElement('label');
                 labelElem7.innerHTML = 'Side Window Size (width minimum: 300px or 15%)';
-                labelElem7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 //labelElem7.htmlFor = "rmHLtbSize";
                 formElem.appendChild(labelElem7);
             formElem.appendChild(document.createElement('br'));
             var labelElem8 = document.createElement('label');
                 labelElem8.innerHTML = 'W:';
                 labelElem8.htmlFor = "rmHLtbSize";
-                labelElem8.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem8.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem8);
             var tbSizeElem = document.createElement('input');
                 tbSizeElem.value = sideWidth;
@@ -271,7 +283,7 @@ else
             var labelElem9 = document.createElement('label');
                 labelElem9.innerHTML = 'H:';
                 labelElem9.htmlFor = "rmHLtbSize2";
-                labelElem9.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem9.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem9);
             var tbSizeElem2 = document.createElement('input');
                 tbSizeElem2.value = sideHeight;
@@ -285,7 +297,7 @@ else
             formElem.appendChild(document.createElement('br'));
             var labelElem4 = document.createElement('label');
                 labelElem4.innerHTML = 'Show the Clipboard in:';
-                labelElem4.style.cssText = 'margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem4.style.cssText = 'margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 //labelElem4.htmlFor = "rmHLcbType1";
                 formElem.appendChild(labelElem4);
 
@@ -301,7 +313,7 @@ else
             var labelElem5 = document.createElement('label');
                 labelElem5.innerHTML = 'Plain Text';
                 labelElem5.htmlFor = "rmHLcbType1";
-                labelElem5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem5);
 
             var cbElem2 = document.createElement('input');
@@ -314,7 +326,7 @@ else
             var labelElem6 = document.createElement('label');
                 labelElem6.innerHTML = 'HTML';
                 labelElem6.htmlFor = "rmHLcbType2";
-                labelElem6.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem6.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem6);
 
             formElem.appendChild(document.createElement('br'));
@@ -357,7 +369,7 @@ else
                 formElem.appendChild(document.createElement('br'));
                 var spanElem1 = document.createElement('span');
                     spanElem1.innerHTML = 'Important Links and Resources';
-                    spanElem1.style.cssText = 'font-weight:bold;color:red;font-size:12px;line-height:normal';
+                    spanElem1.style.cssText = 'font-weight:bold;color:red;font-size:12px;line-height:normal;display:inline-block';
                     formElem.appendChild(spanElem1);
 
                 formElem.appendChild(document.createElement('br'));
@@ -400,6 +412,14 @@ else
                     link5.style.cssText = 'font-size:12px;line-height:normal';
                     //link5.style.cssText = 'font-weight:bold;';
                     formElem.appendChild(link5);
+
+                formElem.appendChild(document.createElement('br'));
+                var link6 = document.createElement('a');
+                    link6.innerText = 'Kindle Notes & Highlights';
+                    link6.href = 'https://read.amazon.com/notebook';
+                    link6.style.cssText = 'font-size:12px;line-height:normal';
+                    //link6.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link6);
 
     var butSett = document.createElement('button');
         butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
@@ -489,7 +509,7 @@ else
             if(butMax.innerHTML == "Expand")
             {
                 divElemMain.style.width = "90%";
-                divElemMain.style.height = "90%";
+                divElemMain.style.height = "80%";
                 butMax.innerHTML = 'Shrink';
                 divElemMain.style.opacity = "1";
             }
@@ -550,9 +570,95 @@ Roam-highlighter Shortcut Keys (v${verNum})
     divTextElem.appendChild(textInput);
     document.body.appendChild(divElem);
 
+    function getKindleHighlights()
+    {
+        if(pageTitle == 'Kindle: Your Notes and Highlights')
+        {
+            //window.alert('Ready to extract notes');
+
+            var myHighlights = document.querySelectorAll('.a-size-base-plus.a-color-base, .kp-notebook-metadata, div#annotations .kp-notebook-cover-image-border');
+            var textString = "";
+            var htmlString = "";
+            var tmpString = "";
+            var hlLocation = "";
+            var hlColor = "";
+            var coverImg = "";
+            var hlCtr = 0;
+            //var titleElem = document.getElementById('');
+            //var bookTitle = "";
+            for(var i = 0; i < myHighlights.length; i++)
+            {
+                var curElement = myHighlights.item(i);
+                var curText = curElement.innerText.toString().trim();
+                //curText = curText.trim().replace(/(\r\n|\n|\r)/gm," ");
+                if(curText != "" || curElement.nodeName == 'IMG')
+                {
+
+                    if(curElement.nodeName == 'H3') //Title
+                    {
+                        textString += curText + '\n';
+                        textString += '    - Title:: ' + curText + '\n';
+                        htmlString += '<li>' + curText + '</li><ul>';
+                        htmlString += '<li>Title:: ' + curText + '</li>';
+                    }
+                    if(curElement.nodeName == 'P' && curElement.classList.contains("a-color-secondary")) //Author
+                    {
+                        textString += '    - Author:: ' + curText + '\n';
+                        textString += '    - ' + coverImg + '\n';
+                        textString += '    - #Kindle-highlights\n';
+
+                        htmlString += '<li>Author:: ' + curText + '</li>';
+                        htmlString += '<li>' + coverImg + '</li>';
+                        htmlString += '<li>#Kindle-highlights</li><ul>';
+                    }
+                    if(curElement.nodeName == 'IMG' && curElement.classList.contains("kp-notebook-cover-image-border")) //Cover art
+                    {
+                        coverImg = '![](' + curElement.src + ')';
+                    }
+                    if(curElement.id == 'highlight') //Highlight
+                    {
+                        textString += '        - ' + curText + '\n';
+                        textString += '            - Color: ' + hlColor + '\n';
+                        textString += '            - ' + hlLocation + '\n';
+
+                        if(hlCtr > 0){htmlString += '</ul>';}
+                        htmlString += '<li>' + curText + '</li><ul>';
+                        htmlString += '<li>Color: ' + hlColor + '</li>';
+                        htmlString += '<li>' + hlLocation + '</li>';
+                        hlCtr++;
+                    }
+                    if(curElement.id == 'annotationHighlightHeader') //Highlight type and location
+                    {
+                        //.split("[")
+                        tmpString = curText.split(" | ");
+                        hlColor = tmpString[0].trim();
+                        hlLocation = tmpString[1].trim();
+                    }
+                    if(curElement.id == 'note') //Note
+                    {
+                        textString += '            - Note: ' + curText + '\n';
+                        htmlString += '<li>Note: ' + curText + '</li>';
+                    }
+                }
+            }
+
+            htmlString += '</ul></ul></ul>';
+            var clipboardDataEvt = event.clipboardData;
+            clipboardDataEvt.setData('text/plain', textString);
+            clipboardDataEvt.setData('text/html', htmlString);
+            var textInput = document.getElementById("rmHLtextArea");
+            //htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>') //.split("</ul>").join('\n</ul>').split("</li>").join('\n</li>');
+
+            textInput.value = textString;
+        }
+        else
+        {
+            window.alert('Not on kindle page. Go to: https://read.amazon.com/notebook');
+        }
+    }
+
     function removeAllHighlights()
     {
-        //console.log("running");
         var prevText = "", nextText = "";
         var elemHighlights = document.querySelectorAll(".roamJsHighlighter");
         for (var i = 0; i < elemHighlights.length; i++)
@@ -570,19 +676,16 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
                     //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
                     var newText = prevText + curElement.innerText + nextText;
-                    //console.log('new text: ', newText);
                     curElement.previousSibling.textContent = newText;
                     curElement.nextSibling.remove();
                 }else {
                     var newText = prevText + curElement.innerText;
-                    //console.log('new text: ', newText);
                     curElement.previousSibling.textContent = newText;
                 }
             }
             else
             {
                 var newText = curElement.innerText + nextText;
-                //console.log('new text: ', newText);
                 curElement.nextSibling.textContent = newText;
             }
 
@@ -611,17 +714,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 //If there is ALSO a next sibling then that means the highlight was in the middle of a paragraph etc.
                 //We will then want to merge the highlighted text, and the prevoius and next siblings all into one element to get back to way it was before highlighter
                 var newText = prevText + curElement.innerText + nextText;
-                //console.log('new text: ', newText);
                 curElement.previousSibling.textContent = newText;
                 curElement.nextSibling.remove();
             }else {
                 var newText = prevText + curElement.innerText;
-                //console.log('new text: ', newText);
                 curElement.previousSibling.textContent = newText;
             }
         }else {
             var newText = curElement.innerText + nextText;
-            //console.log('new text: ', newText);
             curElement.nextSibling.textContent = newText;
         }
 
@@ -633,24 +733,166 @@ Roam-highlighter Shortcut Keys (v${verNum})
     function convertFormat(eachHighlight, elemSpan) {
         var parNodeName = elemSpan.parentElement.nodeName;
         var parElemText = elemSpan.parentElement.innerText;
+
+        var parParNodeName = elemSpan.parentElement.parentElement.nodeName;
+        var parParElemText = "";
+        if(parParNodeName != 'DIV' && parParNodeName != 'BODY' && parParNodeName != 'ARTICLE'){parParElemText = elemSpan.parentElement.parentElement.innerText;}
+
+        var parParParNodeName = elemSpan.parentElement.parentElement.parentElement.nodeName;
+        var parParParElemText = "";
+        if(parParParNodeName != 'DIV' && parParParNodeName != 'BODY' && parParParNodeName != 'ARTICLE'){parParParElemText = elemSpan.parentElement.parentElement.parentElement.innerText;}
+
+        var parParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.nodeName;
+        var parParParParElemText = "";
+        if(parParParParNodeName != 'DIV' && parParParParNodeName != 'BODY' && parParParParNodeName != 'ARTICLE'){parParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.innerText;}
+
         var foundHeader = elemSpan.getAttribute('hlheader'); //Red text selected by user
         var bFoundHeader = false;
+        var bFoundUlBullet = false;
+        //debugMode = 1;
+        if(debugMode != 0)
+        {
+            writeToConsole('');
+            writeToConsole('eachHighlight: ' + eachHighlight);
+            writeToConsole('parNodeName: ' + parNodeName);
+            writeToConsole('parElemText: ' + parElemText);
+            writeToConsole('parParNodeName: ' + parParNodeName);
+            writeToConsole('parParElemText: ' + parParElemText);
+            writeToConsole('parParParNodeName: ' + parParParNodeName);
+            writeToConsole('parParParElemText: ' + parParParElemText);
+            writeToConsole('parParParParNodeName: ' + parParParParNodeName);
+            writeToConsole('parParParParElemText: ' + parParParParElemText);
+        }
+        //debugMode = 0;
+
+        var origEachHighlight = eachHighlight;
 
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = '__' + eachHighlight + '__';}
         if(parNodeName == "CODE"){eachHighlight = "`" + eachHighlight + "`";}
-        if(eachHighlight == parElemText)
-        {
-            if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3")
+        //if(origEachHighlight == parElemText || origEachHighlight == parParElemText || origEachHighlight == parParParElemText)
+        //{
+            if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3" || parParNodeName == "H1" || parParNodeName == "H2" || parParNodeName == "H3" || parParParNodeName == "H1" || parParParNodeName == "H2" || parParParNodeName == "H3")
             {
                 bFoundHeader = true;
-                if(parNodeName == "H1"){eachHighlight = '||h1||' + eachHighlight + '</h1>';}
-                if(parNodeName == "H2"){eachHighlight = '||h2||' + eachHighlight + '</h2>';}
-                if(parNodeName == "H3"){eachHighlight = '||h3||' + eachHighlight + '</h3>';}
+                if(parNodeName == "H1" || parParNodeName == "H1" || parParParNodeName == "H1"){eachHighlight = '||h1||' + eachHighlight;}
+                if(parNodeName == "H2" || parParNodeName == "H2" || parParParNodeName == "H2"){eachHighlight = '||h2||' + eachHighlight;}
+                if(parNodeName == "H3" || parParNodeName == "H3" || parParParNodeName == "H3"){eachHighlight = '||h3||' + eachHighlight;}
+            }
+        //}
+
+        //Adding indent for bullet list sub bullets when there is no "other" element directly around text like Bold/Italics etc.
+        if(parNodeName == 'LI' && (parParNodeName == 'UL' || parParNodeName == 'OL'))
+        {
+            bFoundUlBullet == true;
+            var parParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
+            var parParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
+
+            var newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+            if(newParElement != null)
+            {
+                var parParParParParParParNodeName = newParElement.nodeName;
+
+                newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                if(newParElement != null)
+                {
+                    var parParParParParParParParNodeName = newParElement.nodeName;
+                    newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    if(newParElement != null){var parParParParParParParParParNodeName = newParElement.nodeName;}else{var parParParParParParParParParNodeName = "NULL";}
+                }
+                else
+                {
+                    var parParParParParParParParNodeName = "NULL";
+                    var parParParParParParParParParNodeName = "NULL";
+                }
+            }
+            else
+            {
+                var parParParParParParParNodeName = "NULL";
+                var parParParParParParParParNodeName = "NULL";
+                var parParParParParParParParParNodeName = "NULL";
+            }
+
+            var levelsDeep = 1;
+            if(parParParNodeName == 'LI' && (parParParParNodeName == 'UL' || parParParParNodeName == 'OL')){levelsDeep = 2;}
+            if(parParParParParNodeName == 'LI' && (parParParParParParNodeName == 'UL' || parParParParParParNodeName == 'OL')){levelsDeep = 3;}
+            if(parParParParParParParNodeName == 'LI' && (parParParParParParParParNodeName == 'UL' || parParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
+
+            switch (levelsDeep)
+            {
+                case 1:
+                    eachHighlight = '||ul-one||' + eachHighlight;
+                    break;
+                case 2:
+                    eachHighlight = '||ul-two||' + eachHighlight;
+                    break;
+                case 3:
+                    eachHighlight = '||ul-three||' + eachHighlight;
+                    break;
+                case 4:
+                    eachHighlight = '||ul-four||' + eachHighlight;
+                    break;
+                default:
+                    eachHighlight = '||ul-four||' + eachHighlight;
+                    break;
+            }
+        }else if(parParNodeName == 'LI' && (parParParNodeName == 'UL' || parParParNodeName == 'OL') && parNodeName != 'LI') //Adding indent for bullet list sub bullets when there is Bold/Italics etc. around text (one level deeper of parent elements to access)
+        {
+            bFoundUlBullet == true;
+            var parParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
+            var parParParParParParNodeName = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nodeName;
+
+            var newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+            if(newParElement != null)
+            {
+                var parParParParParParParNodeName = newParElement.nodeName;
+
+                newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                if(newParElement != null)
+                {
+                    var parParParParParParParParNodeName = newParElement.nodeName;
+                    newParElement = elemSpan.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    if(newParElement != null){var parParParParParParParParParNodeName = newParElement.nodeName;}else{var parParParParParParParParParNodeName = "NULL";}
+                }
+                else
+                {
+                    var parParParParParParParParNodeName = "NULL";
+                    var parParParParParParParParParNodeName = "NULL";
+                }
+            }
+            else
+            {
+                var parParParParParParParNodeName = "NULL";
+                var parParParParParParParParNodeName = "NULL";
+                var parParParParParParParParParNodeName = "NULL";
+            }
+
+            var levelsDeep = 1;
+            if(parParParParNodeName == 'LI' && (parParParParParNodeName == 'UL' || parParParParParNodeName == 'OL')){levelsDeep = 2;}
+            if(parParParParParParNodeName == 'LI' && (parParParParParParParNodeName == 'UL' || parParParParParParParNodeName == 'OL')){levelsDeep = 3;}
+            if(parParParParParParParParNodeName == 'LI' && (parParParParParParParParParNodeName == 'UL' || parParParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
+
+            switch (levelsDeep)
+            {
+                case 1:
+                    eachHighlight = '||ul-one||' + eachHighlight;
+                    break;
+                case 2:
+                    eachHighlight = '||ul-two||' + eachHighlight;
+                    break;
+                case 3:
+                    eachHighlight = '||ul-three||' + eachHighlight;
+                    break;
+                case 4:
+                    eachHighlight = '||ul-four||' + eachHighlight;
+                    break;
+                default:
+                    eachHighlight = '||ul-four||' + eachHighlight;
+                    break;
             }
         }
 
-        if(foundHeader == 1 && bFoundHeader == false){eachHighlight = '<h6>' + eachHighlight + '</h6>';}
+        if(foundHeader == 1 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '<h6>' + eachHighlight + '</h6>';}
 
         return eachHighlight;
     }
@@ -688,11 +930,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     || (prevSibNodeName == "A" || prevSibNodeName == "CODE" || prevSibNodeName == "KBD" || prevSibNodeName == "EM" || prevSibNodeName == "I" || prevSibNodeName == "U" || prevSibNodeName == "G-EMOJI" || prevSibNodeName == "STRONG" || prevSibNodeName == "B")
                 )
                 && (
-                    prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "(" || prevNode.innerText.substring(prevNode.innerText.length - 1) == '"' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '“' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '”' || prevNode.innerText.substring(prevNode.innerText.length - 1) == "[" || prevNode.innerText.substring(prevNode.innerText.length - 1) == ":" || prevNode.innerText.substring(prevNode.innerText.length - 1) == "+" || prevNode.innerText.substring(prevNode.innerText.length - 1) == "–" || prevNode.innerText.substring(prevNode.innerText.length - 1) == "-"
+                    prevNode.innerText.substring(prevNode.innerText.length - 1) == " " || prevNode.innerText.substring(prevNode.innerText.length - 1) == "(" || prevNode.innerText.substring(prevNode.innerText.length - 1) == '"' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '“' || prevNode.innerText.substring(prevNode.innerText.length - 1) == '”' || prevNode.innerText.substring(prevNode.innerText.length - 1) == "[" || prevNode.innerText.substring(prevNode.innerText.length - 1) == "+" || prevNode.innerText.substring(prevNode.innerText.length - 1) == "–" || prevNode.innerText.substring(prevNode.innerText.length - 1) == "-"
                     || (prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == "[" && prevSibNodeName == "")
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == "]" && curHighlight.substring(0,1) == "(")
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ")" && curHighlight.substring(0,1) == "#")
                     || (prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == " " && prevSibNodeName == "")
+                    || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ":" && curHighlight.substring(0,1) == " ")
+                    || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ":" && (lastParNodeName == "EM" || lastParNodeName == "I" || lastParNodeName == "STRONG" || lastParNodeName == "B"))
                 )
                 && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
             )
@@ -702,11 +946,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "KBD" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
                 )
                 && (
-                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']' || curHighlight.substring(0,1) == '+' || curHighlight.substring(0,1) == "–" || curHighlight.substring(0,1) == "-"
+                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']' || curHighlight.substring(0,1) == '+' || curHighlight.substring(0,1) == "–" || curHighlight.substring(0,1) == "-" || curHighlight.substring(0,1) == "'" || curHighlight.substring(0,1) == '"'
                 )
                 && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
             )
             || parNodeName == "SUP" || parOfparNodeName == "SUP" || curHighlight.substring(0,1) == "."
+            || curNode.parentElement.parentElement.className == "mw-editsection"
         )
         {
             return true;
@@ -784,84 +1029,89 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 while(elemTitle == elemHighlights.item(i+1).title.split(":")[1])
                 {
                     var elemSpan = elemHighlights.item(i+1);
-                    if(debugMode != 0)
-                    {
-                        writeToConsole('elemSpan.title: ' + elemSpan.title);
-                        writeToConsole('prevNode.title: ' + prevNode.title);
-                    }
-                    var newHighlight = elemSpan.textContent;
-                    var classFound = elemSpan.className;
-                    parNodeName = elemSpan.parentElement.nodeName;
-                    if(debugMode != 0)
-                    {
-                        writeToConsole('newHighlight: ' + newHighlight,3);
-                        writeToConsole('while loop elemSpan.parentElement.nodeName: ' + parNodeName,3)
-                        writeToConsole(elemSpan.parentElement,1,0);
-                    }
-                    var bIsSameLine = true;
-
-                    if(classFound == 'roamJsHighlighter pageLink')
-                    {
-                        bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
-                        lastParNodeName = parNodeName;
-                        prevNode = elemSpan;
-                        if(debugMode != 0)
-                        {
-                            writeToConsole('newHighlight: ' + newHighlight);
-                            writeToConsole('lastMainSpanText: ' + lastMainSpanText);
-                        }
-                        //first try to get rid of ** or __ or ` for bold or italics or code since can't format a page link
-                        var replaceLastText = lastMainSpanText.replace('**' + newHighlight + '**', newHighlight);
-                        replaceLastText = replaceLastText.replace('__' + newHighlight + '__', newHighlight);
-                        replaceLastText = replaceLastText.replace('`' + newHighlight + '`', newHighlight);
-                        replaceLastText = replaceLastText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
-                        if(debugMode != 0)
-                        {
-                            writeToConsole('replaceLastText: ' + replaceLastText);
-                            writeToConsole('lastMainSpanText: ' + lastMainSpanText);
-                            writeToConsole('eachHighlight: ' + eachHighlight);
-                        }
-                        eachHighlight = eachHighlight.replace(lastMainSpanText,replaceLastText);
-                        if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
-                        lastMainSpanText = replaceLastText;
-                    }
+                    if(elemSpan.parentElement.parentElement.className == "mw-editsection")
+                    {}
                     else
                     {
-                        bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
-                        lastParNodeName = parNodeName;
-                        prevNode = elemSpan;
-                        newHighlight = convertFormat(newHighlight, elemSpan);
-
-                        if(parNodeName == "A")
+                        if(debugMode != 0)
                         {
-                            var eachLink = elemSpan.parentElement;
-                            var linkTextToUse = eachLink.innerText;
-                            //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
-                            linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
-                            var linkHref = eachLink.href;
-                            //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
-                            linkHref = linkHref.split("#").join("|HASHTAG|")
-
-                            if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
-                            {
-                                var foundALink = `[${linkTextToUse}](${linkHref})`;
-                            }
-                            else
-                            {
-                                var foundALink = `[${linkTextToUse}]`;
-                            }
-
-                            foundALink = foundALink.split(")]").join("|)|]");
-
-                            if(debugMode != 0){writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);}
-                            newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                            writeToConsole('elemSpan.title: ' + elemSpan.title);
+                            writeToConsole('prevNode.title: ' + prevNode.title);
                         }
+                        var newHighlight = elemSpan.textContent;
+                        var classFound = elemSpan.className;
+                        parNodeName = elemSpan.parentElement.nodeName;
+                        if(debugMode != 0)
+                        {
+                            writeToConsole('newHighlight: ' + newHighlight,3);
+                            writeToConsole('while loop elemSpan.parentElement.nodeName: ' + parNodeName,3)
+                            writeToConsole(elemSpan.parentElement,1,0);
+                        }
+                        var bIsSameLine = true;
 
-                        if(bIsSameLine){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
-                        lastMainSpanText = newHighlight;
+                        if(classFound == 'roamJsHighlighter pageLink')
+                        {
+                            bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
+                            lastParNodeName = parNodeName;
+                            prevNode = elemSpan;
+                            if(debugMode != 0)
+                            {
+                                writeToConsole('newHighlight: ' + newHighlight);
+                                writeToConsole('lastMainSpanText: ' + lastMainSpanText);
+                            }
+                            //first try to get rid of ** or __ or ` for bold or italics or code since can't format a page link
+                            var replaceLastText = lastMainSpanText.replace('**' + newHighlight + '**', newHighlight);
+                            replaceLastText = replaceLastText.replace('__' + newHighlight + '__', newHighlight);
+                            replaceLastText = replaceLastText.replace('`' + newHighlight + '`', newHighlight);
+                            replaceLastText = replaceLastText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
+                            if(debugMode != 0)
+                            {
+                                writeToConsole('replaceLastText: ' + replaceLastText);
+                                writeToConsole('lastMainSpanText: ' + lastMainSpanText);
+                                writeToConsole('eachHighlight: ' + eachHighlight);
+                            }
+                            eachHighlight = eachHighlight.replace(lastMainSpanText,replaceLastText);
+                            if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
+                            lastMainSpanText = replaceLastText;
+                        }
+                        else
+                        {
+                            bIsSameLine = isSameLine(elemSpan, prevNode, lastParNodeName);
+                            lastParNodeName = parNodeName;
+                            prevNode = elemSpan;
+                            newHighlight = convertFormat(newHighlight, elemSpan);
+
+                            if(parNodeName == "A")
+                            {
+                                var eachLink = elemSpan.parentElement;
+                                var linkTextToUse = eachLink.innerText;
+                                //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
+                                linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
+                                var linkHref = eachLink.href;
+                                //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
+                                linkHref = linkHref.split("#").join("|HASHTAG|")
+
+                                if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
+                                {
+                                    var foundALink = `[${linkTextToUse}](${linkHref})`;
+                                }
+                                else
+                                {
+                                    var foundALink = `[${linkTextToUse}]`;
+                                }
+
+                                foundALink = foundALink.split(")]").join("|)|]");
+
+                                if(debugMode != 0){writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);}
+                                newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                            }
+
+                            if(bIsSameLine){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
+                            lastMainSpanText = newHighlight;
+                        }
+                        if(debugMode != 0){writeToConsole('newHighlight: ' + newHighlight);}
+                        if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
                     }
-                    if(debugMode != 0){writeToConsole('newHighlight: ' + newHighlight);}
-                    if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
                     i++;
                     if(i + 1 >= elemHighlights.length){break;}
                 }
@@ -897,7 +1147,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 var lineCtr = 0;
                 for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
                 {
-                    //console.log('Line ',x,': "',eachLine,'"');
 
                     //Replace all double white spaces with single spaces
                     //NOTE: Do not use this AFTER the loop of each line break as it removes the line breaks needed for each Bullet
@@ -968,8 +1217,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
             plainText = plainText.split(")]]").join("^)^]^");
             htmlString = htmlString.split(")]]").join("^)^]^");
 
-            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]");
-            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]");;
+            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]").split("||ul-one||").join("").split("||ul-two||").join("").split("||ul-three||").join("").split("||ul-four||").join("").split(":**__").join(":** __").split(":****").join(":** **");
+            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("^)^]^").join(")]]").split(":**__").join(":** __").split(":****").join(":** **");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
@@ -985,7 +1234,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         else {
             var bOnlyPageRef = false;
             plainConcatHighlights = '- ' + reference + '\n' + plainConcatHighlights;
-            htmlConcatHighlights = '<ul><li>' + reference + '<ul>' + htmlConcatHighlights + '</ul></li></ul>';
+            htmlConcatHighlights = '<li>' + reference + '</li><ul>' + htmlConcatHighlights;
         }
 
         //lOOP THROUGH EACH LINE LOOKING FOR HEADER ROWS TO INDENT UNDER
@@ -993,13 +1242,38 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var lineBreaks = htmlConcatHighlights.trim().split(/[\r\n]+/);
 
         var indentLevel = 0;
+        var ulList = 0;
+        var levelNumber = 0;
+        var lastLevelNumber = 0;
+        var rootBullet = 0;
         var htmlConcatHighlights = "";
         for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
         {
-            var elemType = eachLine.substring(0,4);
-            if(elemType == '<h1>' || elemType == '<h2>' || elemType == '<h3>' || elemType == '<h4>' || elemType == '<h5>')
+            //debugMode = 1;
+            if(debugMode != 0){writeToConsole(x);}
+            if(debugMode != 0){writeToConsole(eachLine);}
+            //var elemType = eachLine.substring(0,4);
+            //if(elemType == '<h1>' || elemType == '<h2>' || elemType == '<h3>' || elemType == '<h4>' || elemType == '<h5>')
+            //{
+            if(eachLine.substring(0,10) == '<li>||h1||')
             {
-                if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                eachLine = eachLine.split("||h1||").join('').split("<li>").join('').split("</li>").join('');
+                //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                if(indentLevel == 0){eachLine = '<li><h1>' + eachLine + '</h1></li><ul>';}else{eachLine = '</ul><li><h1>' + eachLine + '</h1></li><ul>';}
+                indentLevel++;
+            }
+            if(eachLine.substring(0,10) == '<li>||h2||')
+            {
+                eachLine = eachLine.split("||h2||").join('').split("<li>").join('').split("</li>").join('');
+                //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                if(indentLevel == 0){eachLine = '<li><h2>' + eachLine + '</h2></li><ul>';}else{eachLine = '</ul><li><h2>' + eachLine + '</h2></li><ul>';}
+                indentLevel++;
+            }
+            if(eachLine.substring(0,10) == '<li>||h3||')
+            {
+                eachLine = eachLine.split("||h3||").join('').split("<li>").join('').split("</li>").join('');
+                //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
+                if(indentLevel == 0){eachLine = '<li><h3>' + eachLine + '</h3></li><ul>';}else{eachLine = '</ul><li><h3>' + eachLine + '</h3></li><ul>';}
                 indentLevel++;
             }
 
@@ -1011,13 +1285,122 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
                 indentLevel++;
             }
-            //if(eachLine.substring(0,4) == '<h1>'){eachLine = eachLine.replace('</li>','</li><ul>');}
-            writeToConsole(eachLine);
-            htmlConcatHighlights = htmlConcatHighlights + eachLine;
-        }
-        if(indentLevel > 0){htmlConcatHighlights = htmlConcatHighlights.replace('</ul></li></ul>','</ul></ul></li></ul>');}
 
-        writeToConsole(htmlConcatHighlights);
+            //if(eachLine.substring(0,9) == '<li>||ul-')
+            if(eachLine.indexOf('||ul-') > -1)
+            {
+                if(debugMode != 0){writeToConsole(eachLine.substring(0,9));}
+                /*
+                if(eachLine.substring(0,12) == '<li>||ul-one'){levelNumber = 1;}
+                if(eachLine.substring(0,12) == '<li>||ul-two'){levelNumber = 2;}
+                if(eachLine.substring(0,12) == '<li>||ul-thr'){levelNumber = 3;}
+                if(eachLine.substring(0,12) == '<li>||ul-fou'){levelNumber = 4;}
+                */
+
+                if(eachLine.indexOf('||ul-one') > -1){levelNumber = 1;}
+                if(eachLine.indexOf('||ul-two') > -1){levelNumber = 2;}
+                if(eachLine.indexOf('||ul-thr') > -1){levelNumber = 3;}
+                if(eachLine.indexOf('||ul-fou') > -1){levelNumber = 4;}
+                var origLevelNumber = levelNumber;
+
+                //First item under the page reference / link and opening UL so if it is bullet, then move the levels back one because it is now "root"
+                if(x == 2)
+                {
+                    rootBullet = levelNumber;
+                    lastLevelNumber = levelNumber;
+                    ulList = levelNumber;
+                }
+
+                if(levelNumber < rootBullet)
+                {
+                    levelNumber = rootBullet;
+                    rootBullet = origLevelNumber;
+                    ulList = origLevelNumber;
+                }
+
+                //In case multi element part line and added UL for indent, need to remove all ||ul|| stuff and add on just ends so not multiple
+                eachLine = eachLine.split("||ul-one||").join('').split("||ul-two||").join('').split("||ul-three||").join('').split("||ul-four||").join('').split("<li>").join('').split("</li>").join('');
+
+                if(levelNumber - lastLevelNumber > 0)
+                {
+                    eachLine = '<ul><li>' + eachLine + '</li>'
+                    ulList++;
+                }
+
+                if(levelNumber - lastLevelNumber < 0)
+                {
+                    eachLine = '</ul><li>' + eachLine + '</li>'
+                    ulList--;
+
+                    while(ulList > levelNumber)
+                    {
+                        eachLine = '</ul>' + eachLine
+                        ulList--;
+                    }
+                }
+
+                if(levelNumber - lastLevelNumber == 0)
+                {
+                    eachLine = '<li>' + eachLine + '</li>';
+                }
+
+                lastLevelNumber = origLevelNumber;
+            }
+            else
+            {
+                levelNumber = 0;
+                rootBullet = 0;
+                if(levelNumber - lastLevelNumber < 0)
+                {
+                    while(ulList > 0)
+                    {
+                        eachLine = '</ul>' + eachLine
+                        ulList--;
+                    }
+                }
+                lastLevelNumber = levelNumber;
+            }
+
+            if(debugMode != 0){writeToConsole(eachLine);}
+            htmlConcatHighlights = htmlConcatHighlights + eachLine;
+            //debugMode = 0;
+        }
+
+        if(indentLevel > 0){htmlConcatHighlights = htmlConcatHighlights + '</ul>';}
+
+        while(ulList > 0)
+        {
+            htmlConcatHighlights = htmlConcatHighlights + '</ul>';
+            ulList = ulList - 1;
+        }
+
+        htmlConcatHighlights = htmlConcatHighlights + '</ul>';
+        htmlConcatHighlights = htmlConcatHighlights.split("<ul><ul>").join('<ul>');
+        if(debugMode != 0){writeToConsole(htmlConcatHighlights);}
+
+        //lOOP THROUGH EACH LINE OF HTML TO MAKE THE PLAIN TEXT INDENT LIKE IT
+        var loopHtml = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("</ul>").join('\n</ul>')
+        var lineBreaks = loopHtml.trim().split(/[\r\n]+/);
+
+        var newPlainText = "";
+        var indentCtr = 0;
+        for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
+        {
+            if(eachLine.substring(0,4) == '<ul>'){indentCtr++;}
+            if(eachLine.substring(0,5) == '</ul>'){indentCtr--;}
+            if(eachLine.substring(0,4) == '<li>')
+            {
+                eachLine = eachLine.split("<li>").join('').split("</li>").join('');
+                var indentSpaces = "";
+                var tmpIndentCtr = indentCtr;
+                while(tmpIndentCtr > 0)
+                {
+                    indentSpaces = indentSpaces + '    ';
+                    tmpIndentCtr--;
+                }
+                newPlainText += '\n' + indentSpaces + '- ' + eachLine;
+            }
+        }
 
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
@@ -1034,7 +1417,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(cbElem1.checked)
             {
                 textInput.value += '\n'
-                textInput.value += plainConcatHighlights;
+                textInput.value += newPlainText;
             }
             if(cbElem2.checked)
             {
@@ -1053,7 +1436,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
     document.addEventListener('cut', function (e)
     {
         if(debugMode != 0){writeToConsole("start CUT");}
-        if(clickEvent == 0)
+
+        if(kindleClickEvent == 1)
+        {
+            getKindleHighlights();
+        }
+        else if(clickEvent == 0)
         {
             if(debugMode != 0){writeToConsole("INSIDE CLICKEVENT = 0");}
             //Variables for parsing selected elements for highlight
@@ -1065,7 +1453,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var selection = window.getSelection();
             //Create range from selected text
             var range = selection.getRangeAt(0);
-            //console.log(range);
             var allWithinRangeParent = range.commonAncestorContainer;
 
             var startCont = range.startContainer;
@@ -1364,7 +1751,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
         writeToConsole("BEFORE RUNNING UPDATECLIPBOARD");
         //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
         clickEvent = 0;
-        updateClipboard(e);
+        if(kindleClickEvent != 1){updateClipboard(e);}
+        kindleClickEvent = 0;
         e.preventDefault();
     }
     );
@@ -1446,7 +1834,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
             {
                 //Commenting this out because when writing to console it actually prevents a quick highlight after selecting text
                 //and trying to use ctrl + x "cut" to trigger a highlight if you do it too quickly because when you highlight you are clicking first
-                //console.log('Not previously highlighted');
             }
         }
     });
@@ -1489,7 +1876,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
         if(curElement.className === "roamJsHighlighter" || curElement.className === "roamJsHighlighter pageLink")
         {
-            //console.log(curElement);
             var bSelFound = 0;
             if (typeof window.getSelection != "undefined")
             {
@@ -1553,10 +1939,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     //Create new SPAN element for the page reference highlight
                     var divTest = document.createRange();
                     //divTest = window.getSelection();
-                    //console.log(theSelection);
                     divTest.setStart(theSelection.anchorNode, theSelection.anchorOffset);
                     divTest.setEnd(theSelection.focusNode, theSelection.focusOffset);
-                    //console.log(divTest);
                     var subSelection = divTest;
                     var selectedText = subSelection.extractContents();
                     //Create new HTML element SPAN
@@ -1583,7 +1967,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
         {
             //Commenting this out because when writing to console it actually prevents a quick highlight after selecting text
             //and trying to use ctrl + x "cut" to trigger a highlight if you do it too quickly because when you highlight you are clicking first
-            //console.log('Not previously highlighted');
         }
     });
 
