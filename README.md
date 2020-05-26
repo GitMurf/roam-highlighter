@@ -1,33 +1,31 @@
-# roam-highlighter
+# Roam-highlighter
 
-Now you can officially install the Extension from the Chrome Web Store here: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
+Install the Extension from the Chrome Web Store here: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp). For Firefox, see the "Getting Started" section below...
 
-This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use!
+This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use it!
 
 ## How to Use the Highlighter
 
-**Note:** _I am a Windows guy. While I try to document MAC specific shortcuts below, if you have any issues please google the Windows command I list to look for the MAC alternative, and whether it works or not, please open an Issue in Github letting me know what you tried so I can update the instructions accordingly and/or make a fix to the code to include a good MAC alternative. Thanks!_
+**Note:** _I am a Windows guy but have tried my best to test on Macs as well. The shortcuts should be compatible with both Windows and Mac, as well as Chrome and Firefox. If by chance there is an issue, you can modify the shortcuts to whatever you prefer in both Firefox and Chrome in their respective Extension settings pages._
 
-- Install Chrome Extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
-- Press the Highlighter icon in Chrome Extensions toolbar to activate it (only applies to the Tab you click it on)
-- **Show/Hide Side Window:** `Ctrl + S` or `Click Extension Icon` to Open and Close the side window view and _Settings_.
+- Press the Highlighter icon (or `Alt + X`) in the Extensions toolbar to activate it (only applies to the Tab you click it on)
+- **Show/Hide Side Window:** `Alt + X` to Open and Close the side window view and _Settings_.
 - **Make Highlights:** Select text from any webpage and press `Ctrl + X` (_"cut" command_) to highlight.
-  - Updates/changes automatically copy to the clipboard anytime you make changes/additions.
+  - Updates and changes automatically copy to the clipboard.
   - With the new _Side Window_ you will see changes reflected _Real Time_ to see what it will look like in Roam.
 - **Copy Page Title & URL:** For a quick way to grab a _Link_ to a page in the `[` Page title `]` `(`URL`)` format for Roam without any highlights, simply use `Ctrl + X` without any Selection/Highlights and it will copy `[` Page title `]` `(`URL`)` to the clipboard.
+  - Additionally, when you first activate the Highlighter with `Alt + X` or by `Clicking` the Extension Icon, by default the `[` Page title `]` `(`URL`)` will be saved to your clipboard for quick/easy pasting into Roam.
 - **Removing Highlights**
-  - **Single Highlight:** To remove a highlight use `Ctrl + Click` (Windows) or `Alt + Click` (MAC or Windows). This will remove all _"parts"_ (links, bullets, line breaks, etc.) of something you Highlighted.
+  - **Single Highlight:** To remove a highlight use `Ctrl + Click` (Windows) or `Alt + Click` (MAC or Windows). This will remove all _"parts"_ (links, bullets, line breaks, etc.) of a section you Highlighted.
   - **Part of a Highlight:** If you just want to remove a _"part"_ of a Highlight (e.g., single bullet in a list), you can select the text of that _"part"_ and press `Ctrl + X` (_"cut" command_) to remove it, while preserving the rest of the Highlight.
-  - **ALL Highlights:** Pressing `Ctrl + Q` will ask for confirmation to remove all Highlights from the current page.
-    - Press `ENTER` to confirm.
-    - If you want to abort, press cancel or type `0` in the pop up prompt and press `ENTER`.
+  - **ALL Highlights:** Pressing `Alt + Q` will ask for confirmation to remove all Highlights from the current page. Or use the button from the _Settings_ window.
 - **Adding [[Double Brackets]] for Page Linking/References in Roam**
   - For text that is already highlighted in Yellow, you can have [[Double Brackets]] added for _Page Linking_ in Roam.
   - Anything you choose to have [[Double Brackets]] added to will be highlighted in Blue. See the following:
     - **Single Word:** `Double-Click` a single word to add to Roam like: [[DoubleClickedWord]]
-    - **Multiple Words:** Select multiple words from previously highlighted (Yellow) text and press `Ctrl + Click` (Windows) or `Alt + Click` (MAC or Windows) to add to Roam like: [[Multiple Words]]
+    - **Multiple Words:** Select multiple words from previously highlighted (Yellow) text and press `Alt + Z` to add to Roam like: [[Multiple Words]]
     - **Removing Linked References:** `Ctrl + Click` (Windows) or `Alt + Click` (MAC or Windows) any of the Blue highlights (page references) to turn it back to Yellow. [[Double Brackets]] will no longer be added.
-- **Change Settings:** Open the _Side Window_ with `Ctrl + S` and click the `Settings` button.
+- **Change Settings:** Open the _Side Window_ with `Alt + X` and click the `Settings` button.
   - **Highlighter Link #Tag:** #[[Roam-Highlights]] is the `Default` which is added to the _Parent Block_ as `[` Page title `]` `(`URL`)` **#[[Roam-Highlights]]**
   - **Page Title for Alias Link:** The Browser _Page Title_ is the `Default` which is used in the _Parent Block_ as `[` **Page Title** `]` `(`URL`)`
   - **How to handle Line Breaks within each Highlight**
@@ -39,29 +37,39 @@ This Highlighter extension is meant for use with the [Roam Research](https://roa
       4. **Replace with single space:** Line breaks are replaced with a _single space_ (i.e., " ") for concatenation into a single block/bullet.
       5. **Remove line breaks:** Line breaks are completely removed and NOT replaced with any characters which concatenates the Highlight into a single block/bullet. __Note:__ _If there isn't already other "white space", this could cause the last word from the first line to be merged with the first word of the second line._
 
-If you have any issues, questions or feedback for improving the instructions, please open a GitHub Issue and post your thoughts. Thanks and enjoy!
+If you have any issues, questions or feedback for improving the instructions, please [Open a GitHub Issue](https://github.com/GitMurf/roam-highlighter/issues/new) and post your thoughts. Thanks and enjoy!
 
-## NOTE: Other than Demo #5, the following were before I implemented the "Side Window" (but still demonstrate the purpose of the Roam-highlighter tool)
+## Demo 1 - Activate the Highlighter Extension and perform a simple Highlight
 
-## Demo 1 (real quick/simple)
+![](https://user-images.githubusercontent.com/64155612/82860191-b297d280-9ecd-11ea-9e4a-aebe906391c7.gif)
 
-![](https://user-images.githubusercontent.com/64155612/81344586-e2408100-906b-11ea-9601-5b6082c6de5f.gif)
+## Demo 2 - Removing highlights
 
-## Demo 2
+![](https://user-images.githubusercontent.com/64155612/82860651-28e90480-9ecf-11ea-8c59-81ebc50a1687.gif)
 
-![](https://user-images.githubusercontent.com/64155612/81142339-4b1ce180-8f24-11ea-908b-add409f0c7d4.gif)
+## Demo 3 - Options for handling Line Breaks in a Highlight
 
-## Demo 3 (showing options for handling line breaks)
+![]()
 
-![](https://user-images.githubusercontent.com/64155612/81344530-c3da8580-906b-11ea-9696-3abce1d0a912.gif)
+## Demo 4 - Selecting words from a highlight for Roam "page linking"
 
-## Demo 4 (Select word(s) within a highlight to mark for [[page linking]])
+![](https://user-images.githubusercontent.com/64155612/82860891-e542ca80-9ecf-11ea-9242-652caad48673.gif)
 
-![KfZJYsYBuJ](https://user-images.githubusercontent.com/64155612/81620376-8d20aa00-93a0-11ea-8a6a-55d4d427f27c.gif)
+## Demo 5 - "Side Window" Settings
 
-## Demo 5 (New "side window" showing Highlighter clipboard & Settings)
+![](https://user-images.githubusercontent.com/64155612/82861224-d7da1000-9ed0-11ea-9457-e10d76876908.gif)
 
-![](https://user-images.githubusercontent.com/64155612/82017697-91ff8b00-9638-11ea-81a4-14608213e6cd.gif)
+## Demo 6 - Auto indents bulleted lists and Headers
+
+![](https://user-images.githubusercontent.com/64155612/82862301-26d57480-9ed4-11ea-886a-1e42f5e83a0b.gif)
+
+## Demo 7 - Manually add "Header" to nest under
+
+![](https://user-images.githubusercontent.com/64155612/82862528-b418c900-9ed4-11ea-9c92-5e1b9fa70dbe.gif)
+
+## Demo 8 - Extract highlights and notes from Kindle
+
+![](https://user-images.githubusercontent.com/64155612/82861292-12dc4380-9ed1-11ea-9df0-f218e9354ac9.gif)
 
 ## Release Notes
 
@@ -93,9 +101,15 @@ v1.9 released to the Chrome Store. I thought I would tell you what all was updat
 
 ## Getting Started
 
-Install the extenstion from the Chrome Web Store at: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
+There are both Chrome and Firefox Extensions of the Roam-highlighter. For the time being, Firefox has to be installed "manually" (see below for details).
 
-[Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp) testing this link.
+- Chrome Web Store: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp)
+- Firefox won't let us upload a public Extension until Roam is open Beta, so I created a private Extension you have to download directly:
+  - Here is the link to find the newest Firefox Extension: [Firefox Extension Newest Version](https://github.com/GitMurf/roam-highlighter/tree/master/Firefox%20temp%20Add-on)
+  - Click the "Firefox Extension Newest Version" link
+  - Download the .xpi file
+  - Choose to "Open" and choose "Firefox" as the program to open with
+  - This process works for Windows (and I assume Macs as well)
 
 ## Contributors
 
