@@ -94,7 +94,7 @@ v1.9.5
 
 - Implemented auto indenting/nesting for Bullets/Lists
 - Kindle highlights/notes extraction
-- Customizable shortcut keys now through Chrome and Firefox native settings
+- Customizable shortcut keys now through Chrome and Firefox native settings - [DEMO 9](https://github.com/GitMurf/roam-highlighter/blob/master/README.md#demo-9---customize-shortcut-keys-in-chrome-and-firefox)
 - Fixed a few issues with wikipedia / wikiquotes
 - Side window view now shows tabs/headers/nested etc. so you know exactly what your paste into Roam will look like
 
