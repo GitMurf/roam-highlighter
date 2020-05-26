@@ -1,5 +1,5 @@
 //Date: May 25, 2020
-var verNum = '1.9.5';
+var verNum = '1.9.5.1'; //Firefox minor fix
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -570,7 +570,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
     divTextElem.appendChild(textInput);
     document.body.appendChild(divElem);
 
-    function getKindleHighlights()
+    function getKindleHighlights(event)
     {
         if(pageTitle == 'Kindle: Your Notes and Highlights')
         {
@@ -1439,7 +1439,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
         if(kindleClickEvent == 1)
         {
-            getKindleHighlights();
+            getKindleHighlights(e);
         }
         else if(clickEvent == 0)
         {
