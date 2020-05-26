@@ -83,12 +83,18 @@ If you have any issues, questions or feedback for improving the instructions, pl
 
 ![](https://user-images.githubusercontent.com/64155612/82861292-12dc4380-9ed1-11ea-9df0-f218e9354ac9.gif)
 
+## Demo 9 - Customize shortcut keys in Chrome and Firefox
+
+![](https://user-images.githubusercontent.com/64155612/82953227-3ea60a80-9f5f-11ea-83d9-09c316725e34.gif)
+![](https://user-images.githubusercontent.com/64155612/82953429-9e9cb100-9f5f-11ea-8122-e0c125b6053e.gif)
+
 ## Release Notes
 
 v1.9.5
 
 - Implemented auto indenting/nesting for Bullets/Lists
 - Kindle highlights/notes extraction
+- Customizable shortcut keys now through Chrome and Firefox native settings
 - Fixed a few issues with wikipedia / wikiquotes
 - Side window view now shows tabs/headers/nested etc. so you know exactly what your paste into Roam will look like
 
