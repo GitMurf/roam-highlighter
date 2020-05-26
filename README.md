@@ -8,7 +8,7 @@ For Firefox, see the [Getting Started](https://github.com/GitMurf/roam-highlight
 
 This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use it!
 
-## How to Use the Highlighter
+# How to Use the Highlighter
 
 **Note:** _I am a Windows guy but have tried my best to test on Macs as well. The shortcuts should be compatible with both Windows and Mac, as well as Chrome and Firefox. If by chance there is an issue, you can modify the shortcuts to whatever you prefer in both Firefox and Chrome in their respective Extension settings pages._
 
