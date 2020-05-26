@@ -152,6 +152,7 @@ else
     roamHighlighterLoaded = 1;
     //Variable to see if starting by click event (to remove a highlight) OR by a 'cut' event by user adding a highlight
     var clickEvent = 0;
+    var kindleClickEvent = 0;
     //Variable to count the total number of highlights selected and also then create SPAN Title to be able to combine same highlight even with linebreaks
     var highlightCtr = 0;
 
@@ -184,7 +185,7 @@ else
             var labelElem = document.createElement('label');
                 labelElem.innerHTML = 'Highlighter Link #Tag';
                 labelElem.htmlFor = "rmHLtb";
-                labelElem.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem);
             formElem.appendChild(document.createElement('br'));
             var tbElem = document.createElement('input');
@@ -206,12 +207,24 @@ else
                     removeAllHighlights();
                 });
 
+            var butExtractKindle = document.createElement('button');
+                butExtractKindle.style.cssText = 'background-color:black;color:white;border-color:white;margin-left:30px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
+                butExtractKindle.innerHTML = 'Kindle Highlights';
+                butExtractKindle.name = 'rmHLkindle';
+                butExtractKindle.id = 'rmHLkindle';
+                formElem.appendChild(butExtractKindle);
+
+                butExtractKindle.addEventListener("click", function(){
+                    kindleClickEvent = 1;
+                    document.execCommand('cut');
+                });
+
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
             var labelElem2 = document.createElement('label');
                 labelElem2.innerHTML = 'Page Title for Alias Link';
                 labelElem2.htmlFor = "rmHLta2";
-                labelElem2.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem2.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block-block';
                 formElem.appendChild(labelElem2);
             formElem.appendChild(document.createElement('br'));
             var textElem2 = document.createElement('textarea');
@@ -233,7 +246,7 @@ else
             var labelElem3 = document.createElement('label');
                 labelElem3.innerHTML = 'How to handle Line Breaks within each Highlight';
                 labelElem3.htmlFor = "rmHLsel";
-                labelElem3.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem3.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem3);
             formElem.appendChild(document.createElement('br'));
             var selElem = document.createElement('select');
@@ -251,14 +264,14 @@ else
             formElem.appendChild(document.createElement('br'));
             var labelElem7 = document.createElement('label');
                 labelElem7.innerHTML = 'Side Window Size (width minimum: 300px or 15%)';
-                labelElem7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 //labelElem7.htmlFor = "rmHLtbSize";
                 formElem.appendChild(labelElem7);
             formElem.appendChild(document.createElement('br'));
             var labelElem8 = document.createElement('label');
                 labelElem8.innerHTML = 'W:';
                 labelElem8.htmlFor = "rmHLtbSize";
-                labelElem8.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem8.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem8);
             var tbSizeElem = document.createElement('input');
                 tbSizeElem.value = sideWidth;
@@ -270,7 +283,7 @@ else
             var labelElem9 = document.createElement('label');
                 labelElem9.innerHTML = 'H:';
                 labelElem9.htmlFor = "rmHLtbSize2";
-                labelElem9.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem9.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem9);
             var tbSizeElem2 = document.createElement('input');
                 tbSizeElem2.value = sideHeight;
@@ -284,7 +297,7 @@ else
             formElem.appendChild(document.createElement('br'));
             var labelElem4 = document.createElement('label');
                 labelElem4.innerHTML = 'Show the Clipboard in:';
-                labelElem4.style.cssText = 'margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem4.style.cssText = 'margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 //labelElem4.htmlFor = "rmHLcbType1";
                 formElem.appendChild(labelElem4);
 
@@ -300,7 +313,7 @@ else
             var labelElem5 = document.createElement('label');
                 labelElem5.innerHTML = 'Plain Text';
                 labelElem5.htmlFor = "rmHLcbType1";
-                labelElem5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem5);
 
             var cbElem2 = document.createElement('input');
@@ -313,7 +326,7 @@ else
             var labelElem6 = document.createElement('label');
                 labelElem6.innerHTML = 'HTML';
                 labelElem6.htmlFor = "rmHLcbType2";
-                labelElem6.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold';
+                labelElem6.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
                 formElem.appendChild(labelElem6);
 
             formElem.appendChild(document.createElement('br'));
@@ -356,7 +369,7 @@ else
                 formElem.appendChild(document.createElement('br'));
                 var spanElem1 = document.createElement('span');
                     spanElem1.innerHTML = 'Important Links and Resources';
-                    spanElem1.style.cssText = 'font-weight:bold;color:red;font-size:12px;line-height:normal';
+                    spanElem1.style.cssText = 'font-weight:bold;color:red;font-size:12px;line-height:normal;display:inline-block';
                     formElem.appendChild(spanElem1);
 
                 formElem.appendChild(document.createElement('br'));
@@ -399,6 +412,14 @@ else
                     link5.style.cssText = 'font-size:12px;line-height:normal';
                     //link5.style.cssText = 'font-weight:bold;';
                     formElem.appendChild(link5);
+
+                formElem.appendChild(document.createElement('br'));
+                var link6 = document.createElement('a');
+                    link6.innerText = 'Kindle Notes & Highlights';
+                    link6.href = 'https://read.amazon.com/notebook';
+                    link6.style.cssText = 'font-size:12px;line-height:normal';
+                    //link6.style.cssText = 'font-weight:bold;';
+                    formElem.appendChild(link6);
 
     var butSett = document.createElement('button');
         butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
@@ -488,7 +509,7 @@ else
             if(butMax.innerHTML == "Expand")
             {
                 divElemMain.style.width = "90%";
-                divElemMain.style.height = "90%";
+                divElemMain.style.height = "80%";
                 butMax.innerHTML = 'Shrink';
                 divElemMain.style.opacity = "1";
             }
@@ -548,6 +569,93 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
     divTextElem.appendChild(textInput);
     document.body.appendChild(divElem);
+
+    function getKindleHighlights()
+    {
+        if(pageTitle == 'Kindle: Your Notes and Highlights')
+        {
+            //window.alert('Ready to extract notes');
+
+            var myHighlights = document.querySelectorAll('.a-size-base-plus.a-color-base, .kp-notebook-metadata, div#annotations .kp-notebook-cover-image-border');
+            var textString = "";
+            var htmlString = "";
+            var tmpString = "";
+            var hlLocation = "";
+            var hlColor = "";
+            var coverImg = "";
+            var hlCtr = 0;
+            //var titleElem = document.getElementById('');
+            //var bookTitle = "";
+            for(var i = 0; i < myHighlights.length; i++)
+            {
+                var curElement = myHighlights.item(i);
+                var curText = curElement.innerText.toString().trim();
+                //curText = curText.trim().replace(/(\r\n|\n|\r)/gm," ");
+                if(curText != "" || curElement.nodeName == 'IMG')
+                {
+
+                    if(curElement.nodeName == 'H3') //Title
+                    {
+                        textString += curText + '\n';
+                        textString += '    - Title:: ' + curText + '\n';
+                        htmlString += '<li>' + curText + '</li><ul>';
+                        htmlString += '<li>Title:: ' + curText + '</li>';
+                    }
+                    if(curElement.nodeName == 'P' && curElement.classList.contains("a-color-secondary")) //Author
+                    {
+                        textString += '    - Author:: ' + curText + '\n';
+                        textString += '    - ' + coverImg + '\n';
+                        textString += '    - #Kindle-highlights\n';
+
+                        htmlString += '<li>Author:: ' + curText + '</li>';
+                        htmlString += '<li>' + coverImg + '</li>';
+                        htmlString += '<li>#Kindle-highlights</li><ul>';
+                    }
+                    if(curElement.nodeName == 'IMG' && curElement.classList.contains("kp-notebook-cover-image-border")) //Cover art
+                    {
+                        coverImg = '![](' + curElement.src + ')';
+                    }
+                    if(curElement.id == 'highlight') //Highlight
+                    {
+                        textString += '        - ' + curText + '\n';
+                        textString += '            - Color: ' + hlColor + '\n';
+                        textString += '            - ' + hlLocation + '\n';
+
+                        if(hlCtr > 0){htmlString += '</ul>';}
+                        htmlString += '<li>' + curText + '</li><ul>';
+                        htmlString += '<li>Color: ' + hlColor + '</li>';
+                        htmlString += '<li>' + hlLocation + '</li>';
+                        hlCtr++;
+                    }
+                    if(curElement.id == 'annotationHighlightHeader') //Highlight type and location
+                    {
+                        //.split("[")
+                        tmpString = curText.split(" | ");
+                        hlColor = tmpString[0].trim();
+                        hlLocation = tmpString[1].trim();
+                    }
+                    if(curElement.id == 'note') //Note
+                    {
+                        textString += '            - Note: ' + curText + '\n';
+                        htmlString += '<li>Note: ' + curText + '</li>';
+                    }
+                }
+            }
+
+            htmlString += '</ul></ul></ul>';
+            var clipboardDataEvt = event.clipboardData;
+            clipboardDataEvt.setData('text/plain', textString);
+            clipboardDataEvt.setData('text/html', htmlString);
+            var textInput = document.getElementById("rmHLtextArea");
+            //htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>') //.split("</ul>").join('\n</ul>').split("</li>").join('\n</li>');
+
+            textInput.value = textString;
+        }
+        else
+        {
+            window.alert('Not on kindle page. Go to: https://read.amazon.com/notebook');
+        }
+    }
 
     function removeAllHighlights()
     {
@@ -1328,7 +1436,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
     document.addEventListener('cut', function (e)
     {
         if(debugMode != 0){writeToConsole("start CUT");}
-        if(clickEvent == 0)
+
+        if(kindleClickEvent == 1)
+        {
+            getKindleHighlights();
+        }
+        else if(clickEvent == 0)
         {
             if(debugMode != 0){writeToConsole("INSIDE CLICKEVENT = 0");}
             //Variables for parsing selected elements for highlight
@@ -1638,7 +1751,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
         writeToConsole("BEFORE RUNNING UPDATECLIPBOARD");
         //Run the function to loop through the highlighted elements and copy to the clipboard ready to paste to Roam
         clickEvent = 0;
-        updateClipboard(e);
+        if(kindleClickEvent != 1){updateClipboard(e);}
+        kindleClickEvent = 0;
         e.preventDefault();
     }
     );
