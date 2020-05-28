@@ -505,11 +505,14 @@ else
                     sideWidth = tbSizeW.value;
                     sideHeight = tbSizeH.value;
                     //Kindle settings
-                    kindleHLref = tbKinHLref.value;
-                    bLocation = cbLoc.checked;
-                    bColor = cbCol.checked;
-                    bColorRef = cbColRef.checked;
-                    kindleHLstructure = Number(selKindle.value);
+                    if(tbKinHLref != null)
+                    {
+                        kindleHLref = tbKinHLref.value;
+                        bLocation = cbLoc.checked;
+                        bColor = cbCol.checked;
+                        bColorRef = cbColRef.checked;
+                        kindleHLstructure = Number(selKindle.value);
+                    }
 
                     //Save to local storage to keep persistent
                     setLocalStorageValue("pageRef", pageRef);
