@@ -1,5 +1,5 @@
 //Date: May 27, 2020
-var verNum = '1.9.7';
+var verNum = '1.9.6.1';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -1450,8 +1450,9 @@ Roam-highlighter Shortcut Keys (v${verNum})
         }
 
         //lOOP THROUGH EACH LINE LOOKING FOR HEADER ROWS TO INDENT UNDER
-        htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("<h1>").join('\n<h1>').split("<h2>").join('\n<h2>').split("<h3>").join('\n<h3>') //.split("<h4>").join('\n<h4>').split("<h5>").join('\n<h5>') //.split("<h6>").join('\n<h6>')
-        var lineBreaks = htmlConcatHighlights.trim().split(/[\r\n]+/);
+        //htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("<h1>").join('\n<h1>').split("<h2>").join('\n<h2>').split("<h3>").join('\n<h3>') //.split("<h4>").join('\n<h4>').split("<h5>").join('\n<h5>') //.split("<h6>").join('\n<h6>')
+        htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\r\n<ul>').split("<li>").join('\r\n<li>').split("<h1>").join('\r\n<h1>').split("<h2>").join('\r\n<h2>').split("<h3>").join('\r\n<h3>')
+        var lineBreaks = htmlConcatHighlights.trim().split('\r\n');
 
         var indentLevel = 0;
         var ulList = 0;
@@ -1591,8 +1592,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
         if(debugMode != 0){writeToConsole(htmlConcatHighlights);}
 
         //lOOP THROUGH EACH LINE OF HTML TO MAKE THE PLAIN TEXT INDENT LIKE IT
-        var loopHtml = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("</ul>").join('\n</ul>')
-        var lineBreaks = loopHtml.trim().split(/[\r\n]+/);
+        var loopHtml = htmlConcatHighlights.split("<ul>").join('\r\n<ul>').split("<li>").join('\r\n<li>').split("</ul>").join('\r\n</ul>')
+        var lineBreaks = loopHtml.trim().split('\r\n');
 
         var newPlainText = "";
         var indentCtr = 0;
@@ -1613,6 +1614,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 newPlainText += '\n' + indentSpaces + '- ' + eachLine;
             }
         }
+
+        plainConcatHighlights = newPlainText;
 
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
