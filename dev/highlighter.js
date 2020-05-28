@@ -770,11 +770,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     }
                     if(curElement.nodeName == 'P' && curElement.classList.contains("a-color-secondary")) //Author
                     {
+                        //textString += '    - Author:: ' + '#[[' + curText + ']]' + '\n';
                         textString += '    - Author:: ' + curText + '\n';
                         textString += '    - Amazon-store:: ' + amazonLink + '\n';
                         textString += '    - ' + coverImg + '\n';
                         textString += '    - ' + kindleHLref + '\n';
 
+                        //htmlString += '<li>Author:: ' + '#[[' + curText + ']]' + '</li>';
                         htmlString += '<li>Author:: ' + curText + '</li>';
                         htmlString += '<li>Amazon-store:: ' + amazonLink + '</li>';
                         htmlString += '<li>' + coverImg + '</li>';
