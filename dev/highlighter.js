@@ -1,5 +1,5 @@
-//Date: May 27, 2020
-var verNum = '1.9.6.1';
+//Date: May 28, 2020
+var verNum = '1.9.7';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -609,7 +609,7 @@ else
             {
                 divElemMain.style.opacity = "1";
                 divTextElem.style.width = "50%";
-                divSetElem.style.display = "block";
+                divSetElem.style.display = "flex";
                 tbElem.value = pageRef;
                 textElem2.value = pageTitle;
                 selElem.value = sameBlock;
@@ -682,7 +682,7 @@ else
             }
             else
             {
-                if(divSetElem.style.display == "block")
+                if(divSetElem.style.display == "flex")
                 {
                     divTextElem.style.width = "100%";
                     divSetElem.style.display = "none";
