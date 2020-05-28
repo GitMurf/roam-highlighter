@@ -203,7 +203,7 @@ else
         divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999;font-size:12px;line-height:normal';
     var divButtonsElem = document.createElement('div');
         divButtonsElem.id = 'rmHLdivButt';
-        divButtonsElem.style.cssText = 'width:100%';
+        divButtonsElem.style.cssText = 'width:100%;display:flex';
         divElem.appendChild(divButtonsElem);
     var divTextElem = document.createElement('div');
         divTextElem.id = 'rmHLdivText';
@@ -588,113 +588,113 @@ else
                     //link6.style.cssText = 'font-weight:bold;';
                     formElem.appendChild(link6);
 
-    var butSett = document.createElement('button');
-        butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-        butSett.innerHTML = 'Settings';
-        butSett.id = 'rmHLsettings';
-        divButtonsElem.appendChild(butSett);
-
-        butSett.addEventListener("click", function(){
-            var divElemMain = document.getElementById("rmHLmain");
-            var divSetElem = document.getElementById("rmHLdivSett");
-            var divTextElem = document.getElementById("rmHLdivText");
-            var tbElem = document.getElementById("rmHLtb");
-            var textElem2 = document.getElementById("rmHLta2");
-            var selElem = document.getElementById("rmHLsel");
-            var butSett = document.getElementById("rmHLsettings");
-            var butMax = document.getElementById("rmHLexpand");
-            var butWrap = document.getElementById("rmHLwrap");
-
-            if(divSetElem.style.display == "none")
-            {
-                divElemMain.style.opacity = "1";
-                divTextElem.style.width = "50%";
-                divSetElem.style.display = "flex";
-                tbElem.value = pageRef;
-                textElem2.value = pageTitle;
-                selElem.value = sameBlock;
-                if(butMax.innerHTML == "Expand"){butMax.click();}
-            }
-            else
-            {
-                //divElemMain.style.opacity = "0.8";
-                divTextElem.style.width = "100%";
-                divSetElem.style.display = "none";
-                //butMax.click();
-            }
-        });
-
-    var butWrap = document.createElement('button');
-        butWrap.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-        butWrap.innerHTML = 'Wrap';
-        butWrap.id = 'rmHLwrap';
-        divButtonsElem.appendChild(butWrap);
-
-        butWrap.addEventListener("click", function(){
-            var textInput = document.getElementById("rmHLtextArea");
-            var butWrap = document.getElementById("rmHLwrap");
-
-            if(butWrap.innerHTML == "Wrap")
-            {
-                //textInput.style.whiteSpace = "normal";
-                //Changed for firefox compatibility
-                textInput.style.whiteSpace = "pre-wrap";
-                butWrap.innerHTML = 'Un-Wrap';
-            }
-            else
-            {
-                textInput.style.whiteSpace = "pre";
-                butWrap.innerHTML = 'Wrap';
-            }
-        });
-
-    var butHide = document.createElement('button');
-        butHide.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-        butHide.innerHTML = 'Hide';
-        divButtonsElem.appendChild(butHide);
-
-        butHide.addEventListener("click", function(){
-            var divElemMain = document.getElementById("rmHLmain");
-            divElemMain.style.display = "none";
-            //divElemMain.style.display = "block";
-            showWindow = 0;
-            setLocalStorageValue("showWindow", showWindow);
-        });
-
-    var butMax = document.createElement('button');
-        butMax.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-        butMax.innerHTML = 'Expand';
-        butMax.id = 'rmHLexpand';
-        divButtonsElem.appendChild(butMax);
-
-        butMax.addEventListener("click", function(){
-            var divElemMain = document.getElementById("rmHLmain");
-            var divTextElem = document.getElementById("rmHLdivText");
-            var butMax = document.getElementById("rmHLexpand");
-            var divSetElem = document.getElementById("rmHLdivSett");
-
-            if(butMax.innerHTML == "Expand")
-            {
-                divElemMain.style.width = "90%";
-                divElemMain.style.height = "80%";
-                butMax.innerHTML = 'Shrink';
-                divElemMain.style.opacity = "1";
-            }
-            else
-            {
-                if(divSetElem.style.display == "flex")
-                {
-                    divTextElem.style.width = "100%";
-                    divSetElem.style.display = "none";
-                }
-
-                divElemMain.style.width = sideWidth;
-                divElemMain.style.height =sideHeight;
-
+            var butMax = document.createElement('button');
+                butMax.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
                 butMax.innerHTML = 'Expand';
-                divElemMain.style.opacity = "0.8";
-            }
-        });
+                butMax.id = 'rmHLexpand';
+                divButtonsElem.appendChild(butMax);
+
+                butMax.addEventListener("click", function(){
+                    var divElemMain = document.getElementById("rmHLmain");
+                    var divTextElem = document.getElementById("rmHLdivText");
+                    var butMax = document.getElementById("rmHLexpand");
+                    var divSetElem = document.getElementById("rmHLdivSett");
+
+                    if(butMax.innerHTML == "Expand")
+                    {
+                        divElemMain.style.width = "90%";
+                        divElemMain.style.height = "80%";
+                        butMax.innerHTML = 'Shrink';
+                        divElemMain.style.opacity = "1";
+                    }
+                    else
+                    {
+                        if(divSetElem.style.display == "flex")
+                        {
+                            divTextElem.style.width = "100%";
+                            divSetElem.style.display = "none";
+                        }
+
+                        divElemMain.style.width = sideWidth;
+                        divElemMain.style.height =sideHeight;
+
+                        butMax.innerHTML = 'Expand';
+                        divElemMain.style.opacity = "0.8";
+                    }
+                });
+
+            var butHide = document.createElement('button');
+                butHide.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
+                butHide.innerHTML = 'Hide';
+                divButtonsElem.appendChild(butHide);
+
+                butHide.addEventListener("click", function(){
+                    var divElemMain = document.getElementById("rmHLmain");
+                    divElemMain.style.display = "none";
+                    //divElemMain.style.display = "block";
+                    showWindow = 0;
+                    setLocalStorageValue("showWindow", showWindow);
+                });
+
+            var butWrap = document.createElement('button');
+                butWrap.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
+                butWrap.innerHTML = 'Wrap';
+                butWrap.id = 'rmHLwrap';
+                divButtonsElem.appendChild(butWrap);
+
+                butWrap.addEventListener("click", function(){
+                    var textInput = document.getElementById("rmHLtextArea");
+                    var butWrap = document.getElementById("rmHLwrap");
+
+                    if(butWrap.innerHTML == "Wrap")
+                    {
+                        //textInput.style.whiteSpace = "normal";
+                        //Changed for firefox compatibility
+                        textInput.style.whiteSpace = "pre-wrap";
+                        butWrap.innerHTML = 'Un-Wrap';
+                    }
+                    else
+                    {
+                        textInput.style.whiteSpace = "pre";
+                        butWrap.innerHTML = 'Wrap';
+                    }
+                });
+
+            var butSett = document.createElement('button');
+                butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
+                butSett.innerHTML = 'Settings';
+                butSett.id = 'rmHLsettings';
+                divButtonsElem.appendChild(butSett);
+
+                butSett.addEventListener("click", function(){
+                    var divElemMain = document.getElementById("rmHLmain");
+                    var divSetElem = document.getElementById("rmHLdivSett");
+                    var divTextElem = document.getElementById("rmHLdivText");
+                    var tbElem = document.getElementById("rmHLtb");
+                    var textElem2 = document.getElementById("rmHLta2");
+                    var selElem = document.getElementById("rmHLsel");
+                    var butSett = document.getElementById("rmHLsettings");
+                    var butMax = document.getElementById("rmHLexpand");
+                    var butWrap = document.getElementById("rmHLwrap");
+
+                    if(divSetElem.style.display == "none")
+                    {
+                        divElemMain.style.opacity = "1";
+                        divTextElem.style.width = "50%";
+                        divSetElem.style.display = "flex";
+                        tbElem.value = pageRef;
+                        textElem2.value = pageTitle;
+                        selElem.value = sameBlock;
+                        if(butMax.innerHTML == "Expand"){butMax.click();}
+                    }
+                    else
+                    {
+                        //divElemMain.style.opacity = "0.8";
+                        divTextElem.style.width = "100%";
+                        divSetElem.style.display = "none";
+                        //butMax.click();
+                    }
+                });
 
     var textInput = document.createElement("textarea");
         textInput.name = "textAreaInput";
