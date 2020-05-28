@@ -1,5 +1,5 @@
-//Date: May 26, 2020
-var verNum = '1.9.6';
+//Date: May 27, 2020
+var verNum = '1.9.7';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -548,7 +548,7 @@ else
                 formElem.appendChild(document.createElement('br'));
                 var link2 = document.createElement('a');
                     link2.innerText = 'Demos and Videos';
-                    link2.href = 'https://github.com/GitMurf/roam-highlighter#note-other-than-demo-5-the-following-were-before-i-implemented-the-side-window-but-still-demonstrate-the-purpose-of-the-roam-highlighter-tool';
+                    link2.href = 'https://github.com/GitMurf/roam-highlighter#demo-1---activate-the-highlighter-extension-and-perform-a-simple-highlight';
                     link2.style.cssText = 'font-size:12px;line-height:normal';
                     //link2.style.cssText = 'font-weight:bold;';
                     formElem.appendChild(link2);
