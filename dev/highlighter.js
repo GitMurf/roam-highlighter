@@ -1617,7 +1617,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
         }
 
-        plainConcatHighlights = newPlainText;
+        plainConcatHighlights = newPlainText.trim();
 
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
@@ -1633,7 +1633,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             textInput.value = "";
             if(cbElem1.checked)
             {
-                textInput.value += '\n'
+                //textInput.value += '\n'
                 textInput.value += newPlainText;
             }
             if(cbElem2.checked)
