@@ -10,6 +10,11 @@ This Highlighter extension is meant for use with the [Roam Research](https://roa
 
 # How to Use the Highlighter
 
+First and foremost, here are three YouTube walkthroughs / Demos of how to use the Roam-highlighter:
+- [Roam-highlighter QUICK Demo - YouTube](https://www.youtube.com/watch?v=UzseaoxaSEM&feature=youtu.be) (4:43)
+- [Roam-highlighter SHORT Demo - YouTube](https://www.youtube.com/watch?v=VoO1H6p9dwc&feature=youtu.be) (9:36)
+- [Roam-highlighter FULL Demo - YouTube](https://www.youtube.com/watch?v=mU4Yf7Kgku4&feature=youtu.be) (24:56)
+
 **Note:** _I am a Windows guy but have tried my best to test on Macs as well. The shortcuts should be compatible with both Windows and Mac, as well as Chrome and Firefox. If by chance there is an issue, you can modify the shortcuts to whatever you prefer in both Firefox and Chrome in their respective Extension settings pages._ (see [Demo 9 - Customizing Shortcuts](https://github.com/GitMurf/roam-highlighter/blob/master/README.md#demo-9---customize-shortcut-keys-in-chrome-and-firefox))
 
 - Press the Highlighter icon (or `Alt + X`) in the Extensions toolbar to activate it (only applies to the Tab you click it on)
