@@ -196,15 +196,68 @@ else
 
     console.log('Loaded highlighter.js script v' + verNum);
 
+    function createNewElement(fElemType,fElemVal,fElemFor,fElemCss,fAppendTo,fElemId,fElemName)
+    {
+        if(fElemType != 'checkbox'){var fElem = document.createElement(fElemType);}
+
+        switch (fElemType)
+        {
+            case 'label':
+                fElem.innerHTML = fElemVal;
+                fElem.htmlFor = fElemFor;
+                break;
+            case 'textarea':
+                fElem.value = fElemVal;
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+            case 'select':
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+            case 'input':
+                fElem.value = fElemVal;
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+            case 'checkbox':
+                var fElem = document.createElement('input');
+                fElem.setAttribute("type", "checkbox");
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+            case 'span':
+                fElem.innerHTML = fElemVal;
+                fElem.htmlFor = fElemFor;
+                break;
+            case 'a':
+                fElem.innerText = fElemVal;
+                break;
+            case 'button':
+                fElem.innerHTML = fElemVal;
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+        }
+
+        fElem.style.cssText = fElemCss;
+        fAppendTo.appendChild(fElem);
+
+        return fElem;
+    }
+
     //Setup the options/settings menu
     var divElem = document.createElement('div');
         divElem.id = 'rmHLmain';
         divElem.style.display = "block";
         divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999;font-size:12px;line-height:normal';
+        document.body.appendChild(divElem);
+
     var divButtonsElem = document.createElement('div');
         divButtonsElem.id = 'rmHLdivButt';
         divButtonsElem.style.cssText = 'width:100%;display:flex';
         divElem.appendChild(divButtonsElem);
+
     var divTextElem = document.createElement('div');
         divTextElem.id = 'rmHLdivText';
         divTextElem.style.cssText = 'width:100%;height:100%;float:right';
@@ -215,171 +268,145 @@ else
         divSetElem.style.cssText = 'width:50%;height:100%;display:none;float:left';
         divElem.appendChild(divSetElem);
 
-        //Main settings DIV
-        var formElem = document.createElement('div');
-            formElem.id = 'rmHLform';
-            formElem.style.cssText = 'width:55%;height:100%;background-color:white;padding:15px;float:left;border-left:1px solid black;border-top:1px solid black';
-            divSetElem.appendChild(formElem);
+    //Main settings DIV
+    var formElem = document.createElement('div');
+        formElem.id = 'rmHLform';
+        formElem.style.cssText = 'width:55%;height:100%;background-color:white;padding:15px;float:left;border-left:1px solid black;border-top:1px solid black';
+        divSetElem.appendChild(formElem);
 
-        //Kindle settings DIV
-        var divKindle = document.createElement('div');
-            divKindle.id = 'rmHLdivKindle';
-            divKindle.style.cssText = 'width:45%;height:100%;background-color:white;padding:15px;float:left;border-top:1px solid black';
-            divSetElem.appendChild(divKindle);
+    //Kindle settings DIV
+    var divKindle = document.createElement('div');
+        divKindle.id = 'rmHLdivKindle';
+        divKindle.style.cssText = 'width:45%;height:100%;background-color:white;padding:15px;float:left;border-top:1px solid black';
+        divSetElem.appendChild(divKindle);
 
-            var labelElem = document.createElement('label');
-                labelElem.innerHTML = 'Highlighter Link #Tag';
-                labelElem.htmlFor = "rmHLtb";
-                labelElem.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem);
-            if(getPage.includes('read.amazon.com/notebook'))
-            {
-                var butExtractKindle = document.createElement('button');
-                    butExtractKindle.style.cssText = 'background-color:black;color:white;border-color:white;margin-left:30px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right';
-                    butExtractKindle.innerHTML = 'Get Kindle Highlights';
-                    butExtractKindle.name = 'rmHLkindle';
-                    butExtractKindle.id = 'rmHLkindle';
-                    formElem.appendChild(butExtractKindle);
+    var labelElem = createNewElement('label','Highlighter Link #Tag','rmHLtb','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
-                    butExtractKindle.addEventListener("click", function(){
-                        kindleClickEvent = 1;
-                        document.execCommand('cut');
-                    });
-            }
+    if(getPage.includes('read.amazon.com/notebook'))
+    {
+        var butExtractKindle = createNewElement('button','Get Kindle Highlights','','background-color:black;color:white;border-color:white;margin-left:30px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right',formElem,'rmHLkindle','rmHLkindle');
 
-            var butClearAll = document.createElement('button');
-                butClearAll.style.cssText = 'background-color:black;color:white;border-color:white;margin-left:15px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right';
-                butClearAll.innerHTML = 'Clear All Highlights';
-                butClearAll.name = 'rmHLclear';
-                butClearAll.id = 'rmHLclear';
-                formElem.appendChild(butClearAll);
+        butExtractKindle.addEventListener("click", function(){
+            kindleClickEvent = 1;
+            document.execCommand('cut');
+        });
+    }
 
-                butClearAll.addEventListener("click", function(){
-                    removeAllHighlights();
-                });
+    var butClearAll = createNewElement('button','Clear All Highlights','','background-color:black;color:white;border-color:white;margin-left:15px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right',formElem,'rmHLclear','rmHLclear');
 
-            formElem.appendChild(document.createElement('br'));
-            var tbElem = document.createElement('input');
-                tbElem.value = pageRef;
-                tbElem.id = 'rmHLtb';
-                tbElem.style.cssText = 'padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
-                tbElem.name = "rmHLtb";
-                tbElem.placeholder = "#[[Roam-Highlights]]";
-                formElem.appendChild(tbElem);
-            if(getPage.includes('read.amazon.com/notebook'))
-            {
-                    //Text box for Kindle-highlights tag
-                    var labelKindle4 = document.createElement('label');
-                        labelKindle4.innerHTML = 'Highlights #Tag: ';
-                        labelKindle4.htmlFor = "rmHLkingleTb1";
-                        labelKindle4.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline;margin-right:5px;vertical-align:middle;padding:0px;';
-                        divKindle.appendChild(labelKindle4);
+    butClearAll.addEventListener("click", function(){
+        removeAllHighlights();
+    });
 
-                    //divKindle.appendChild(document.createElement('br'));
-                    var tbKindle1 = document.createElement('input');
-                        tbKindle1.value = kindleHLref;
-                        tbKindle1.id = 'rmHLkingleTb1';
-                        tbKindle1.style.cssText = 'padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;width:60%';
-                        tbKindle1.name = "rmHLkingleTb1";
-                        tbKindle1.placeholder = "#[[Kindle-highlights]]";
-                        divKindle.appendChild(tbKindle1);
+    formElem.appendChild(document.createElement('br'));
+    var tbElem = createNewElement('input',pageRef,'','padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtb','rmHLtb');
+    tbElem.placeholder = "#[[Roam-Highlights]]";
 
-                    divKindle.appendChild(document.createElement('br'));
-                    divKindle.appendChild(document.createElement('br'));
-                    var labelKindle1 = document.createElement('label');
-                        labelKindle1.innerHTML = 'Include:';
-                        labelKindle1.style.cssText = 'margin-right:10px;margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle1);
+    if(getPage.includes('read.amazon.com/notebook'))
+    {
+        //Text box for Kindle-highlights tag
+        var labelKindle4 = document.createElement('label');
+            labelKindle4.innerHTML = 'Highlights #Tag: ';
+            labelKindle4.htmlFor = "rmHLkingleTb1";
+            labelKindle4.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline;margin-right:5px;vertical-align:middle;padding:0px;';
+            divKindle.appendChild(labelKindle4);
 
-                    var cbElem4 = document.createElement('input');
-                        cbElem4.setAttribute("type", "checkbox");
-                        cbElem4.style.cssText = 'vertical-align:inherit;font-size:12px;line-height:normal';
-                        cbElem4.id = 'rmHLcbLoc';
-                        cbElem4.name = 'rmHLcbLoc';
-                        if(bLocation){cbElem4.checked = true;}else{cbElem4.checked = false;};
-                        divKindle.appendChild(cbElem4);
-                    var labelKindle3 = document.createElement('label');
-                        labelKindle3.innerHTML = 'Location';
-                        labelKindle3.htmlFor = "rmHLcbLoc";
-                        labelKindle3.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle3);
+        //divKindle.appendChild(document.createElement('br'));
+        var tbKindle1 = document.createElement('input');
+            tbKindle1.value = kindleHLref;
+            tbKindle1.id = 'rmHLkingleTb1';
+            tbKindle1.style.cssText = 'padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;width:60%';
+            tbKindle1.name = "rmHLkingleTb1";
+            tbKindle1.placeholder = "#[[Kindle-highlights]]";
+            divKindle.appendChild(tbKindle1);
 
-                    var cbElem3 = document.createElement('input');
-                        cbElem3.setAttribute("type", "checkbox");
-                        cbElem3.style.cssText = 'vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px';
-                        cbElem3.id = 'rmHLcbHlColor';
-                        cbElem3.name = 'rmHLcbHlColor';
-                        if(bColor){cbElem3.checked = true;}else{cbElem3.checked = false;};
-                        divKindle.appendChild(cbElem3);
-                    var labelKindle2 = document.createElement('label');
-                        labelKindle2.innerHTML = 'HL Color';
-                        labelKindle2.htmlFor = "rmHLcbHlColor";
-                        labelKindle2.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle2);
+        divKindle.appendChild(document.createElement('br'));
+        divKindle.appendChild(document.createElement('br'));
+        var labelKindle1 = document.createElement('label');
+            labelKindle1.innerHTML = 'Include:';
+            labelKindle1.style.cssText = 'margin-right:10px;margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
+            divKindle.appendChild(labelKindle1);
 
-                    var cbElem5 = document.createElement('input');
-                        cbElem5.setAttribute("type", "checkbox");
-                        cbElem5.style.cssText = 'vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px';
-                        cbElem5.id = 'rmHLcbHlColorLink';
-                        cbElem5.name = 'rmHLcbHlColorLink';
-                        if(bColorRef){cbElem5.checked = true;}else{cbElem5.checked = false;};
-                        divKindle.appendChild(cbElem5);
-                    var labelKindle5 = document.createElement('label');
-                        labelKindle5.innerHTML = 'HL Color #[[Ref]]';
-                        labelKindle5.htmlFor = "rmHLcbHlColorLink";
-                        labelKindle5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle5);
+        var cbElem4 = document.createElement('input');
+            cbElem4.setAttribute("type", "checkbox");
+            cbElem4.style.cssText = 'vertical-align:inherit;font-size:12px;line-height:normal';
+            cbElem4.id = 'rmHLcbLoc';
+            cbElem4.name = 'rmHLcbLoc';
+            if(bLocation){cbElem4.checked = true;}else{cbElem4.checked = false;};
+            divKindle.appendChild(cbElem4);
+        var labelKindle3 = document.createElement('label');
+            labelKindle3.innerHTML = 'Location';
+            labelKindle3.htmlFor = "rmHLcbLoc";
+            labelKindle3.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
+            divKindle.appendChild(labelKindle3);
 
-                    //Selection combobox for where to have the HL Color in relation to the actual highlight
-                    divKindle.appendChild(document.createElement('br'));
-                    divKindle.appendChild(document.createElement('br'));
-                    var labelKindle6 = document.createElement('label');
-                        labelKindle6.innerHTML = 'Structure of Highlights, Color, Location and Notes';
-                        labelKindle6.htmlFor = "rmHLkindleSel";
-                        labelKindle6.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle6);
-                    divKindle.appendChild(document.createElement('br'));
-                    var selKindle = document.createElement('select');
-                        selKindle.options.add( new Option("HL > -Color -Loc -Note","0", true, true) );
-                        selKindle.options.add( new Option("HL #Color > -Loc -Note","1") );
-                        selKindle.options.add( new Option("Color > -HL -Loc -Note","2") );
-                        selKindle.options.add( new Option("Color > HL > -Loc -Note","3") );
-                        selKindle.style.cssText = 'padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer';
-                        selKindle.id = 'rmHLkindleSel';
-                        selKindle.name = 'rmHLkindleSel';
-                        selKindle.value = kindleHLstructure;
-                        divKindle.appendChild(selKindle);
+        var cbElem3 = document.createElement('input');
+            cbElem3.setAttribute("type", "checkbox");
+            cbElem3.style.cssText = 'vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px';
+            cbElem3.id = 'rmHLcbHlColor';
+            cbElem3.name = 'rmHLcbHlColor';
+            if(bColor){cbElem3.checked = true;}else{cbElem3.checked = false;};
+            divKindle.appendChild(cbElem3);
+        var labelKindle2 = document.createElement('label');
+            labelKindle2.innerHTML = 'HL Color';
+            labelKindle2.htmlFor = "rmHLcbHlColor";
+            labelKindle2.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
+            divKindle.appendChild(labelKindle2);
 
-                        divKindle.appendChild(document.createElement('br'));
-                        divKindle.appendChild(document.createElement('br'));
-                        var labelKindle7 = document.createElement('label');
-                            labelKindle7.innerHTML = 'HL = Highlights from Kindle<br>> = Nesting child bullet<br>- = Bullet/block<br>#Color --> Example: #[[Yellow highlight]]';
-                            labelKindle7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:normal;display:inline-block';
-                            divKindle.appendChild(labelKindle7);
+        var cbElem5 = document.createElement('input');
+            cbElem5.setAttribute("type", "checkbox");
+            cbElem5.style.cssText = 'vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px';
+            cbElem5.id = 'rmHLcbHlColorLink';
+            cbElem5.name = 'rmHLcbHlColorLink';
+            if(bColorRef){cbElem5.checked = true;}else{cbElem5.checked = false;};
+            divKindle.appendChild(cbElem5);
+        var labelKindle5 = document.createElement('label');
+            labelKindle5.innerHTML = 'HL Color #[[Ref]]';
+            labelKindle5.htmlFor = "rmHLcbHlColorLink";
+            labelKindle5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
+            divKindle.appendChild(labelKindle5);
 
-                        divKindle.appendChild(document.createElement('br'));
-                        var labelKindle8 = document.createElement('label');
-                            labelKindle8.innerHTML = '*Must Save changes before "Getting Highlights"';
-                            labelKindle8.style.cssText = 'font-size:12px;line-height:normal;color:red;font-weight:bold;display:inline-block';
-                            divKindle.appendChild(labelKindle8);
-                //divKindle.style.display = "none";
-            }
+        //Selection combobox for where to have the HL Color in relation to the actual highlight
+        divKindle.appendChild(document.createElement('br'));
+        divKindle.appendChild(document.createElement('br'));
+        var labelKindle6 = document.createElement('label');
+            labelKindle6.innerHTML = 'Structure of Highlights, Color, Location and Notes';
+            labelKindle6.htmlFor = "rmHLkindleSel";
+            labelKindle6.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
+            divKindle.appendChild(labelKindle6);
+        divKindle.appendChild(document.createElement('br'));
+        var selKindle = document.createElement('select');
+            selKindle.options.add( new Option("HL > -Color -Loc -Note","0", true, true) );
+            selKindle.options.add( new Option("HL #Color > -Loc -Note","1") );
+            selKindle.options.add( new Option("Color > -HL -Loc -Note","2") );
+            selKindle.options.add( new Option("Color > HL > -Loc -Note","3") );
+            selKindle.style.cssText = 'padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer';
+            selKindle.id = 'rmHLkindleSel';
+            selKindle.name = 'rmHLkindleSel';
+            selKindle.value = kindleHLstructure;
+            divKindle.appendChild(selKindle);
+
+            divKindle.appendChild(document.createElement('br'));
+            divKindle.appendChild(document.createElement('br'));
+            var labelKindle7 = document.createElement('label');
+                labelKindle7.innerHTML = 'HL = Highlights from Kindle<br>> = Nesting child bullet<br>- = Bullet/block<br>#Color --> Example: #[[Yellow highlight]]';
+                labelKindle7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:normal;display:inline-block';
+                divKindle.appendChild(labelKindle7);
+
+            divKindle.appendChild(document.createElement('br'));
+            var labelKindle8 = document.createElement('label');
+                labelKindle8.innerHTML = '*Must Save changes before "Getting Highlights"';
+                labelKindle8.style.cssText = 'font-size:12px;line-height:normal;color:red;font-weight:bold;display:inline-block';
+                divKindle.appendChild(labelKindle8);
+        //divKindle.style.display = "none";
+    }
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
-            var labelElem2 = document.createElement('label');
-                labelElem2.innerHTML = 'Page Title for Alias Link';
-                labelElem2.htmlFor = "rmHLta2";
-                labelElem2.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem2);
+            var labelElem2 = createNewElement('label','Page Title for Alias Link','rmHLta2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
             formElem.appendChild(document.createElement('br'));
-            var textElem2 = document.createElement('textarea');
-                textElem2.value = pageTitle;
-                textElem2.id = 'rmHLta2';
-                textElem2.style.cssText = 'width:90%;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px';
-                textElem2.rows = 3;
-                textElem2.name = "rmHLta2";
-                //textElem2.placeholder = "#[[Roam-Highlights]]";
-                formElem.appendChild(textElem2);
+            var textElem2 = createNewElement('textarea',pageTitle,'','width:90%;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px',formElem,'rmHLta2','rmHLta2');
+            textElem2.rows = 3;
 
             //5 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
                 //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
@@ -388,319 +415,222 @@ else
                 //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
-            var labelElem3 = document.createElement('label');
-                labelElem3.innerHTML = 'How to handle Line Breaks within each Highlight';
-                labelElem3.htmlFor = "rmHLsel";
-                labelElem3.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem3);
+            var labelElem3 = createNewElement('label','How to handle Line Breaks within each Highlight','rmHLsel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
             formElem.appendChild(document.createElement('br'));
-            var selElem = document.createElement('select');
-                selElem.options.add( new Option("[DEFAULT] New bullets same level","0", true, true) );
-                selElem.options.add( new Option("Nest under first Line Break","1") );
-                selElem.options.add( new Option("Ctrl + Shift + V same bullet","2") );
-                selElem.options.add( new Option("Replace with single space","3") );
-                selElem.options.add( new Option("Remove line breaks","4") );
-                selElem.style.cssText = 'padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer';
-                selElem.id = 'rmHLsel';
-                selElem.name = 'rmHLsel';
-                formElem.appendChild(selElem);
+            var selElem = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer',formElem,'rmHLsel','rmHLsel');
+            selElem.options.add( new Option("[DEFAULT] New bullets same level","0", true, true) );
+            selElem.options.add( new Option("Nest under first Line Break","1") );
+            selElem.options.add( new Option("Ctrl + Shift + V same bullet","2") );
+            selElem.options.add( new Option("Replace with single space","3") );
+            selElem.options.add( new Option("Remove line breaks","4") );
 
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
-            var labelElem7 = document.createElement('label');
-                labelElem7.innerHTML = 'Side Window Size (width minimum: 300px or 15%)';
-                labelElem7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                //labelElem7.htmlFor = "rmHLtbSize";
-                formElem.appendChild(labelElem7);
+            var labelElem7 = createNewElement('label','Side Window Size (width minimum: 300px or 15%)','','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
             formElem.appendChild(document.createElement('br'));
-            var labelElem8 = document.createElement('label');
-                labelElem8.innerHTML = 'W:';
-                labelElem8.htmlFor = "rmHLtbSize";
-                labelElem8.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem8);
-            var tbSizeElem = document.createElement('input');
-                tbSizeElem.value = sideWidth;
-                tbSizeElem.id = 'rmHLtbSize';
-                tbSizeElem.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
-                tbSizeElem.name = "rmHLtbSize";
-                tbSizeElem.placeholder = "17%";
-                formElem.appendChild(tbSizeElem);
-            var labelElem9 = document.createElement('label');
-                labelElem9.innerHTML = 'H:';
-                labelElem9.htmlFor = "rmHLtbSize2";
-                labelElem9.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem9);
-            var tbSizeElem2 = document.createElement('input');
-                tbSizeElem2.value = sideHeight;
-                tbSizeElem2.id = 'rmHLtbSize2';
-                tbSizeElem2.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
-                tbSizeElem2.name = "rmHLtbSize2";
-                tbSizeElem2.placeholder = "20%";
-                formElem.appendChild(tbSizeElem2);
+            var labelElem8 = createNewElement('label','W:','rmHLtbSize','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+            var tbSizeElem = createNewElement('input',sideWidth,'rmHLtbSize','padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbSize','rmHLtbSize');
+            tbSizeElem.placeholder = "17%";
+
+            var labelElem9 = createNewElement('label','H:','rmHLtbSize2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+            var tbSizeElem2 = createNewElement('input',sideHeight,'rmHLtbSize','padding-left:5px;text-align:center;width:50px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbSize2','rmHLtbSize2');
+            tbSizeElem2.placeholder = "20%";
 
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
-            var labelElem4 = document.createElement('label');
-                labelElem4.innerHTML = 'Show the Clipboard in:';
-                labelElem4.style.cssText = 'margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                //labelElem4.htmlFor = "rmHLcbType1";
-                formElem.appendChild(labelElem4);
+            var labelElem4 = createNewElement('label','Show the Clipboard in:','','margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
-            //formElem.appendChild(document.createElement('br'));
-            //formElem.appendChild(document.createElement('br'));
-            var cbElem1 = document.createElement('input');
-                cbElem1.setAttribute("type", "checkbox");
-                cbElem1.style.cssText = 'vertical-align:middle;font-size:12px;line-height:normal';
-                cbElem1.id = 'rmHLcbType1';
-                cbElem1.name = 'rmHLcbType1';
-                cbElem1.checked = true;
-                formElem.appendChild(cbElem1);
-            var labelElem5 = document.createElement('label');
-                labelElem5.innerHTML = 'Plain Text';
-                labelElem5.htmlFor = "rmHLcbType1";
-                labelElem5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem5);
+            var cbElem1 = createNewElement('checkbox','','','vertical-align:middle;font-size:12px;line-height:normal',formElem,'rmHLcbType1','rmHLcbType1');
+            cbElem1.checked = true;
 
-            var cbElem2 = document.createElement('input');
-                cbElem2.setAttribute("type", "checkbox");
-                cbElem2.style.cssText = 'vertical-align:middle;margin-left:20px;font-size:12px;line-height:normal';
-                cbElem2.id = 'rmHLcbType2';
-                cbElem2.name = 'rmHLcbType2';
-                cbElem2.checked = false;
-                formElem.appendChild(cbElem2);
-            var labelElem6 = document.createElement('label');
-                labelElem6.innerHTML = 'HTML';
-                labelElem6.htmlFor = "rmHLcbType2";
-                labelElem6.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem6);
+            var labelElem5 = createNewElement('label','Plain Text','rmHLcbType1','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+            var cbElem2 = createNewElement('checkbox','','','vertical-align:middle;margin-left:20px;font-size:12px;line-height:normal',formElem,'rmHLcbType2','rmHLcbType2');
+            cbElem2.checked = false;
+
+            var labelElem6 = createNewElement('label','HTML','rmHLcbType2','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
             formElem.appendChild(document.createElement('br'));
             formElem.appendChild(document.createElement('br'));
-            var butSave = document.createElement('button');
-                butSave.style.cssText = 'background-color:Blue;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-                butSave.innerHTML = 'Save';
-                butSave.name = 'rmHLsave';
-                butSave.id = 'rmHLsave';
-                formElem.appendChild(butSave);
 
-                butSave.addEventListener("click", function(){
-                    var divElemMain = document.getElementById("rmHLmain");
-                    var tbElem = document.getElementById("rmHLtb");
-                    var textElem2 = document.getElementById("rmHLta2");
-                    var selElem = document.getElementById("rmHLsel");
-                    var tbSizeW = document.getElementById("rmHLtbSize");
-                    var tbSizeH = document.getElementById("rmHLtbSize2");
-                    //Kindle settings
-                    var tbKinHLref = document.getElementById("rmHLkingleTb1");
-                    var cbLoc = document.getElementById("rmHLcbLoc");
-                    var cbCol = document.getElementById("rmHLcbHlColor");
-                    var cbColRef = document.getElementById("rmHLcbHlColorLink");
-                    var selKindle = document.getElementById("rmHLkindleSel");
+            var butSave = createNewElement('button','Save','','background-color:Blue;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',formElem,'rmHLsave','rmHLsave');
 
-                    var butSave = document.getElementById("rmHLsave");
+            butSave.addEventListener("click", function(){
+                var divElemMain = document.getElementById("rmHLmain");
+                var tbElem = document.getElementById("rmHLtb");
+                var textElem2 = document.getElementById("rmHLta2");
+                var selElem = document.getElementById("rmHLsel");
+                var tbSizeW = document.getElementById("rmHLtbSize");
+                var tbSizeH = document.getElementById("rmHLtbSize2");
+                //Kindle settings
+                var tbKinHLref = document.getElementById("rmHLkingleTb1");
+                var cbLoc = document.getElementById("rmHLcbLoc");
+                var cbCol = document.getElementById("rmHLcbHlColor");
+                var cbColRef = document.getElementById("rmHLcbHlColorLink");
+                var selKindle = document.getElementById("rmHLkindleSel");
 
-                    pageRef = tbElem.value;
-                    pageTitle = textElem2.value;
-                    sameBlock = Number(selElem.value);
-                    sideWidth = tbSizeW.value;
-                    sideHeight = tbSizeH.value;
-                    //Kindle settings
-                    if(tbKinHLref != null)
+                var butSave = document.getElementById("rmHLsave");
+
+                pageRef = tbElem.value;
+                pageTitle = textElem2.value;
+                sameBlock = Number(selElem.value);
+                sideWidth = tbSizeW.value;
+                sideHeight = tbSizeH.value;
+                //Kindle settings
+                if(tbKinHLref != null)
+                {
+                    kindleHLref = tbKinHLref.value;
+                    bLocation = cbLoc.checked;
+                    bColor = cbCol.checked;
+                    bColorRef = cbColRef.checked;
+                    kindleHLstructure = Number(selKindle.value);
+                }
+
+                //Save to local storage to keep persistent
+                setLocalStorageValue("pageRef", pageRef);
+                setLocalStorageValue("sameBlock", sameBlock);
+                setLocalStorageValue("sideWidth", sideWidth);
+                setLocalStorageValue("sideHeight", sideHeight);
+                //Kindle settings
+                setLocalStorageValue("kindleHLref", kindleHLref);
+                setLocalStorageValue("bLocation", bLocation);
+                setLocalStorageValue("bColor", bColor);
+                setLocalStorageValue("bColorRef", bColorRef);
+                setLocalStorageValue("kindleHLstructure", kindleHLstructure);
+
+                //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+                //We already have the "cut" event listener set to run our code, so this should activate it
+                clickEvent = 1;
+                document.execCommand('cut');
+            });
+
+            formElem.appendChild(document.createElement('br'));
+            formElem.appendChild(document.createElement('br'));
+            var spanElem1 = createNewElement('span','Important Links and Resources','','font-weight:bold;color:red;font-size:12px;line-height:normal;display:inline-block',formElem,'','');
+
+            formElem.appendChild(document.createElement('br'));
+            formElem.appendChild(document.createElement('br'));
+            var link1 = createNewElement('a','Detailed Instructions and Shortcuts','','font-size:12px;line-height:normal',formElem,'','');
+            link1.href = 'https://github.com/GitMurf/roam-highlighter#how-to-use-the-highlighter';
+
+            formElem.appendChild(document.createElement('br'));
+            var link2 = createNewElement('a','Demos and Videos','','font-size:12px;line-height:normal',formElem,'','');
+            link2.href = 'https://github.com/GitMurf/roam-highlighter#demo-1---activate-the-highlighter-extension-and-perform-a-simple-highlight';
+
+            formElem.appendChild(document.createElement('br'));
+            var link3 = createNewElement('a','Report a Bug/Issue','','font-size:12px;line-height:normal',formElem,'','');
+            link3.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+
+            formElem.appendChild(document.createElement('br'));
+            var link4 = createNewElement('a','Submit an Idea or Feature Request','','font-size:12px;line-height:normal',formElem,'','');
+            link4.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+
+            formElem.appendChild(document.createElement('br'));
+            var link5 = createNewElement('a','Ask a Question','','font-size:12px;line-height:normal',formElem,'','');
+            link5.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+
+            var link6 = createNewElement('a','Kindle Notes & Highlights','','font-size:12px;line-height:normal',formElem,'','');
+            link6.href = 'https://read.amazon.com/notebook';
+
+            var butMax = createNewElement('button','Expand','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'rmHLexpand','rmHLexpand');
+
+            butMax.addEventListener("click", function(){
+                var divElemMain = document.getElementById("rmHLmain");
+                var divTextElem = document.getElementById("rmHLdivText");
+                var butMax = document.getElementById("rmHLexpand");
+                var divSetElem = document.getElementById("rmHLdivSett");
+
+                if(butMax.innerHTML == "Expand")
+                {
+                    divElemMain.style.width = "90%";
+                    divElemMain.style.height = "80%";
+                    butMax.innerHTML = 'Shrink';
+                    divElemMain.style.opacity = "1";
+                }
+                else
+                {
+                    if(divSetElem.style.display == "flex")
                     {
-                        kindleHLref = tbKinHLref.value;
-                        bLocation = cbLoc.checked;
-                        bColor = cbCol.checked;
-                        bColorRef = cbColRef.checked;
-                        kindleHLstructure = Number(selKindle.value);
-                    }
-
-                    //Save to local storage to keep persistent
-                    setLocalStorageValue("pageRef", pageRef);
-                    setLocalStorageValue("sameBlock", sameBlock);
-                    setLocalStorageValue("sideWidth", sideWidth);
-                    setLocalStorageValue("sideHeight", sideHeight);
-                    //Kindle settings
-                    setLocalStorageValue("kindleHLref", kindleHLref);
-                    setLocalStorageValue("bLocation", bLocation);
-                    setLocalStorageValue("bColor", bColor);
-                    setLocalStorageValue("bColorRef", bColorRef);
-                    setLocalStorageValue("kindleHLstructure", kindleHLstructure);
-
-                    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
-                    //We already have the "cut" event listener set to run our code, so this should activate it
-                    clickEvent = 1;
-                    document.execCommand('cut');
-                });
-
-                formElem.appendChild(document.createElement('br'));
-                formElem.appendChild(document.createElement('br'));
-                var spanElem1 = document.createElement('span');
-                    spanElem1.innerHTML = 'Important Links and Resources';
-                    spanElem1.style.cssText = 'font-weight:bold;color:red;font-size:12px;line-height:normal;display:inline-block';
-                    formElem.appendChild(spanElem1);
-
-                formElem.appendChild(document.createElement('br'));
-                formElem.appendChild(document.createElement('br'));
-                var link1 = document.createElement('a');
-                    link1.innerText = 'Detailed Instructions and Shortcuts';
-                    link1.href = 'https://github.com/GitMurf/roam-highlighter#how-to-use-the-highlighter';
-                    link1.style.cssText = 'font-size:12px;line-height:normal';
-                    //link1.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link1);
-
-                formElem.appendChild(document.createElement('br'));
-                var link2 = document.createElement('a');
-                    link2.innerText = 'Demos and Videos';
-                    link2.href = 'https://github.com/GitMurf/roam-highlighter#demo-1---activate-the-highlighter-extension-and-perform-a-simple-highlight';
-                    link2.style.cssText = 'font-size:12px;line-height:normal';
-                    //link2.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link2);
-
-                formElem.appendChild(document.createElement('br'));
-                var link3 = document.createElement('a');
-                    link3.innerText = 'Report a Bug/Issue';
-                    link3.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
-                    link3.style.cssText = 'font-size:12px;line-height:normal';
-                    //link3.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link3);
-
-                formElem.appendChild(document.createElement('br'));
-                var link4 = document.createElement('a');
-                    link4.innerText = 'Submit an Idea or Feature Request';
-                    link4.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
-                    link4.style.cssText = 'font-size:12px;line-height:normal';
-                    //link4.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link4);
-
-                formElem.appendChild(document.createElement('br'));
-                var link5 = document.createElement('a');
-                    link5.innerText = 'Ask a Question';
-                    link5.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
-                    link5.style.cssText = 'font-size:12px;line-height:normal';
-                    //link5.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link5);
-
-                formElem.appendChild(document.createElement('br'));
-                var link6 = document.createElement('a');
-                    link6.innerText = 'Kindle Notes & Highlights';
-                    link6.href = 'https://read.amazon.com/notebook';
-                    link6.style.cssText = 'font-size:12px;line-height:normal';
-                    //link6.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link6);
-
-            var butMax = document.createElement('button');
-                butMax.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-                butMax.innerHTML = 'Expand';
-                butMax.id = 'rmHLexpand';
-                divButtonsElem.appendChild(butMax);
-
-                butMax.addEventListener("click", function(){
-                    var divElemMain = document.getElementById("rmHLmain");
-                    var divTextElem = document.getElementById("rmHLdivText");
-                    var butMax = document.getElementById("rmHLexpand");
-                    var divSetElem = document.getElementById("rmHLdivSett");
-
-                    if(butMax.innerHTML == "Expand")
-                    {
-                        divElemMain.style.width = "90%";
-                        divElemMain.style.height = "80%";
-                        butMax.innerHTML = 'Shrink';
-                        divElemMain.style.opacity = "1";
-                    }
-                    else
-                    {
-                        if(divSetElem.style.display == "flex")
-                        {
-                            divTextElem.style.width = "100%";
-                            divSetElem.style.display = "none";
-                        }
-
-                        divElemMain.style.width = sideWidth;
-                        divElemMain.style.height =sideHeight;
-
-                        butMax.innerHTML = 'Expand';
-                        divElemMain.style.opacity = "0.8";
-                    }
-                });
-
-            var butHide = document.createElement('button');
-                butHide.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-                butHide.innerHTML = 'Hide';
-                divButtonsElem.appendChild(butHide);
-
-                butHide.addEventListener("click", function(){
-                    var divElemMain = document.getElementById("rmHLmain");
-                    divElemMain.style.display = "none";
-                    //divElemMain.style.display = "block";
-                    showWindow = 0;
-                    setLocalStorageValue("showWindow", showWindow);
-                });
-
-            var butWrap = document.createElement('button');
-                butWrap.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-                butWrap.innerHTML = 'Wrap';
-                butWrap.id = 'rmHLwrap';
-                divButtonsElem.appendChild(butWrap);
-
-                butWrap.addEventListener("click", function(){
-                    var textInput = document.getElementById("rmHLtextArea");
-                    var butWrap = document.getElementById("rmHLwrap");
-
-                    if(butWrap.innerHTML == "Wrap")
-                    {
-                        //textInput.style.whiteSpace = "normal";
-                        //Changed for firefox compatibility
-                        textInput.style.whiteSpace = "pre-wrap";
-                        butWrap.innerHTML = 'Un-Wrap';
-                    }
-                    else
-                    {
-                        textInput.style.whiteSpace = "pre";
-                        butWrap.innerHTML = 'Wrap';
-                    }
-                });
-
-            var butSett = document.createElement('button');
-                butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-                butSett.innerHTML = 'Settings';
-                butSett.id = 'rmHLsettings';
-                divButtonsElem.appendChild(butSett);
-
-                butSett.addEventListener("click", function(){
-                    var divElemMain = document.getElementById("rmHLmain");
-                    var divSetElem = document.getElementById("rmHLdivSett");
-                    var divTextElem = document.getElementById("rmHLdivText");
-                    var tbElem = document.getElementById("rmHLtb");
-                    var textElem2 = document.getElementById("rmHLta2");
-                    var selElem = document.getElementById("rmHLsel");
-                    var butSett = document.getElementById("rmHLsettings");
-                    var butMax = document.getElementById("rmHLexpand");
-                    var butWrap = document.getElementById("rmHLwrap");
-
-                    if(divSetElem.style.display == "none")
-                    {
-                        divElemMain.style.opacity = "1";
-                        divTextElem.style.width = "50%";
-                        divSetElem.style.display = "flex";
-                        tbElem.value = pageRef;
-                        textElem2.value = pageTitle;
-                        selElem.value = sameBlock;
-                        if(butMax.innerHTML == "Expand"){butMax.click();}
-                    }
-                    else
-                    {
-                        //divElemMain.style.opacity = "0.8";
                         divTextElem.style.width = "100%";
                         divSetElem.style.display = "none";
-                        //butMax.click();
                     }
-                });
 
-    var textInput = document.createElement("textarea");
-        textInput.name = "textAreaInput";
-        textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
-        textInput.id = 'rmHLtextArea';
-        textInput.value = `
+                    divElemMain.style.width = sideWidth;
+                    divElemMain.style.height =sideHeight;
+
+                    butMax.innerHTML = 'Expand';
+                    divElemMain.style.opacity = "0.8";
+                }
+            });
+
+            var butHide = createNewElement('button','Hide','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'','');
+
+            butHide.addEventListener("click", function(){
+                var divElemMain = document.getElementById("rmHLmain");
+                divElemMain.style.display = "none";
+                //divElemMain.style.display = "block";
+                showWindow = 0;
+                setLocalStorageValue("showWindow", showWindow);
+            });
+
+            var butWrap = createNewElement('button','Wrap','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'rmHLwrap','rmHLwrap');
+
+            butWrap.addEventListener("click", function(){
+                var textInput = document.getElementById("rmHLtextArea");
+                var butWrap = document.getElementById("rmHLwrap");
+
+                if(butWrap.innerHTML == "Wrap")
+                {
+                    //textInput.style.whiteSpace = "normal";
+                    //Changed for firefox compatibility
+                    textInput.style.whiteSpace = "pre-wrap";
+                    butWrap.innerHTML = 'Un-Wrap';
+                }
+                else
+                {
+                    textInput.style.whiteSpace = "pre";
+                    butWrap.innerHTML = 'Wrap';
+                }
+            });
+
+            var butSett = createNewElement('button','Settings','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'rmHLsettings','rmHLsettings');
+
+            butSett.addEventListener("click", function(){
+                var divElemMain = document.getElementById("rmHLmain");
+                var divSetElem = document.getElementById("rmHLdivSett");
+                var divTextElem = document.getElementById("rmHLdivText");
+                var tbElem = document.getElementById("rmHLtb");
+                var textElem2 = document.getElementById("rmHLta2");
+                var selElem = document.getElementById("rmHLsel");
+                var butSett = document.getElementById("rmHLsettings");
+                var butMax = document.getElementById("rmHLexpand");
+                var butWrap = document.getElementById("rmHLwrap");
+
+                if(divSetElem.style.display == "none")
+                {
+                    divElemMain.style.opacity = "1";
+                    divTextElem.style.width = "50%";
+                    divSetElem.style.display = "flex";
+                    tbElem.value = pageRef;
+                    textElem2.value = pageTitle;
+                    selElem.value = sameBlock;
+                    if(butMax.innerHTML == "Expand"){butMax.click();}
+                }
+                else
+                {
+                    //divElemMain.style.opacity = "0.8";
+                    divTextElem.style.width = "100%";
+                    divSetElem.style.display = "none";
+                    //butMax.click();
+                }
+            });
+
+            var textInput = createNewElement('textarea','','','width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',divTextElem,'rmHLtextArea','textAreaInput');
+            textInput.value = `
 Roam-highlighter Shortcut Keys (v${verNum})
 *All settings are now saved tab to tab, session to session
 
@@ -733,9 +663,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
 \t- Adds [[Double Brackets]] around selection for Roam "Page Linking"
 `;
-
-    divTextElem.appendChild(textInput);
-    document.body.appendChild(divElem);
 
     function getKindleHighlights(event)
     {
