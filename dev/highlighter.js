@@ -412,6 +412,11 @@ else
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
     var labelElem2 = createNewElement('label','Page Title for Alias Link','rmHLta2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    var cbElemPgTitle = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbPgTitle','rmHLcbPgTitle');
+    cbElemPgTitle.checked = true;
+    //if(bPgTitle){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
+
     var tbElemPgTrunc = createNewElement('input',pageTruncate,'','padding-left:0px;text-align:center;width:15px;margin-left:20%;margin-right:0px;margin-bottom:2px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbPgTrunc','rmHLtbPgTrunc');
     var labelElemPgTruncate = createNewElement('label','Truncate','rmHLtbPgTrunc','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:5px',formElem,'','');
 
@@ -467,7 +472,7 @@ else
     tbElemCode.placeholder = '`';
 
     var labelElemHeaders = createNewElement('label','Headers:','rmHLcbHeaders','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var cbElemHeaders = createNewElement('checkbox','','','vertical-align:middle;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbHeaders','rmHLcbHeaders');
+    var cbElemHeaders = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbHeaders','rmHLcbHeaders');
     if(bHeaders){cbElemHeaders.checked = true;}else{cbElemHeaders.checked = false;}
 
     formElem.appendChild(document.createElement('br'));
@@ -477,7 +482,7 @@ else
     //tbElemBullet.placeholder = '- ';
 
     var labelElemIndents = createNewElement('label','Indent:','rmHLcbIndents','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var cbElemIndents = createNewElement('checkbox','','','vertical-align:middle;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbIndents','rmHLcbIndents');
+    var cbElemIndents = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbIndents','rmHLcbIndents');
     if(bIndents){cbElemIndents.checked = true;}else{cbElemIndents.checked = false;}
 
     formElem.appendChild(document.createElement('br'));
@@ -522,6 +527,7 @@ else
         var cbElem1 = document.getElementById("rmHLcbType1")
         var cbElem2 = document.getElementById("rmHLcbType2")
         var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
+        var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
         //Kindle settings
         var tbKinHLref = document.getElementById("rmHLkingleTb1");
         var cbLoc = document.getElementById("rmHLcbLoc");
@@ -530,7 +536,7 @@ else
         var selKindle = document.getElementById("rmHLkindleSel");
 
         var selDefaults = document.getElementById("rmHLdefaultsSel");
-console.log(selDefaults.value);
+
         switch (Number(selDefaults.value))
         {
             case 0:
@@ -572,6 +578,7 @@ console.log(selDefaults.value);
             cbColRef.checked = true;
             selKindle.value = 0;
         }
+        cbElemPgTitle.checked = true;
 
         pageRef = tbElem.value;
         pageTitle = textElem2.value;
@@ -867,8 +874,17 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var coverImg = "";
             var amazonLink = "";
             var hlCtr = 0;
+
+            var initIndentAmount = '    ';
+            var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
+            if(cbElemPgTitle.checked == false){initIndentAmount = '';}
+
             var indentAmount = '    ';
-            if(bIndents == false){indentAmount = '';}
+            if(bIndents == false)
+            {
+                indentAmount = '';
+                initIndentAmount = '';
+            }
             //var titleElem = document.getElementById('');
             //var bookTitle = "";
             for(var i = 0; i < myHighlights.length; i++)
@@ -880,17 +896,26 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 {
                     if(curElement.nodeName == 'H3') //Title
                     {
-                        if(bIndents){textString += curText + '\n';}
-                        textString += indentAmount + formatBullets + 'Title: ' + curText + '\n';
-                        htmlString += '<li>' + curText + '</li><ul>';
+                        //Hack right now until get a real checkbox for kindle specific nesting in parent title
+                        if(cbElemPgTitle.checked)
+                        {
+                            if(bIndents){textString += curText + '\n';}
+                            htmlString += '<li>' + curText + '</li><ul>';
+                        }
+                        else
+                        {
+                            htmlString += '<ul>';
+                        }
+
+                        textString += initIndentAmount + formatBullets + 'Title: ' + curText + '\n';
                         htmlString += '<li>Title:: ' + curText + '</li>';
                     }
                     if(curElement.nodeName == 'P' && curElement.classList.contains("a-color-secondary")) //Author
                     {
-                        textString += indentAmount + formatBullets + 'Author: ' + '[[' + curText + ']]' + '\n';
-                        //textString += indentAmount + formatBullets + 'Author: ' + curText + '\n';
-                        textString += indentAmount + formatBullets + 'Amazon-store: ' + amazonLink + '\n';
-                        textString += indentAmount + formatBullets + coverImg + '\n';
+                        textString += initIndentAmount + formatBullets + 'Author: ' + '[[' + curText + ']]' + '\n';
+                        //textString += initIndentAmount + formatBullets + 'Author: ' + curText + '\n';
+                        textString += initIndentAmount + formatBullets + 'Amazon-store: ' + amazonLink + '\n';
+                        textString += initIndentAmount + formatBullets + coverImg + '\n';
                         if(formatBullets == ''){textString += '\n';}
 
                         htmlString += '<li>Author:: ' + '[[' + curText + ']]' + '</li>';
@@ -900,7 +925,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
                         if(kindleHLref != '')
                         {
-                            textString += indentAmount + formatBullets + kindleHLref + '\n';
+                            textString += initIndentAmount + formatBullets + kindleHLref + '\n';
                             if(formatBullets == ''){textString += '\n';}
                             htmlString += '<li>' + kindleHLref + '</li><ul>';
                         }
@@ -923,32 +948,32 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         switch (kindleHLstructure)
                         {
                             case 0:
-                                textString += indentAmount + indentAmount + formatBullets + curText + '\n';
-                                if(bColor){textString += indentAmount + indentAmount + indentAmount + formatBullets + hlColor + '\n';}
-                                if(bLocation){textString += indentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
+                                textString += initIndentAmount + indentAmount + formatBullets + curText + '\n';
+                                if(bColor){textString += initIndentAmount + indentAmount + indentAmount + formatBullets + hlColor + '\n';}
+                                if(bLocation){textString += initIndentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + curText + '</li><ul>';
                                 if(bColor){htmlString += '<li>' + hlColor + '</li>';}
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                             case 1:
-                                textString += indentAmount + indentAmount + formatBullets + curText
+                                textString += initIndentAmount + indentAmount + formatBullets + curText
                                 if(bColor){textString += ' ' + hlColor + '\n';}else{textString += '\n';}
-                                if(bLocation){textString += indentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
+                                if(bLocation){textString += initIndentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + curText + ' ' + hlColor + '</li><ul>';
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                             case 2:
-                                textString += indentAmount + indentAmount + formatBullets + hlColor + '\n';
-                                textString += indentAmount + indentAmount + indentAmount + formatBullets + curText + '\n';
-                                if(bLocation){textString += indentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
+                                textString += initIndentAmount + indentAmount + formatBullets + hlColor + '\n';
+                                textString += initIndentAmount + indentAmount + indentAmount + formatBullets + curText + '\n';
+                                if(bLocation){textString += initIndentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + hlColor + '</li><ul>';
                                 htmlString += '<li>' + curText + '</li>';
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                             case 3:
-                                textString += indentAmount + indentAmount + formatBullets + hlColor + '\n';
-                                textString += indentAmount + indentAmount + indentAmount + formatBullets + curText + '\n';
-                                if(bLocation){textString += indentAmount + indentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
+                                textString += initIndentAmount + indentAmount + formatBullets + hlColor + '\n';
+                                textString += initIndentAmount + indentAmount + indentAmount + formatBullets + curText + '\n';
+                                if(bLocation){textString += initIndentAmount + indentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + hlColor + '</li><ul>';
                                 htmlString += '<li>' + curText + '</li><ul>';
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
@@ -969,12 +994,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     {
                         if(kindleHLstructure == 3)
                         {
-                            textString += indentAmount + indentAmount + indentAmount + indentAmount + formatBullets + 'Note: ' + curText + '\n';
+                            textString += initIndentAmount + indentAmount + indentAmount + indentAmount + formatBullets + 'Note: ' + curText + '\n';
                             htmlString += '<li>Note: ' + curText + '</li>';
                         }
                         else
                         {
-                            textString += indentAmount + indentAmount + indentAmount + formatBullets + 'Note: ' + curText + '\n';
+                            textString += initIndentAmount + indentAmount + indentAmount + formatBullets + 'Note: ' + curText + '\n';
                             htmlString += '<li>Note: ' + curText + '</li>';
                         }
                     }
@@ -1574,6 +1599,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
         }
 
+        var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
         //Check if no highlights and just want the page name in Roam link format [Page Title](URL)
         if(plainConcatHighlights == "" || htmlConcatHighlights == "")
         {
@@ -1584,8 +1610,16 @@ Roam-highlighter Shortcut Keys (v${verNum})
         else
         {
             var bOnlyPageRef = false;
-            plainConcatHighlights = formatBullets + reference + '\n' + plainConcatHighlights;
-            htmlConcatHighlights = '<li>' + reference + '</li><ul>' + htmlConcatHighlights;
+
+            if(cbElemPgTitle.checked)
+            {
+                plainConcatHighlights = formatBullets + reference + '\n' + plainConcatHighlights;
+                htmlConcatHighlights = '<li>' + reference + '</li><ul>' + htmlConcatHighlights;
+            }
+            else
+            {
+                htmlConcatHighlights = '<ul>' + htmlConcatHighlights;
+            }
         }
 
         //lOOP THROUGH EACH LINE LOOKING FOR HEADER ROWS TO INDENT UNDER
@@ -1761,7 +1795,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var indentCtr = 0;
         for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
         {
-            if(eachLine.substring(0,4) == '<ul>'){indentCtr++;}
+            if(x > 0 || cbElemPgTitle.checked){if(eachLine.substring(0,4) == '<ul>'){indentCtr++;}}
             if(eachLine.substring(0,5) == '</ul>'){indentCtr--;}
             if(eachLine.substring(0,4) == '<li>')
             {
