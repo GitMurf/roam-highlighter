@@ -1,5 +1,5 @@
-//Date: May 27, 2020
-var verNum = '1.9.6.1';
+//Date: May 31, 2020
+var verNum = '1.9.7';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -8,8 +8,15 @@ var pageRef = "#[[Roam-Highlights]]";
 var sideWidth = "20%";
 var sideHeight = "30%";
 var showWindow = Number(1);
+var formatBold = '**';
+var formatItalics = '__';
+var formatCode = '`';
+var formatBullets = '- ';
+var bHeaders = true;
+var bIndents = true;
+var pageTruncate = '';
 //Kindle settings
-var kindleHLref = "#[[Kindle-highlights]]";
+var kindleHLref = "#[[Kindle-Highlights]]";
 var bLocation = true;
 var bColor = true;
 var bColorRef = true;
@@ -74,6 +81,13 @@ async function startFunction()
         writeToConsole("sideWidth: " + sideWidth,-1);
         writeToConsole("sideHeight: " + sideHeight,-1);
         writeToConsole("showWindow: " + showWindow,-1);
+        writeToConsole("formatBold: " + formatBold,-1);
+        writeToConsole("formatItalics: " + formatItalics,-1);
+        writeToConsole("formatCode: " + formatCode,-1);
+        writeToConsole("bHeaders: " + bHeaders,-1);
+        writeToConsole("formatBullets: " + formatBullets,-1);
+        writeToConsole("bIndents: " + bIndents,-1);
+        writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -82,7 +96,7 @@ async function startFunction()
     }
 
     //Array to loop through to get values from browser.storage.local
-    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
+    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "pageTruncate", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
 
     for(var s = 0; s < settingsArray.length; s++)
     {
@@ -118,6 +132,34 @@ async function startFunction()
                 if(varResult !== undefined){showWindow = varResult;}
                 setLocalStorageValue("showWindow", showWindow);
                 break;
+            case "formatBold":
+                if(varResult !== undefined){formatBold = varResult;}
+                setLocalStorageValue("formatBold", formatBold);
+                break;
+            case "formatItalics":
+                if(varResult !== undefined){formatItalics = varResult;}
+                setLocalStorageValue("formatItalics", formatItalics);
+                break;
+            case "formatCode":
+                if(varResult !== undefined){formatCode = varResult;}
+                setLocalStorageValue("formatCode", formatCode);
+                break;
+            case "bHeaders":
+                if(varResult !== undefined){bHeaders = varResult;}
+                setLocalStorageValue("bHeaders", bHeaders);
+                break;
+            case "formatBullets":
+                if(varResult !== undefined){formatBullets = varResult;}
+                setLocalStorageValue("formatBullets", formatBullets);
+                break;
+            case "bIndents":
+                if(varResult !== undefined){bIndents = varResult;}
+                setLocalStorageValue("bIndents", bIndents);
+                break;
+            case "pageTruncate":
+                if(varResult !== undefined){pageTruncate = varResult;}
+                setLocalStorageValue("pageTruncate", pageTruncate);
+                break;
             case "kindleHLref":
                 if(varResult !== undefined){kindleHLref = varResult;}
                 setLocalStorageValue("kindleHLref", kindleHLref);
@@ -148,6 +190,13 @@ async function startFunction()
         writeToConsole("sideWidth: " + sideWidth,-1);
         writeToConsole("sideHeight: " + sideHeight,-1);
         writeToConsole("showWindow: " + showWindow,-1);
+        writeToConsole("formatBold: " + formatBold,-1);
+        writeToConsole("formatItalics: " + formatItalics,-1);
+        writeToConsole("formatCode: " + formatCode,-1);
+        writeToConsole("bHeaders: " + bHeaders,-1);
+        writeToConsole("formatBullets: " + formatBullets,-1);
+        writeToConsole("bIndents: " + bIndents,-1);
+        writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -196,15 +245,78 @@ else
 
     console.log('Loaded highlighter.js script v' + verNum);
 
+    function createNewElement(fElemType,fElemVal,fElemFor,fElemCss,fAppendTo,fElemId,fElemName)
+    {
+        if(fElemType != 'checkbox'){var fElem = document.createElement(fElemType);}
+
+        switch (fElemType)
+        {
+            case 'label':
+                fElem.innerHTML = fElemVal;
+                fElem.htmlFor = fElemFor;
+                break;
+            case 'textarea':
+                fElem.value = fElemVal;
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+            case 'select':
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+            case 'input':
+                fElem.value = fElemVal;
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+            case 'checkbox':
+                var fElem = document.createElement('input');
+                fElem.setAttribute("type", "checkbox");
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+            case 'span':
+                fElem.innerHTML = fElemVal;
+                fElem.htmlFor = fElemFor;
+                break;
+            case 'a':
+                fElem.innerText = fElemVal;
+                break;
+            case 'button':
+                fElem.innerHTML = fElemVal;
+                fElem.id = fElemId;
+                fElem.name = fElemName;
+                break;
+        }
+
+        fElem.style.cssText = fElemCss;
+        fAppendTo.appendChild(fElem);
+
+        return fElem;
+    }
+
     //Setup the options/settings menu
+    /* TEMPLATE ELEMENTS TO CREATE
+        var butExtractKindle = createNewElement('label','INNER_HTML','FOR','CSS',divKindle,'','');
+        var butExtractKindle = createNewElement('textarea','TEXT','','CSS',divKindle,'ID','NAME');
+        var butExtractKindle = createNewElement('select','','','CSS',divKindle,'ID','NAME');
+        var butExtractKindle = createNewElement('button','TEXT','','CSS',divKindle,'ID','NAME');
+        var butExtractKindle = createNewElement('input','TEXT','','CSS',divKindle,'ID','NAME');
+        var butExtractKindle = createNewElement('checkbox','','','CSS',divKindle,'ID','NAME');
+        var butExtractKindle = createNewElement('span','TEXT','','CSS',divKindle,'ID','NAME');
+        var butExtractKindle = createNewElement('a','TEXT','','CSS',divKindle,'ID','NAME');
+    */
     var divElem = document.createElement('div');
         divElem.id = 'rmHLmain';
         divElem.style.display = "block";
         divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999;font-size:12px;line-height:normal';
+        document.body.appendChild(divElem);
+
     var divButtonsElem = document.createElement('div');
         divButtonsElem.id = 'rmHLdivButt';
-        divButtonsElem.style.cssText = 'width:100%';
+        divButtonsElem.style.cssText = 'width:100%;display:flex';
         divElem.appendChild(divButtonsElem);
+
     var divTextElem = document.createElement('div');
         divTextElem.id = 'rmHLdivText';
         divTextElem.style.cssText = 'width:100%;height:100%;float:right';
@@ -215,492 +327,505 @@ else
         divSetElem.style.cssText = 'width:50%;height:100%;display:none;float:left';
         divElem.appendChild(divSetElem);
 
-        //Main settings DIV
-        var formElem = document.createElement('div');
-            formElem.id = 'rmHLform';
-            formElem.style.cssText = 'width:55%;height:100%;background-color:white;padding:15px;float:left;border-left:1px solid black;border-top:1px solid black';
-            divSetElem.appendChild(formElem);
+    //Main settings DIV
+    var formElem = document.createElement('div');
+        formElem.id = 'rmHLform';
+        formElem.style.cssText = 'width:55%;height:100%;background-color:white;padding:15px;float:left;border-left:1px solid black;border-top:1px solid black';
+        divSetElem.appendChild(formElem);
 
-        //Kindle settings DIV
-        var divKindle = document.createElement('div');
-            divKindle.id = 'rmHLdivKindle';
-            divKindle.style.cssText = 'width:45%;height:100%;background-color:white;padding:15px;float:left;border-top:1px solid black';
-            divSetElem.appendChild(divKindle);
+    //Kindle settings DIV
+    var divKindle = document.createElement('div');
+        divKindle.id = 'rmHLdivKindle';
+        divKindle.style.cssText = 'width:45%;height:100%;background-color:white;padding:15px;float:left;border-top:1px solid black';
+        divSetElem.appendChild(divKindle);
 
-            var labelElem = document.createElement('label');
-                labelElem.innerHTML = 'Highlighter Link #Tag';
-                labelElem.htmlFor = "rmHLtb";
-                labelElem.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem);
-            if(getPage.includes('read.amazon.com/notebook'))
+    var labelElem = createNewElement('label','Highlighter Link #Tag','rmHLtb','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    if(getPage.includes('read.amazon.com/notebook'))
+    {
+        var butExtractKindle = createNewElement('button','Get Kindle Highlights','','background-color:black;color:white;border-color:white;margin-left:10px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right',formElem,'rmHLkindle','rmHLkindle');
+
+        butExtractKindle.addEventListener("click", function(){
+            kindleClickEvent = 1;
+            document.execCommand('cut');
+        });
+    }
+
+    var butClearAll = createNewElement('button','Clear All Highlights','','background-color:black;color:white;border-color:white;margin-left:15px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right',formElem,'rmHLclear','rmHLclear');
+
+    butClearAll.addEventListener("click", function(){
+        removeAllHighlights();
+    });
+
+    formElem.appendChild(document.createElement('br'));
+    var tbElem = createNewElement('input',pageRef,'','padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtb','rmHLtb');
+    tbElem.placeholder = "#[[Roam-Highlights]]";
+
+    if(getPage.includes('read.amazon.com/notebook'))
+    {
+        //Text box for Kindle-highlights tag
+        var labelKindle4 = createNewElement('label','Highlights #Tag: ','rmHLkingleTb1','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline;margin-right:5px;vertical-align:middle;padding:0px',divKindle,'','');
+        //divKindle.appendChild(document.createElement('br'));
+        var tbKindle1 = createNewElement('input',kindleHLref,'','padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;width:60%',divKindle,'rmHLkingleTb1','rmHLkingleTb1');
+        tbKindle1.placeholder = "#[[Kindle-Highlights]]";
+
+        divKindle.appendChild(document.createElement('br'));
+        divKindle.appendChild(document.createElement('br'));
+        var labelKindle1 = createNewElement('label','Include:','','margin-right:10px;margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+
+        var cbElem4 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer',divKindle,'rmHLcbLoc','rmHLcbLoc');
+        if(bLocation){cbElem4.checked = true;}else{cbElem4.checked = false;}
+
+        var labelKindle3 = createNewElement('label','Location','rmHLcbLoc','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+
+        var cbElem3 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px;cursor:pointer',divKindle,'rmHLcbHlColor','rmHLcbHlColor');
+        if(bColor){cbElem3.checked = true;}else{cbElem3.checked = false;}
+
+        var labelKindle2 = createNewElement('label','HL Color','rmHLcbHlColor','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+
+        var cbElem5 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px;cursor:pointer',divKindle,'rmHLcbHlColorLink','rmHLcbHlColorLink');
+        if(bColorRef){cbElem5.checked = true;}else{cbElem5.checked = false;}
+
+        var labelKindle5 = createNewElement('label','HL Color #[[Ref]]','rmHLcbHlColorLink','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+
+        //Selection combobox for where to have the HL Color in relation to the actual highlight
+        divKindle.appendChild(document.createElement('br'));
+        divKindle.appendChild(document.createElement('br'));
+        var labelKindle6 = createNewElement('label','Structure of Highlights, Color, Location and Notes','rmHLkindleSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        divKindle.appendChild(document.createElement('br'));
+
+        var selKindle = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer',divKindle,'rmHLkindleSel','rmHLkindleSel');
+        selKindle.options.add( new Option("HL > -Color -Loc -Note","0", true, true) );
+        selKindle.options.add( new Option("HL #Color > -Loc -Note","1") );
+        selKindle.options.add( new Option("Color > -HL -Loc -Note","2") );
+        selKindle.options.add( new Option("Color > HL > -Loc -Note","3") );
+        selKindle.value = kindleHLstructure;
+
+        divKindle.appendChild(document.createElement('br'));
+        divKindle.appendChild(document.createElement('br'));
+        var labelKindle7 = createNewElement('label','HL = Highlights from Kindle<br>> = Nesting child bullet<br>- = Bullet/block<br>#Color --> Example: #[[Yellow highlight]]','','font-size:12px;line-height:normal;color:black;font-weight:normal;display:inline-block',divKindle,'','');
+
+        divKindle.appendChild(document.createElement('br'));
+        var labelKindle8 = createNewElement('label','*Must Save changes before "Getting Highlights"','','font-size:12px;line-height:normal;color:red;font-weight:bold;display:inline-block',divKindle,'','');
+    }
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+    var labelElem2 = createNewElement('label','Page Title for Alias Link','rmHLta2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    var cbElemPgTitle = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbPgTitle','rmHLcbPgTitle');
+    cbElemPgTitle.checked = true;
+    //if(bPgTitle){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
+
+    var tbElemPgTrunc = createNewElement('input',pageTruncate,'','padding-left:0px;text-align:center;width:15px;margin-left:20%;margin-right:0px;margin-bottom:2px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbPgTrunc','rmHLtbPgTrunc');
+    var labelElemPgTruncate = createNewElement('label','Truncate','rmHLtbPgTrunc','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:5px',formElem,'','');
+
+    formElem.appendChild(document.createElement('br'));
+    var textElem2 = createNewElement('textarea',pageTitle,'','width:90%;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px',formElem,'rmHLta2','rmHLta2');
+    textElem2.rows = 3;
+
+    //5 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
+        //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
+        //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
+        //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
+        //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+    var labelElem3 = createNewElement('label','How to handle Line Breaks within each Highlight','rmHLsel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    formElem.appendChild(document.createElement('br'));
+    var selElem = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer',formElem,'rmHLsel','rmHLsel');
+    selElem.options.add( new Option("[DEFAULT] New bullets same level","0", true, true) );
+    selElem.options.add( new Option("Nest under first Line Break","1") );
+    selElem.options.add( new Option("Ctrl + Shift + V same bullet","2") );
+    selElem.options.add( new Option("Replace with single space","3") );
+    selElem.options.add( new Option("Remove line breaks","4") );
+    selElem.value = sameBlock;
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+    var labelElem7 = createNewElement('label','Side Window Size (width minimum: 300px or 15%)','','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    formElem.appendChild(document.createElement('br'));
+    var labelElem8 = createNewElement('label','W:','rmHLtbSize','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    var tbSizeElem = createNewElement('input',sideWidth,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbSize','rmHLtbSize');
+    tbSizeElem.placeholder = "17%";
+
+    var labelElem9 = createNewElement('label','H:','rmHLtbSize2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    var tbSizeElem2 = createNewElement('input',sideHeight,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbSize2','rmHLtbSize2');
+    tbSizeElem2.placeholder = "20%";
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+    var labelElemBold = createNewElement('label','Bold:','rmHLtbBold','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var tbElemBold = createNewElement('input',formatBold,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbBold','rmHLtbBold');
+    tbElemBold.placeholder = '**';
+
+    var labelElemItalic = createNewElement('label','Italics:','rmHLtbItalic','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var tbElemItalic = createNewElement('input',formatItalics,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbItalic','rmHLtbItalic');
+    tbElemItalic.placeholder = '__';
+
+    var labelElemCode = createNewElement('label','Code:','rmHLtbCode','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var tbElemCode = createNewElement('input',formatCode,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbCode','rmHLtbCode');
+    tbElemCode.placeholder = '`';
+
+    var labelElemHeaders = createNewElement('label','Headers:','rmHLcbHeaders','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var cbElemHeaders = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbHeaders','rmHLcbHeaders');
+    if(bHeaders){cbElemHeaders.checked = true;}else{cbElemHeaders.checked = false;}
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+    var labelElemBullet = createNewElement('label','Bullets:','rmHLtbBullet','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var tbElemBullet = createNewElement('input',formatBullets,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbBullet','rmHLtbBullet');
+    //tbElemBullet.placeholder = '- ';
+
+    var labelElemIndents = createNewElement('label','Indent:','rmHLcbIndents','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var cbElemIndents = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbIndents','rmHLcbIndents');
+    if(bIndents){cbElemIndents.checked = true;}else{cbElemIndents.checked = false;}
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+    var labelElem4 = createNewElement('label','Show the Clipboard in:','','margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    var cbElem1 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbType1','rmHLcbType1');
+    cbElem1.checked = true;
+
+    var labelElem5 = createNewElement('label','Plain Text','rmHLcbType1','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    var cbElem2 = createNewElement('checkbox','','','vertical-align:inherit;margin-left:20px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbType2','rmHLcbType2');
+    cbElem2.checked = false;
+
+    var labelElem6 = createNewElement('label','HTML','rmHLcbType2','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+
+    var labelElemDefaults = createNewElement('label','Reset to Default Settings for:','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    formElem.appendChild(document.createElement('br'));
+
+    var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
+    selDefaults.options.add( new Option("Roam Research","0", true, true) );
+    selDefaults.options.add( new Option("Obsidian","1") );
+
+    var butReset = createNewElement('button','Reset','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',formElem,'rmHLreset','rmHLreset');
+
+    butReset.addEventListener("click", function(){
+        var divElemMain = document.getElementById("rmHLmain");
+        var tbElem = document.getElementById("rmHLtb");
+        var textElem2 = document.getElementById("rmHLta2");
+        var selElem = document.getElementById("rmHLsel");
+        var tbSizeW = document.getElementById("rmHLtbSize");
+        var tbSizeH = document.getElementById("rmHLtbSize2");
+        var tbElemBold = document.getElementById("rmHLtbBold");
+        var tbElemItalic = document.getElementById("rmHLtbItalic");
+        var tbElemCode = document.getElementById("rmHLtbCode");
+        var cbElemHeaders = document.getElementById("rmHLcbHeaders")
+        var tbElemBullet = document.getElementById("rmHLtbBullet");
+        var cbElemIndents = document.getElementById("rmHLcbIndents")
+        var cbElem1 = document.getElementById("rmHLcbType1")
+        var cbElem2 = document.getElementById("rmHLcbType2")
+        var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
+        var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
+        //Kindle settings
+        var tbKinHLref = document.getElementById("rmHLkingleTb1");
+        var cbLoc = document.getElementById("rmHLcbLoc");
+        var cbCol = document.getElementById("rmHLcbHlColor");
+        var cbColRef = document.getElementById("rmHLcbHlColorLink");
+        var selKindle = document.getElementById("rmHLkindleSel");
+
+        var selDefaults = document.getElementById("rmHLdefaultsSel");
+
+        switch (Number(selDefaults.value))
+        {
+            case 0:
+                //Roam
+                tbElem.value = '#[[Roam-Highlights]]';
+                tbElemBold.value = '**';
+                tbElemItalic.value = '__';
+                tbElemCode.value = '`';
+                cbElemHeaders.checked = true;
+                tbElemBullet.value = '- ';
+                cbElemIndents.checked = true;
+                //Kindle settings
+                if(tbKinHLref != null){tbKinHLref.value = '#[[Kindle-Highlights]]';}
+                break;
+            case 1:
+                //Obsidian
+                tbElem.value = '[[Obsidian-Highlights]]';
+                tbElemBold.value = '**';
+                tbElemItalic.value = '_';
+                tbElemCode.value = '`';
+                cbElemHeaders.checked = false;
+                tbElemBullet.value = '';
+                cbElemIndents.checked = false;
+                //Kindle settings
+                if(tbKinHLref != null){tbKinHLref.value = '[[Kindle-Highlights]]';}
+                break;
+        }
+
+        selElem.value = 0;
+        tbSizeW.value = '20%';
+        tbSizeH.value = '30%';
+        cbElem1.checked = true;
+        cbElem2.checked = false;
+        tbElemPgTrunc.value = '';
+        if(tbKinHLref != null)
+        {
+            cbLoc.checked = true;
+            cbCol.checked = true;
+            cbColRef.checked = true;
+            selKindle.value = 0;
+        }
+        cbElemPgTitle.checked = true;
+
+        pageRef = tbElem.value;
+        pageTitle = textElem2.value;
+        sameBlock = Number(selElem.value);
+        sideWidth = tbSizeW.value;
+        sideHeight = tbSizeH.value;
+        formatBold = tbElemBold.value;
+        formatItalics = tbElemItalic.value;
+        formatCode = tbElemCode.value;
+        bHeaders = cbElemHeaders.checked;
+        formatBullets = tbElemBullet.value;
+        bIndents = cbElemIndents.checked;
+        pageTruncate = tbElemPgTrunc.value;
+        //Kindle settings
+        if(tbKinHLref != null)
+        {
+            kindleHLref = tbKinHLref.value;
+            bLocation = cbLoc.checked;
+            bColor = cbCol.checked;
+            bColorRef = cbColRef.checked;
+            kindleHLstructure = Number(selKindle.value);
+        }
+
+        //Save to local storage to keep persistent
+        setLocalStorageValue("pageRef", pageRef);
+        setLocalStorageValue("sameBlock", sameBlock);
+        setLocalStorageValue("sideWidth", sideWidth);
+        setLocalStorageValue("sideHeight", sideHeight);
+        setLocalStorageValue("formatBold", formatBold);
+        setLocalStorageValue("formatItalics", formatItalics);
+        setLocalStorageValue("formatCode", formatCode);
+        setLocalStorageValue("bHeaders", bHeaders);
+        setLocalStorageValue("formatBullets", formatBullets);
+        setLocalStorageValue("bIndents", bIndents);
+        setLocalStorageValue("pageTruncate", pageTruncate);
+        //Kindle settings
+        setLocalStorageValue("kindleHLref", kindleHLref);
+        setLocalStorageValue("bLocation", bLocation);
+        setLocalStorageValue("bColor", bColor);
+        setLocalStorageValue("bColorRef", bColorRef);
+        setLocalStorageValue("kindleHLstructure", kindleHLstructure);
+
+        //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+        //We already have the "cut" event listener set to run our code, so this should activate it
+        clickEvent = 1;
+        document.execCommand('cut');
+    });
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+
+    var butSave = createNewElement('button','Save','','background-color:Blue;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',formElem,'rmHLsave','rmHLsave');
+
+    butSave.addEventListener("click", function(){
+        var divElemMain = document.getElementById("rmHLmain");
+        var tbElem = document.getElementById("rmHLtb");
+        var textElem2 = document.getElementById("rmHLta2");
+        var selElem = document.getElementById("rmHLsel");
+        var tbSizeW = document.getElementById("rmHLtbSize");
+        var tbSizeH = document.getElementById("rmHLtbSize2");
+        var tbElemBold = document.getElementById("rmHLtbBold");
+        var tbElemItalic = document.getElementById("rmHLtbItalic");
+        var tbElemCode = document.getElementById("rmHLtbCode");
+        var cbElemHeaders = document.getElementById("rmHLcbHeaders")
+        var tbElemBullet = document.getElementById("rmHLtbBullet");
+        var cbElemIndents = document.getElementById("rmHLcbIndents")
+        var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
+        //Kindle settings
+        var tbKinHLref = document.getElementById("rmHLkingleTb1");
+        var cbLoc = document.getElementById("rmHLcbLoc");
+        var cbCol = document.getElementById("rmHLcbHlColor");
+        var cbColRef = document.getElementById("rmHLcbHlColorLink");
+        var selKindle = document.getElementById("rmHLkindleSel");
+
+        var butSave = document.getElementById("rmHLsave");
+
+        pageRef = tbElem.value;
+        pageTitle = textElem2.value;
+        sameBlock = Number(selElem.value);
+        sideWidth = tbSizeW.value;
+        sideHeight = tbSizeH.value;
+        formatBold = tbElemBold.value;
+        formatItalics = tbElemItalic.value;
+        formatCode = tbElemCode.value;
+        bHeaders = cbElemHeaders.checked;
+        formatBullets = tbElemBullet.value;
+        bIndents = cbElemIndents.checked;
+        pageTruncate = tbElemPgTrunc.value;
+        //Kindle settings
+        if(tbKinHLref != null)
+        {
+            kindleHLref = tbKinHLref.value;
+            bLocation = cbLoc.checked;
+            bColor = cbCol.checked;
+            bColorRef = cbColRef.checked;
+            kindleHLstructure = Number(selKindle.value);
+        }
+
+        //Save to local storage to keep persistent
+        setLocalStorageValue("pageRef", pageRef);
+        setLocalStorageValue("sameBlock", sameBlock);
+        setLocalStorageValue("sideWidth", sideWidth);
+        setLocalStorageValue("sideHeight", sideHeight);
+        setLocalStorageValue("formatBold", formatBold);
+        setLocalStorageValue("formatItalics", formatItalics);
+        setLocalStorageValue("formatCode", formatCode);
+        setLocalStorageValue("bHeaders", bHeaders);
+        setLocalStorageValue("formatBullets", formatBullets);
+        setLocalStorageValue("bIndents", bIndents);
+        setLocalStorageValue("pageTruncate", pageTruncate);
+        //Kindle settings
+        setLocalStorageValue("kindleHLref", kindleHLref);
+        setLocalStorageValue("bLocation", bLocation);
+        setLocalStorageValue("bColor", bColor);
+        setLocalStorageValue("bColorRef", bColorRef);
+        setLocalStorageValue("kindleHLstructure", kindleHLstructure);
+
+        //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+        //We already have the "cut" event listener set to run our code, so this should activate it
+        clickEvent = 1;
+        document.execCommand('cut');
+    });
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+    var spanElem1 = createNewElement('span','Important Links and Resources (v' + verNum + ')','','font-weight:bold;color:red;font-size:12px;line-height:normal;display:inline-block',formElem,'','');
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+    var link1 = createNewElement('a','Detailed Instructions and Shortcuts','','font-size:12px;line-height:normal',formElem,'','');
+    link1.href = 'https://github.com/GitMurf/roam-highlighter#how-to-use-the-highlighter';
+
+    formElem.appendChild(document.createElement('br'));
+    var link2 = createNewElement('a','Demos and Videos','','font-size:12px;line-height:normal',formElem,'','');
+    link2.href = 'https://github.com/GitMurf/roam-highlighter#demo-1---activate-the-highlighter-extension-and-perform-a-simple-highlight';
+
+    formElem.appendChild(document.createElement('br'));
+    var link3 = createNewElement('a','Report a Bug/Issue','','font-size:12px;line-height:normal',formElem,'','');
+    link3.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+
+    formElem.appendChild(document.createElement('br'));
+    var link4 = createNewElement('a','Submit an Idea or Feature Request','','font-size:12px;line-height:normal',formElem,'','');
+    link4.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+
+    formElem.appendChild(document.createElement('br'));
+    var link5 = createNewElement('a','Ask a Question','','font-size:12px;line-height:normal',formElem,'','');
+    link5.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+
+    formElem.appendChild(document.createElement('br'));
+    var link6 = createNewElement('a','Kindle Notes & Highlights','','font-size:12px;line-height:normal',formElem,'','');
+    link6.href = 'https://read.amazon.com/notebook';
+
+    var butMax = createNewElement('button','Expand','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'rmHLexpand','rmHLexpand');
+
+    butMax.addEventListener("click", function(){
+        var divElemMain = document.getElementById("rmHLmain");
+        var divTextElem = document.getElementById("rmHLdivText");
+        var butMax = document.getElementById("rmHLexpand");
+        var divSetElem = document.getElementById("rmHLdivSett");
+
+        if(butMax.innerHTML == "Expand")
+        {
+            divElemMain.style.width = "90%";
+            divElemMain.style.height = "80%";
+            butMax.innerHTML = 'Shrink';
+            divElemMain.style.opacity = "1";
+        }
+        else
+        {
+            if(divSetElem.style.display == "flex")
             {
-                var butExtractKindle = document.createElement('button');
-                    butExtractKindle.style.cssText = 'background-color:black;color:white;border-color:white;margin-left:30px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right';
-                    butExtractKindle.innerHTML = 'Get Kindle Highlights';
-                    butExtractKindle.name = 'rmHLkindle';
-                    butExtractKindle.id = 'rmHLkindle';
-                    formElem.appendChild(butExtractKindle);
-
-                    butExtractKindle.addEventListener("click", function(){
-                        kindleClickEvent = 1;
-                        document.execCommand('cut');
-                    });
-            }
-
-            var butClearAll = document.createElement('button');
-                butClearAll.style.cssText = 'background-color:black;color:white;border-color:white;margin-left:15px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right';
-                butClearAll.innerHTML = 'Clear All Highlights';
-                butClearAll.name = 'rmHLclear';
-                butClearAll.id = 'rmHLclear';
-                formElem.appendChild(butClearAll);
-
-                butClearAll.addEventListener("click", function(){
-                    removeAllHighlights();
-                });
-
-            formElem.appendChild(document.createElement('br'));
-            var tbElem = document.createElement('input');
-                tbElem.value = pageRef;
-                tbElem.id = 'rmHLtb';
-                tbElem.style.cssText = 'padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
-                tbElem.name = "rmHLtb";
-                tbElem.placeholder = "#[[Roam-Highlights]]";
-                formElem.appendChild(tbElem);
-            if(getPage.includes('read.amazon.com/notebook'))
-            {
-                    //Text box for Kindle-highlights tag
-                    var labelKindle4 = document.createElement('label');
-                        labelKindle4.innerHTML = 'Highlights #Tag: ';
-                        labelKindle4.htmlFor = "rmHLkingleTb1";
-                        labelKindle4.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline;margin-right:5px;vertical-align:middle;padding:0px;';
-                        divKindle.appendChild(labelKindle4);
-
-                    //divKindle.appendChild(document.createElement('br'));
-                    var tbKindle1 = document.createElement('input');
-                        tbKindle1.value = kindleHLref;
-                        tbKindle1.id = 'rmHLkingleTb1';
-                        tbKindle1.style.cssText = 'padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;width:60%';
-                        tbKindle1.name = "rmHLkingleTb1";
-                        tbKindle1.placeholder = "#[[Kindle-highlights]]";
-                        divKindle.appendChild(tbKindle1);
-
-                    divKindle.appendChild(document.createElement('br'));
-                    divKindle.appendChild(document.createElement('br'));
-                    var labelKindle1 = document.createElement('label');
-                        labelKindle1.innerHTML = 'Include:';
-                        labelKindle1.style.cssText = 'margin-right:10px;margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle1);
-
-                    var cbElem4 = document.createElement('input');
-                        cbElem4.setAttribute("type", "checkbox");
-                        cbElem4.style.cssText = 'vertical-align:inherit;font-size:12px;line-height:normal';
-                        cbElem4.id = 'rmHLcbLoc';
-                        cbElem4.name = 'rmHLcbLoc';
-                        if(bLocation){cbElem4.checked = true;}else{cbElem4.checked = false;};
-                        divKindle.appendChild(cbElem4);
-                    var labelKindle3 = document.createElement('label');
-                        labelKindle3.innerHTML = 'Location';
-                        labelKindle3.htmlFor = "rmHLcbLoc";
-                        labelKindle3.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle3);
-
-                    var cbElem3 = document.createElement('input');
-                        cbElem3.setAttribute("type", "checkbox");
-                        cbElem3.style.cssText = 'vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px';
-                        cbElem3.id = 'rmHLcbHlColor';
-                        cbElem3.name = 'rmHLcbHlColor';
-                        if(bColor){cbElem3.checked = true;}else{cbElem3.checked = false;};
-                        divKindle.appendChild(cbElem3);
-                    var labelKindle2 = document.createElement('label');
-                        labelKindle2.innerHTML = 'HL Color';
-                        labelKindle2.htmlFor = "rmHLcbHlColor";
-                        labelKindle2.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle2);
-
-                    var cbElem5 = document.createElement('input');
-                        cbElem5.setAttribute("type", "checkbox");
-                        cbElem5.style.cssText = 'vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px';
-                        cbElem5.id = 'rmHLcbHlColorLink';
-                        cbElem5.name = 'rmHLcbHlColorLink';
-                        if(bColorRef){cbElem5.checked = true;}else{cbElem5.checked = false;};
-                        divKindle.appendChild(cbElem5);
-                    var labelKindle5 = document.createElement('label');
-                        labelKindle5.innerHTML = 'HL Color #[[Ref]]';
-                        labelKindle5.htmlFor = "rmHLcbHlColorLink";
-                        labelKindle5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle5);
-
-                    //Selection combobox for where to have the HL Color in relation to the actual highlight
-                    divKindle.appendChild(document.createElement('br'));
-                    divKindle.appendChild(document.createElement('br'));
-                    var labelKindle6 = document.createElement('label');
-                        labelKindle6.innerHTML = 'Structure of Highlights, Color, Location and Notes';
-                        labelKindle6.htmlFor = "rmHLkindleSel";
-                        labelKindle6.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                        divKindle.appendChild(labelKindle6);
-                    divKindle.appendChild(document.createElement('br'));
-                    var selKindle = document.createElement('select');
-                        selKindle.options.add( new Option("HL > -Color -Loc -Note","0", true, true) );
-                        selKindle.options.add( new Option("HL #Color > -Loc -Note","1") );
-                        selKindle.options.add( new Option("Color > -HL -Loc -Note","2") );
-                        selKindle.options.add( new Option("Color > HL > -Loc -Note","3") );
-                        selKindle.style.cssText = 'padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer';
-                        selKindle.id = 'rmHLkindleSel';
-                        selKindle.name = 'rmHLkindleSel';
-                        selKindle.value = kindleHLstructure;
-                        divKindle.appendChild(selKindle);
-
-                        divKindle.appendChild(document.createElement('br'));
-                        divKindle.appendChild(document.createElement('br'));
-                        var labelKindle7 = document.createElement('label');
-                            labelKindle7.innerHTML = 'HL = Highlights from Kindle<br>> = Nesting child bullet<br>- = Bullet/block<br>#Color --> Example: #[[Yellow highlight]]';
-                            labelKindle7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:normal;display:inline-block';
-                            divKindle.appendChild(labelKindle7);
-
-                        divKindle.appendChild(document.createElement('br'));
-                        var labelKindle8 = document.createElement('label');
-                            labelKindle8.innerHTML = '*Must Save changes before "Getting Highlights"';
-                            labelKindle8.style.cssText = 'font-size:12px;line-height:normal;color:red;font-weight:bold;display:inline-block';
-                            divKindle.appendChild(labelKindle8);
-                //divKindle.style.display = "none";
-            }
-            formElem.appendChild(document.createElement('br'));
-            formElem.appendChild(document.createElement('br'));
-            var labelElem2 = document.createElement('label');
-                labelElem2.innerHTML = 'Page Title for Alias Link';
-                labelElem2.htmlFor = "rmHLta2";
-                labelElem2.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem2);
-            formElem.appendChild(document.createElement('br'));
-            var textElem2 = document.createElement('textarea');
-                textElem2.value = pageTitle;
-                textElem2.id = 'rmHLta2';
-                textElem2.style.cssText = 'width:90%;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px';
-                textElem2.rows = 3;
-                textElem2.name = "rmHLta2";
-                //textElem2.placeholder = "#[[Roam-Highlights]]";
-                formElem.appendChild(textElem2);
-
-            //5 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
-                //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
-                //Set to 1 if you want line breaks (e.g., each paragraph) to create new bullets, but nested underneath the first "paragraph" in the highlight
-                //Set to 2 if you want line breaks (e.g., each paragraph) to be in same bullet with Ctrl + Shift "soft line breaks" like Ctrl+Shift+V does in browser pasting
-                //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
-            formElem.appendChild(document.createElement('br'));
-            formElem.appendChild(document.createElement('br'));
-            var labelElem3 = document.createElement('label');
-                labelElem3.innerHTML = 'How to handle Line Breaks within each Highlight';
-                labelElem3.htmlFor = "rmHLsel";
-                labelElem3.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem3);
-            formElem.appendChild(document.createElement('br'));
-            var selElem = document.createElement('select');
-                selElem.options.add( new Option("[DEFAULT] New bullets same level","0", true, true) );
-                selElem.options.add( new Option("Nest under first Line Break","1") );
-                selElem.options.add( new Option("Ctrl + Shift + V same bullet","2") );
-                selElem.options.add( new Option("Replace with single space","3") );
-                selElem.options.add( new Option("Remove line breaks","4") );
-                selElem.style.cssText = 'padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer';
-                selElem.id = 'rmHLsel';
-                selElem.name = 'rmHLsel';
-                formElem.appendChild(selElem);
-
-            formElem.appendChild(document.createElement('br'));
-            formElem.appendChild(document.createElement('br'));
-            var labelElem7 = document.createElement('label');
-                labelElem7.innerHTML = 'Side Window Size (width minimum: 300px or 15%)';
-                labelElem7.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                //labelElem7.htmlFor = "rmHLtbSize";
-                formElem.appendChild(labelElem7);
-            formElem.appendChild(document.createElement('br'));
-            var labelElem8 = document.createElement('label');
-                labelElem8.innerHTML = 'W:';
-                labelElem8.htmlFor = "rmHLtbSize";
-                labelElem8.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem8);
-            var tbSizeElem = document.createElement('input');
-                tbSizeElem.value = sideWidth;
-                tbSizeElem.id = 'rmHLtbSize';
-                tbSizeElem.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
-                tbSizeElem.name = "rmHLtbSize";
-                tbSizeElem.placeholder = "17%";
-                formElem.appendChild(tbSizeElem);
-            var labelElem9 = document.createElement('label');
-                labelElem9.innerHTML = 'H:';
-                labelElem9.htmlFor = "rmHLtbSize2";
-                labelElem9.style.cssText = 'font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem9);
-            var tbSizeElem2 = document.createElement('input');
-                tbSizeElem2.value = sideHeight;
-                tbSizeElem2.id = 'rmHLtbSize2';
-                tbSizeElem2.style.cssText = 'padding-left:5px;text-align:center;width:50px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
-                tbSizeElem2.name = "rmHLtbSize2";
-                tbSizeElem2.placeholder = "20%";
-                formElem.appendChild(tbSizeElem2);
-
-            formElem.appendChild(document.createElement('br'));
-            formElem.appendChild(document.createElement('br'));
-            var labelElem4 = document.createElement('label');
-                labelElem4.innerHTML = 'Show the Clipboard in:';
-                labelElem4.style.cssText = 'margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                //labelElem4.htmlFor = "rmHLcbType1";
-                formElem.appendChild(labelElem4);
-
-            //formElem.appendChild(document.createElement('br'));
-            //formElem.appendChild(document.createElement('br'));
-            var cbElem1 = document.createElement('input');
-                cbElem1.setAttribute("type", "checkbox");
-                cbElem1.style.cssText = 'vertical-align:middle;font-size:12px;line-height:normal';
-                cbElem1.id = 'rmHLcbType1';
-                cbElem1.name = 'rmHLcbType1';
-                cbElem1.checked = true;
-                formElem.appendChild(cbElem1);
-            var labelElem5 = document.createElement('label');
-                labelElem5.innerHTML = 'Plain Text';
-                labelElem5.htmlFor = "rmHLcbType1";
-                labelElem5.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem5);
-
-            var cbElem2 = document.createElement('input');
-                cbElem2.setAttribute("type", "checkbox");
-                cbElem2.style.cssText = 'vertical-align:middle;margin-left:20px;font-size:12px;line-height:normal';
-                cbElem2.id = 'rmHLcbType2';
-                cbElem2.name = 'rmHLcbType2';
-                cbElem2.checked = false;
-                formElem.appendChild(cbElem2);
-            var labelElem6 = document.createElement('label');
-                labelElem6.innerHTML = 'HTML';
-                labelElem6.htmlFor = "rmHLcbType2";
-                labelElem6.style.cssText = 'margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block';
-                formElem.appendChild(labelElem6);
-
-            formElem.appendChild(document.createElement('br'));
-            formElem.appendChild(document.createElement('br'));
-            var butSave = document.createElement('button');
-                butSave.style.cssText = 'background-color:Blue;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-                butSave.innerHTML = 'Save';
-                butSave.name = 'rmHLsave';
-                butSave.id = 'rmHLsave';
-                formElem.appendChild(butSave);
-
-                butSave.addEventListener("click", function(){
-                    var divElemMain = document.getElementById("rmHLmain");
-                    var tbElem = document.getElementById("rmHLtb");
-                    var textElem2 = document.getElementById("rmHLta2");
-                    var selElem = document.getElementById("rmHLsel");
-                    var tbSizeW = document.getElementById("rmHLtbSize");
-                    var tbSizeH = document.getElementById("rmHLtbSize2");
-                    //Kindle settings
-                    var tbKinHLref = document.getElementById("rmHLkingleTb1");
-                    var cbLoc = document.getElementById("rmHLcbLoc");
-                    var cbCol = document.getElementById("rmHLcbHlColor");
-                    var cbColRef = document.getElementById("rmHLcbHlColorLink");
-                    var selKindle = document.getElementById("rmHLkindleSel");
-
-                    var butSave = document.getElementById("rmHLsave");
-
-                    pageRef = tbElem.value;
-                    pageTitle = textElem2.value;
-                    sameBlock = Number(selElem.value);
-                    sideWidth = tbSizeW.value;
-                    sideHeight = tbSizeH.value;
-                    //Kindle settings
-                    if(tbKinHLref != null)
-                    {
-                        kindleHLref = tbKinHLref.value;
-                        bLocation = cbLoc.checked;
-                        bColor = cbCol.checked;
-                        bColorRef = cbColRef.checked;
-                        kindleHLstructure = Number(selKindle.value);
-                    }
-
-                    //Save to local storage to keep persistent
-                    setLocalStorageValue("pageRef", pageRef);
-                    setLocalStorageValue("sameBlock", sameBlock);
-                    setLocalStorageValue("sideWidth", sideWidth);
-                    setLocalStorageValue("sideHeight", sideHeight);
-                    //Kindle settings
-                    setLocalStorageValue("kindleHLref", kindleHLref);
-                    setLocalStorageValue("bLocation", bLocation);
-                    setLocalStorageValue("bColor", bColor);
-                    setLocalStorageValue("bColorRef", bColorRef);
-                    setLocalStorageValue("kindleHLstructure", kindleHLstructure);
-
-                    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
-                    //We already have the "cut" event listener set to run our code, so this should activate it
-                    clickEvent = 1;
-                    document.execCommand('cut');
-                });
-
-                formElem.appendChild(document.createElement('br'));
-                formElem.appendChild(document.createElement('br'));
-                var spanElem1 = document.createElement('span');
-                    spanElem1.innerHTML = 'Important Links and Resources';
-                    spanElem1.style.cssText = 'font-weight:bold;color:red;font-size:12px;line-height:normal;display:inline-block';
-                    formElem.appendChild(spanElem1);
-
-                formElem.appendChild(document.createElement('br'));
-                formElem.appendChild(document.createElement('br'));
-                var link1 = document.createElement('a');
-                    link1.innerText = 'Detailed Instructions and Shortcuts';
-                    link1.href = 'https://github.com/GitMurf/roam-highlighter#how-to-use-the-highlighter';
-                    link1.style.cssText = 'font-size:12px;line-height:normal';
-                    //link1.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link1);
-
-                formElem.appendChild(document.createElement('br'));
-                var link2 = document.createElement('a');
-                    link2.innerText = 'Demos and Videos';
-                    link2.href = 'https://github.com/GitMurf/roam-highlighter#demo-1---activate-the-highlighter-extension-and-perform-a-simple-highlight';
-                    link2.style.cssText = 'font-size:12px;line-height:normal';
-                    //link2.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link2);
-
-                formElem.appendChild(document.createElement('br'));
-                var link3 = document.createElement('a');
-                    link3.innerText = 'Report a Bug/Issue';
-                    link3.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
-                    link3.style.cssText = 'font-size:12px;line-height:normal';
-                    //link3.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link3);
-
-                formElem.appendChild(document.createElement('br'));
-                var link4 = document.createElement('a');
-                    link4.innerText = 'Submit an Idea or Feature Request';
-                    link4.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
-                    link4.style.cssText = 'font-size:12px;line-height:normal';
-                    //link4.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link4);
-
-                formElem.appendChild(document.createElement('br'));
-                var link5 = document.createElement('a');
-                    link5.innerText = 'Ask a Question';
-                    link5.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
-                    link5.style.cssText = 'font-size:12px;line-height:normal';
-                    //link5.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link5);
-
-                formElem.appendChild(document.createElement('br'));
-                var link6 = document.createElement('a');
-                    link6.innerText = 'Kindle Notes & Highlights';
-                    link6.href = 'https://read.amazon.com/notebook';
-                    link6.style.cssText = 'font-size:12px;line-height:normal';
-                    //link6.style.cssText = 'font-weight:bold;';
-                    formElem.appendChild(link6);
-
-    var butSett = document.createElement('button');
-        butSett.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-        butSett.innerHTML = 'Settings';
-        butSett.id = 'rmHLsettings';
-        divButtonsElem.appendChild(butSett);
-
-        butSett.addEventListener("click", function(){
-            var divElemMain = document.getElementById("rmHLmain");
-            var divSetElem = document.getElementById("rmHLdivSett");
-            var divTextElem = document.getElementById("rmHLdivText");
-            var tbElem = document.getElementById("rmHLtb");
-            var textElem2 = document.getElementById("rmHLta2");
-            var selElem = document.getElementById("rmHLsel");
-            var butSett = document.getElementById("rmHLsettings");
-            var butMax = document.getElementById("rmHLexpand");
-            var butWrap = document.getElementById("rmHLwrap");
-
-            if(divSetElem.style.display == "none")
-            {
-                divElemMain.style.opacity = "1";
-                divTextElem.style.width = "50%";
-                divSetElem.style.display = "block";
-                tbElem.value = pageRef;
-                textElem2.value = pageTitle;
-                selElem.value = sameBlock;
-                if(butMax.innerHTML == "Expand"){butMax.click();}
-            }
-            else
-            {
-                //divElemMain.style.opacity = "0.8";
                 divTextElem.style.width = "100%";
                 divSetElem.style.display = "none";
-                //butMax.click();
             }
-        });
 
-    var butWrap = document.createElement('button');
-        butWrap.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-        butWrap.innerHTML = 'Wrap';
-        butWrap.id = 'rmHLwrap';
-        divButtonsElem.appendChild(butWrap);
+            divElemMain.style.width = sideWidth;
+            divElemMain.style.height = sideHeight;
 
-        butWrap.addEventListener("click", function(){
-            var textInput = document.getElementById("rmHLtextArea");
-            var butWrap = document.getElementById("rmHLwrap");
+            butMax.innerHTML = 'Expand';
+            divElemMain.style.opacity = "0.8";
+        }
+    });
 
-            if(butWrap.innerHTML == "Wrap")
-            {
-                //textInput.style.whiteSpace = "normal";
-                //Changed for firefox compatibility
-                textInput.style.whiteSpace = "pre-wrap";
-                butWrap.innerHTML = 'Un-Wrap';
-            }
-            else
-            {
-                textInput.style.whiteSpace = "pre";
-                butWrap.innerHTML = 'Wrap';
-            }
-        });
+    var butHide = createNewElement('button','Hide','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'','');
 
-    var butHide = document.createElement('button');
-        butHide.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-        butHide.innerHTML = 'Hide';
-        divButtonsElem.appendChild(butHide);
+    butHide.addEventListener("click", function(){
+        var divElemMain = document.getElementById("rmHLmain");
+        divElemMain.style.display = "none";
+        //divElemMain.style.display = "block";
+        showWindow = 0;
+        setLocalStorageValue("showWindow", showWindow);
+    });
 
-        butHide.addEventListener("click", function(){
-            var divElemMain = document.getElementById("rmHLmain");
-            divElemMain.style.display = "none";
-            //divElemMain.style.display = "block";
-            showWindow = 0;
-            setLocalStorageValue("showWindow", showWindow);
-        });
+    var butWrap = createNewElement('button','Wrap','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'rmHLwrap','rmHLwrap');
 
-    var butMax = document.createElement('button');
-        butMax.style.cssText = 'float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px';
-        butMax.innerHTML = 'Expand';
-        butMax.id = 'rmHLexpand';
-        divButtonsElem.appendChild(butMax);
+    butWrap.addEventListener("click", function(){
+        var textInput = document.getElementById("rmHLtextArea");
+        var butWrap = document.getElementById("rmHLwrap");
 
-        butMax.addEventListener("click", function(){
-            var divElemMain = document.getElementById("rmHLmain");
-            var divTextElem = document.getElementById("rmHLdivText");
-            var butMax = document.getElementById("rmHLexpand");
-            var divSetElem = document.getElementById("rmHLdivSett");
+        if(butWrap.innerHTML == "Wrap")
+        {
+            //textInput.style.whiteSpace = "normal";
+            //Changed for firefox compatibility
+            textInput.style.whiteSpace = "pre-wrap";
+            butWrap.innerHTML = 'Un-Wrap';
+        }
+        else
+        {
+            textInput.style.whiteSpace = "pre";
+            butWrap.innerHTML = 'Wrap';
+        }
+    });
 
-            if(butMax.innerHTML == "Expand")
-            {
-                divElemMain.style.width = "90%";
-                divElemMain.style.height = "80%";
-                butMax.innerHTML = 'Shrink';
-                divElemMain.style.opacity = "1";
-            }
-            else
-            {
-                if(divSetElem.style.display == "block")
-                {
-                    divTextElem.style.width = "100%";
-                    divSetElem.style.display = "none";
-                }
+    var butSett = createNewElement('button','Settings','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'rmHLsettings','rmHLsettings');
 
-                divElemMain.style.width = sideWidth;
-                divElemMain.style.height =sideHeight;
+    butSett.addEventListener("click", function(){
+        var divElemMain = document.getElementById("rmHLmain");
+        var divSetElem = document.getElementById("rmHLdivSett");
+        var divTextElem = document.getElementById("rmHLdivText");
+        var tbElem = document.getElementById("rmHLtb");
+        var textElem2 = document.getElementById("rmHLta2");
+        var selElem = document.getElementById("rmHLsel");
+        var butSett = document.getElementById("rmHLsettings");
+        var butMax = document.getElementById("rmHLexpand");
+        var butWrap = document.getElementById("rmHLwrap");
 
-                butMax.innerHTML = 'Expand';
-                divElemMain.style.opacity = "0.8";
-            }
-        });
+        if(divSetElem.style.display == "none")
+        {
+            divElemMain.style.opacity = "1";
+            divTextElem.style.width = "50%";
+            divSetElem.style.display = "flex";
+            tbElem.value = pageRef;
+            textElem2.value = pageTitle;
+            selElem.value = sameBlock;
+            if(butMax.innerHTML == "Expand"){butMax.click();}
+        }
+        else
+        {
+            //divElemMain.style.opacity = "0.8";
+            divTextElem.style.width = "100%";
+            divSetElem.style.display = "none";
+            //butMax.click();
+        }
+    });
 
-    var textInput = document.createElement("textarea");
-        textInput.name = "textAreaInput";
-        textInput.style.cssText = 'width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid';
-        textInput.id = 'rmHLtextArea';
-        textInput.value = `
+    var textInput = createNewElement('textarea','','','width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',divTextElem,'rmHLtextArea','textAreaInput');
+    textInput.value = `
 Roam-highlighter Shortcut Keys (v${verNum})
 *All settings are now saved tab to tab, session to session
 
@@ -734,9 +859,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
 \t- Adds [[Double Brackets]] around selection for Roam "Page Linking"
 `;
 
-    divTextElem.appendChild(textInput);
-    document.body.appendChild(divElem);
-
     function getKindleHighlights(event)
     {
         if(pageTitle == 'Kindle: Your Notes and Highlights')
@@ -752,6 +874,17 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var coverImg = "";
             var amazonLink = "";
             var hlCtr = 0;
+
+            var initIndentAmount = '    ';
+            var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
+            if(cbElemPgTitle.checked == false){initIndentAmount = '';}
+
+            var indentAmount = '    ';
+            if(bIndents == false)
+            {
+                indentAmount = '';
+                initIndentAmount = '';
+            }
             //var titleElem = document.getElementById('');
             //var bookTitle = "";
             for(var i = 0; i < myHighlights.length; i++)
@@ -763,24 +896,39 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 {
                     if(curElement.nodeName == 'H3') //Title
                     {
-                        textString += curText + '\n';
-                        textString += '    - Title:: ' + curText + '\n';
-                        htmlString += '<li>' + curText + '</li><ul>';
+                        //Hack right now until get a real checkbox for kindle specific nesting in parent title
+                        if(cbElemPgTitle.checked)
+                        {
+                            if(bIndents){textString += curText + '\n';}
+                            htmlString += '<li>' + curText + '</li><ul>';
+                        }
+                        else
+                        {
+                            htmlString += '<ul>';
+                        }
+
+                        textString += initIndentAmount + formatBullets + 'Title: ' + curText + '\n';
                         htmlString += '<li>Title:: ' + curText + '</li>';
                     }
                     if(curElement.nodeName == 'P' && curElement.classList.contains("a-color-secondary")) //Author
                     {
-                        //textString += '    - Author:: ' + '#[[' + curText + ']]' + '\n';
-                        textString += '    - Author:: ' + curText + '\n';
-                        textString += '    - Amazon-store:: ' + amazonLink + '\n';
-                        textString += '    - ' + coverImg + '\n';
-                        textString += '    - ' + kindleHLref + '\n';
+                        textString += initIndentAmount + formatBullets + 'Author: ' + '[[' + curText + ']]' + '\n';
+                        //textString += initIndentAmount + formatBullets + 'Author: ' + curText + '\n';
+                        textString += initIndentAmount + formatBullets + 'Amazon-store: ' + amazonLink + '\n';
+                        textString += initIndentAmount + formatBullets + coverImg + '\n';
+                        if(formatBullets == ''){textString += '\n';}
 
-                        //htmlString += '<li>Author:: ' + '#[[' + curText + ']]' + '</li>';
-                        htmlString += '<li>Author:: ' + curText + '</li>';
+                        htmlString += '<li>Author:: ' + '[[' + curText + ']]' + '</li>';
+                        //htmlString += '<li>Author:: ' + curText + '</li>';
                         htmlString += '<li>Amazon-store:: ' + amazonLink + '</li>';
                         htmlString += '<li>' + coverImg + '</li>';
-                        htmlString += '<li>' + kindleHLref + '</li><ul>';
+
+                        if(kindleHLref != '')
+                        {
+                            textString += initIndentAmount + formatBullets + kindleHLref + '\n';
+                            if(formatBullets == ''){textString += '\n';}
+                            htmlString += '<li>' + kindleHLref + '</li><ul>';
+                        }
                     }
                     if(curElement.nodeName == 'IMG' && curElement.classList.contains("kp-notebook-cover-image-border")) //Cover art
                     {
@@ -794,38 +942,40 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         if(hlCtr > 0)
                         {
                             if(kindleHLstructure == 3){htmlString += '</ul></ul>';}else{htmlString += '</ul>';}
+                            if(formatBullets == ''){textString += '\n';}
                         }
 
                         switch (kindleHLstructure)
                         {
                             case 0:
-                                textString += '        - ' + curText + '\n';
-                                if(bColor){textString += '            - ' + hlColor + '\n';}
-                                if(bLocation){textString += '            - ' + hlLocation + '\n';}
+                                textString += initIndentAmount + indentAmount + formatBullets + curText + '\n';
+                                if(bColor){textString += initIndentAmount + indentAmount + indentAmount + formatBullets + hlColor + '\n';}
+                                if(bLocation){textString += initIndentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + curText + '</li><ul>';
                                 if(bColor){htmlString += '<li>' + hlColor + '</li>';}
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                             case 1:
-                                textString += '        - ' + curText + ' ' + hlColor + '\n';
-                                if(bLocation){textString += '            - ' + hlLocation + '\n';}
+                                textString += initIndentAmount + indentAmount + formatBullets + curText
+                                if(bColor){textString += ' ' + hlColor + '\n';}else{textString += '\n';}
+                                if(bLocation){textString += initIndentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + curText + ' ' + hlColor + '</li><ul>';
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                             case 2:
-                                textString += '        - ' + hlColor + '\n';
-                                if(bColor){textString += '            - ' + curText + '\n';}
-                                if(bLocation){textString += '            - ' + hlLocation + '\n';}
+                                textString += initIndentAmount + indentAmount + formatBullets + hlColor + '\n';
+                                textString += initIndentAmount + indentAmount + indentAmount + formatBullets + curText + '\n';
+                                if(bLocation){textString += initIndentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + hlColor + '</li><ul>';
-                                if(bColor){htmlString += '<li>' + curText + '</li>';}
+                                htmlString += '<li>' + curText + '</li>';
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                             case 3:
-                                textString += '        - ' + hlColor + '\n';
-                                if(bColor){textString += '            - ' + curText + '\n';}
-                                if(bLocation){textString += '                - ' + hlLocation + '\n';}
+                                textString += initIndentAmount + indentAmount + formatBullets + hlColor + '\n';
+                                textString += initIndentAmount + indentAmount + indentAmount + formatBullets + curText + '\n';
+                                if(bLocation){textString += initIndentAmount + indentAmount + indentAmount + indentAmount + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + hlColor + '</li><ul>';
-                                if(bColor){htmlString += '<li>' + curText + '</li><ul>';}
+                                htmlString += '<li>' + curText + '</li><ul>';
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                         }
@@ -837,19 +987,19 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         //.split("[")
                         tmpString = curText.split(" | ");
                         hlColor = tmpString[0].trim();
-                        if(bColorRef){hlColor = '#[[' + hlColor + ']]';}
+                        if(bColorRef){hlColor = '[[' + hlColor + ']]';}
                         hlLocation = tmpString[1].trim();
                     }
                     if(curElement.id == 'note') //Note
                     {
                         if(kindleHLstructure == 3)
                         {
-                            textString += '                - Note: ' + curText + '\n';
+                            textString += initIndentAmount + indentAmount + indentAmount + indentAmount + formatBullets + 'Note: ' + curText + '\n';
                             htmlString += '<li>Note: ' + curText + '</li>';
                         }
                         else
                         {
-                            textString += '            - Note: ' + curText + '\n';
+                            textString += initIndentAmount + indentAmount + indentAmount + formatBullets + 'Note: ' + curText + '\n';
                             htmlString += '<li>Note: ' + curText + '</li>';
                         }
                     }
@@ -981,9 +1131,9 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
         var origEachHighlight = eachHighlight;
 
-        if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = '**' + eachHighlight + '**';}
-        if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = '__' + eachHighlight + '__';}
-        if(parNodeName == "CODE"){eachHighlight = "`" + eachHighlight + "`";}
+        if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = formatBold + eachHighlight + formatBold;}
+        if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = formatItalics + eachHighlight + formatItalics;}
+        if(parNodeName == "CODE"){eachHighlight = formatCode + eachHighlight + formatCode;}
         //if(origEachHighlight == parElemText || origEachHighlight == parParElemText || origEachHighlight == parParParElemText)
         //{
             if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3" || parParNodeName == "H1" || parParNodeName == "H2" || parParNodeName == "H3" || parParParNodeName == "H1" || parParParNodeName == "H2" || parParParNodeName == "H3")
@@ -1175,9 +1325,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
     function updateClipboard(event) {
+        var pageTitle2 = pageTitle;
+        if(pageTruncate != '')
+        {
+            pageTitle2 = pageTitle2.split(pageTruncate)[0].trim();
+        }
         //Get page title and URL and put in Roam format [Page Title](URL)
-        pageTitle = pageTitle.split("[").join("(").split("]").join(")");
-        var reference = `[${pageTitle}](${location.href}) ${pageRef}`;
+        pageTitle2 = pageTitle2.split("[").join("(").split("]").join(")");
+        var reference = `[${pageTitle2}](${location.href}) ${pageRef}`;
         reference = reference.trim();
         if(debugMode != 0){writeToConsole('reference: ' + reference);}
 
@@ -1274,9 +1429,9 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 writeToConsole('lastMainSpanText: ' + lastMainSpanText);
                             }
                             //first try to get rid of ** or __ or ` for bold or italics or code since can't format a page link
-                            var replaceLastText = lastMainSpanText.replace('**' + newHighlight + '**', newHighlight);
-                            replaceLastText = replaceLastText.replace('__' + newHighlight + '__', newHighlight);
-                            replaceLastText = replaceLastText.replace('`' + newHighlight + '`', newHighlight);
+                            var replaceLastText = lastMainSpanText.replace(formatBold + newHighlight + formatBold, newHighlight);
+                            replaceLastText = replaceLastText.replace(formatItalics + newHighlight + formatItalics, newHighlight);
+                            replaceLastText = replaceLastText.replace(formatCode + newHighlight + formatCode, newHighlight);
                             replaceLastText = replaceLastText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
                             if(debugMode != 0)
                             {
@@ -1338,7 +1493,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 {
                     tempString = eachHighlight.trim().replace(/(\r\n|\n|\r)/gm," ");
                     tempString = tempString.replace(/\s+/g," ");
-                    plainText = `\t- ${tempString.trim()}\n`;
+                    plainText = `\t${formatBullets}${tempString.trim()}\n`;
                     htmlString = `<li>${tempString.trim()}</li>`;
                 }
             }
@@ -1349,7 +1504,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 {
                     tempString = eachHighlight.trim().replace(/(\r\n|\n|\r)/gm,"");
                     tempString = tempString.replace(/\s+/g,"");
-                    plainText = `\t- ${tempString.trim()}\n`;
+                    plainText = `\t${formatBullets}${tempString.trim()}\n`;
                     htmlString = `<li>${tempString.trim()}</li>`;
                 }
             }
@@ -1371,20 +1526,20 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         switch (sameBlock)
                         {
                             case 0:
-                                plainText += `\t- ${eachLine.trim()}\n`;
+                                plainText += `\t${formatBullets}${eachLine.trim()}\n`;
                                 htmlString += `<li>${eachLine.trim()}</li>`;
                                 break;
                             case 1:
                                 if(x > 0)
                                 {
                                     //Nested under the first bullet/linebreak from the highlight
-                                    plainText += `\t\t- ${eachLine.trim()}\n`;
+                                    plainText += `\t\t${formatBullets}${eachLine.trim()}\n`;
                                     htmlString += `<li>${eachLine.trim()}</li>`;
                                 }
                                 else
                                 {
                                     //First line which will go in parent bullet that the rest of the highlight will go under
-                                    plainText += `\t- ${eachLine.trim()}\n`;
+                                    plainText += `\t${formatBullets}${eachLine.trim()}\n`;
                                     if(lineBreaks.length > 1){htmlString += `<li>${eachLine.trim()}<ul>`;}else{htmlString += `<li>${eachLine.trim()}</li>`;}
                                 }
                                 break;
@@ -1399,13 +1554,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 else
                                 {
                                     //First line
-                                    plainText += `\t- ${eachLine.trim()}\n`;
+                                    plainText += `\t${formatBullets}${eachLine.trim()}\n`;
                                     if(lineBreaks.length > 1){htmlString += `<li>${eachLine.trim()}`;}else{htmlString += `<li>${eachLine.trim()}</li>`;}
                                 }
                                 break;
                             default:
-                                plainText += `\t- ${eachLine.trim()}\n`;
-                                htmlString += `\t- ${eachLine.trim()}\n`;
+                                plainText += `\t${formatBullets}${eachLine.trim()}\n`;
+                                htmlString += `\t${formatBullets}${eachLine.trim()}\n`;
                         }
                         lineCtr++
                     }
@@ -1430,14 +1585,21 @@ Roam-highlighter Shortcut Keys (v${verNum})
             //Using Split/Join allows to replace multiple instances of the characters you are looking to replace
             plainText = plainText.split(")]]").join("^)^]^");
             htmlString = htmlString.split(")]]").join("^)^]^");
+            //Account for a parenthesis after a [page](URL) which causes a double )) which we replace below to avoid block references in Roam
+            if(htmlString.indexOf("((") == -1 && htmlString.indexOf("))") > -1)
+            {
+                plainText = plainText.split("))").join("^)^)^");
+                htmlString = htmlString.split("))").join("^)^)^");
+            }
 
-            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]").split("||ul-one||").join("").split("||ul-two||").join("").split("||ul-three||").join("").split("||ul-four||").join("").split(":**__").join(":** __").split(":****").join(":** **");
-            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("^)^]^").join(")]]").split(":**__").join(":** __").split(":****").join(":** **");
+            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]").split("||ul-one||").join("").split("||ul-two||").join("").split("||ul-three||").join("").split("||ul-four||").join("").split(":**__").join(":** __").split(":****").join(":** **").split("^)^)^").join("))");
+            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("^)^]^").join(")]]").split(":**__").join(":** __").split(":****").join(":** **").split("^)^)^").join("))");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
         }
 
+        var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
         //Check if no highlights and just want the page name in Roam link format [Page Title](URL)
         if(plainConcatHighlights == "" || htmlConcatHighlights == "")
         {
@@ -1445,10 +1607,19 @@ Roam-highlighter Shortcut Keys (v${verNum})
             plainConcatHighlights = reference;
             htmlConcatHighlights = reference;
         }
-        else {
+        else
+        {
             var bOnlyPageRef = false;
-            plainConcatHighlights = '- ' + reference + '\n' + plainConcatHighlights;
-            htmlConcatHighlights = '<li>' + reference + '</li><ul>' + htmlConcatHighlights;
+
+            if(cbElemPgTitle.checked)
+            {
+                plainConcatHighlights = formatBullets + reference + '\n' + plainConcatHighlights;
+                htmlConcatHighlights = '<li>' + reference + '</li><ul>' + htmlConcatHighlights;
+            }
+            else
+            {
+                htmlConcatHighlights = '<ul>' + htmlConcatHighlights;
+            }
         }
 
         //lOOP THROUGH EACH LINE LOOKING FOR HEADER ROWS TO INDENT UNDER
@@ -1474,21 +1645,42 @@ Roam-highlighter Shortcut Keys (v${verNum})
             {
                 eachLine = eachLine.split("||h1||").join('').split("<li>").join('').split("</li>").join('');
                 //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
-                if(indentLevel == 0){eachLine = '<li><h1>' + eachLine + '</h1></li><ul>';}else{eachLine = '</ul><li><h1>' + eachLine + '</h1></li><ul>';}
+                if(bHeaders)
+                {
+                    if(indentLevel == 0){eachLine = '<li><h1>' + eachLine + '</h1></li><ul>';}else{eachLine = '</ul><li><h1>' + eachLine + '</h1></li><ul>';}
+                }
+                else
+                {
+                    if(indentLevel == 0){eachLine = '<li>' + eachLine + '</li><ul>';}else{eachLine = '</ul><li>' + eachLine + '</li><ul>';}
+                }
                 indentLevel++;
             }
             if(eachLine.substring(0,10) == '<li>||h2||')
             {
                 eachLine = eachLine.split("||h2||").join('').split("<li>").join('').split("</li>").join('');
                 //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
-                if(indentLevel == 0){eachLine = '<li><h2>' + eachLine + '</h2></li><ul>';}else{eachLine = '</ul><li><h2>' + eachLine + '</h2></li><ul>';}
+                if(bHeaders)
+                {
+                    if(indentLevel == 0){eachLine = '<li><h2>' + eachLine + '</h2></li><ul>';}else{eachLine = '</ul><li><h2>' + eachLine + '</h2></li><ul>';}
+                }
+                else
+                {
+                    if(indentLevel == 0){eachLine = '<li>' + eachLine + '</li><ul>';}else{eachLine = '</ul><li>' + eachLine + '</li><ul>';}
+                }
                 indentLevel++;
             }
             if(eachLine.substring(0,10) == '<li>||h3||')
             {
                 eachLine = eachLine.split("||h3||").join('').split("<li>").join('').split("</li>").join('');
                 //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
-                if(indentLevel == 0){eachLine = '<li><h3>' + eachLine + '</h3></li><ul>';}else{eachLine = '</ul><li><h3>' + eachLine + '</h3></li><ul>';}
+                if(bHeaders)
+                {
+                    if(indentLevel == 0){eachLine = '<li><h3>' + eachLine + '</h3></li><ul>';}else{eachLine = '</ul><li><h3>' + eachLine + '</h3></li><ul>';}
+                }
+                else
+                {
+                    if(indentLevel == 0){eachLine = '<li>' + eachLine + '</li><ul>';}else{eachLine = '</ul><li>' + eachLine + '</li><ul>';}
+                }
                 indentLevel++;
             }
 
@@ -1496,7 +1688,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             {
                 //In case multi element part line and added manually header H6 for indent, need to remove all <h6></h6> stuff and add on just ends so not multiple
                 eachLine = eachLine.split("<h6>").join('').split("</h6>").join('').split("<li>").join('').split("</li>").join('');
-                eachLine = '<li><h6>' + eachLine + '</h6></li>';
+                if(bHeaders){eachLine = '<li><h6>' + eachLine + '</h6></li>';}else{eachLine = '<li>' + eachLine + '</li>';}
                 if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
                 indentLevel++;
             }
@@ -1589,7 +1781,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             ulList = ulList - 1;
         }
 
-        htmlConcatHighlights = htmlConcatHighlights + '</ul>';
+        if(htmlConcatHighlights.indexOf("<ul>") > -1){htmlConcatHighlights = htmlConcatHighlights + '</ul>';}
         htmlConcatHighlights = htmlConcatHighlights.split("<ul><ul>").join('<ul>');
         if(debugMode != 0){writeToConsole(htmlConcatHighlights);}
 
@@ -1598,10 +1790,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var lineBreaks = loopHtml.trim().split('\r\n');
 
         var newPlainText = "";
+        var indentAmount = '    ';
+        if(bIndents == false){indentAmount = '';}
         var indentCtr = 0;
         for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
         {
-            if(eachLine.substring(0,4) == '<ul>'){indentCtr++;}
+            if(x > 0 || cbElemPgTitle.checked){if(eachLine.substring(0,4) == '<ul>'){indentCtr++;}}
             if(eachLine.substring(0,5) == '</ul>'){indentCtr--;}
             if(eachLine.substring(0,4) == '<li>')
             {
@@ -1610,14 +1804,16 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 var tmpIndentCtr = indentCtr;
                 while(tmpIndentCtr > 0)
                 {
-                    indentSpaces = indentSpaces + '    ';
+
+                    indentSpaces = indentSpaces + indentAmount;
                     tmpIndentCtr--;
                 }
-                newPlainText += '\n' + indentSpaces + '- ' + eachLine;
+                newPlainText += '\n' + indentSpaces + formatBullets + eachLine;
+                if(formatBullets == ''){newPlainText += '\n';}
             }
         }
 
-        plainConcatHighlights = newPlainText;
+        if(newPlainText.trim() != ''){plainConcatHighlights = newPlainText.trim();}
 
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
@@ -1633,8 +1829,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
             textInput.value = "";
             if(cbElem1.checked)
             {
-                textInput.value += '\n'
-                textInput.value += newPlainText;
+                //textInput.value += '\n'
+                textInput.value += plainConcatHighlights;
             }
             if(cbElem2.checked)
             {
