@@ -11,6 +11,9 @@ var showWindow = Number(1);
 var formatBold = '**';
 var formatItalics = '__';
 var formatCode = '`';
+var formatBullets = '- ';
+//var bHeaders = true;
+var bIndents = true;
 //Kindle settings
 var kindleHLref = "#[[Kindle-highlights]]";
 var bLocation = true;
@@ -80,6 +83,8 @@ async function startFunction()
         writeToConsole("formatBold: " + formatBold,-1);
         writeToConsole("formatItalics: " + formatItalics,-1);
         writeToConsole("formatCode: " + formatCode,-1);
+        writeToConsole("formatBullets: " + formatBullets,-1);
+        writeToConsole("bIndents: " + bIndents,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -88,7 +93,7 @@ async function startFunction()
     }
 
     //Array to loop through to get values from browser.storage.local
-    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
+    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "formatBullets", "bIndents", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
 
     for(var s = 0; s < settingsArray.length; s++)
     {
@@ -136,6 +141,14 @@ async function startFunction()
                 if(varResult !== undefined){formatCode = varResult;}
                 setLocalStorageValue("formatCode", formatCode);
                 break;
+            case "formatBullets":
+                if(varResult !== undefined){formatBullets = varResult;}
+                setLocalStorageValue("formatBullets", formatBullets);
+                break;
+            case "bIndents":
+                if(varResult !== undefined){bIndents = varResult;}
+                setLocalStorageValue("bIndents", bIndents);
+                break;
             case "kindleHLref":
                 if(varResult !== undefined){kindleHLref = varResult;}
                 setLocalStorageValue("kindleHLref", kindleHLref);
@@ -169,6 +182,8 @@ async function startFunction()
         writeToConsole("formatBold: " + formatBold,-1);
         writeToConsole("formatItalics: " + formatItalics,-1);
         writeToConsole("formatCode: " + formatCode,-1);
+        writeToConsole("formatBullets: " + formatBullets,-1);
+        writeToConsole("bIndents: " + bIndents,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -424,7 +439,6 @@ else
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-
     var labelElemBold = createNewElement('label','Bold:','rmHLtbBold','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
     var tbElemBold = createNewElement('input',formatBold,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbBold','rmHLtbBold');
     tbElemBold.placeholder = '**';
@@ -436,6 +450,22 @@ else
     var labelElemCode = createNewElement('label','Code:','rmHLtbCode','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
     var tbElemCode = createNewElement('input',formatCode,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbCode','rmHLtbCode');
     tbElemCode.placeholder = '`';
+
+    /*Still need to implement turning header formatting on/off
+    var labelElemHeaders = createNewElement('label','Headers:','rmHLcbHeaders','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var cbElemHeaders = createNewElement('checkbox','','','vertical-align:middle;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbHeaders','rmHLcbHeaders');
+    cbElemHeaders.checked = true;
+    */
+
+    formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+    var labelElemBullet = createNewElement('label','Bullets:','rmHLtbBullet','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var tbElemBullet = createNewElement('input',formatBullets,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbBullet','rmHLtbBullet');
+    tbElemBullet.placeholder = '- ';
+
+    var labelElemIndents = createNewElement('label','Indent:','rmHLcbIndents','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var cbElemIndents = createNewElement('checkbox','','','vertical-align:middle;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbIndents','rmHLcbIndents');
+    if(bIndents){cbElemIndents.checked = true;}else{cbElemIndents.checked = false;}
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
@@ -466,6 +496,8 @@ else
         var tbElemBold = document.getElementById("rmHLtbBold");
         var tbElemItalic = document.getElementById("rmHLtbItalic");
         var tbElemCode = document.getElementById("rmHLtbCode");
+        var tbElemBullet = document.getElementById("rmHLtbBullet");
+        var cbElemIndents = document.getElementById("rmHLcbIndents")
         //Kindle settings
         var tbKinHLref = document.getElementById("rmHLkingleTb1");
         var cbLoc = document.getElementById("rmHLcbLoc");
@@ -483,6 +515,8 @@ else
         formatBold = tbElemBold.value;
         formatItalics = tbElemItalic.value;
         formatCode = tbElemCode.value;
+        formatBullets = tbElemBullet.value;
+        bIndents = cbElemIndents.checked;
         //Kindle settings
         if(tbKinHLref != null)
         {
@@ -501,6 +535,8 @@ else
         setLocalStorageValue("formatBold", formatBold);
         setLocalStorageValue("formatItalics", formatItalics);
         setLocalStorageValue("formatCode", formatCode);
+        setLocalStorageValue("formatBullets", formatBullets);
+        setLocalStorageValue("bIndents", bIndents);
         //Kindle settings
         setLocalStorageValue("kindleHLref", kindleHLref);
         setLocalStorageValue("bLocation", bLocation);
@@ -698,17 +734,17 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     if(curElement.nodeName == 'H3') //Title
                     {
                         textString += curText + '\n';
-                        textString += '    - Title:: ' + curText + '\n';
+                        textString += '    ' + formatBullets + 'Title:: ' + curText + '\n';
                         htmlString += '<li>' + curText + '</li><ul>';
                         htmlString += '<li>Title:: ' + curText + '</li>';
                     }
                     if(curElement.nodeName == 'P' && curElement.classList.contains("a-color-secondary")) //Author
                     {
                         //textString += '    - Author:: ' + '#[[' + curText + ']]' + '\n';
-                        textString += '    - Author:: ' + curText + '\n';
-                        textString += '    - Amazon-store:: ' + amazonLink + '\n';
-                        textString += '    - ' + coverImg + '\n';
-                        textString += '    - ' + kindleHLref + '\n';
+                        textString += '    ' + formatBullets + 'Author:: ' + curText + '\n';
+                        textString += '    ' + formatBullets + 'Amazon-store:: ' + amazonLink + '\n';
+                        textString += '    ' + formatBullets + coverImg + '\n';
+                        textString += '    ' + formatBullets + kindleHLref + '\n';
 
                         //htmlString += '<li>Author:: ' + '#[[' + curText + ']]' + '</li>';
                         htmlString += '<li>Author:: ' + curText + '</li>';
@@ -733,31 +769,31 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         switch (kindleHLstructure)
                         {
                             case 0:
-                                textString += '        - ' + curText + '\n';
-                                if(bColor){textString += '            - ' + hlColor + '\n';}
-                                if(bLocation){textString += '            - ' + hlLocation + '\n';}
+                                textString += '        ' + formatBullets + curText + '\n';
+                                if(bColor){textString += '            ' + formatBullets + hlColor + '\n';}
+                                if(bLocation){textString += '            ' + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + curText + '</li><ul>';
                                 if(bColor){htmlString += '<li>' + hlColor + '</li>';}
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                             case 1:
-                                textString += '        - ' + curText + ' ' + hlColor + '\n';
-                                if(bLocation){textString += '            - ' + hlLocation + '\n';}
+                                textString += '        ' + formatBullets + curText + ' ' + hlColor + '\n';
+                                if(bLocation){textString += '            ' + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + curText + ' ' + hlColor + '</li><ul>';
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                             case 2:
-                                textString += '        - ' + hlColor + '\n';
-                                if(bColor){textString += '            - ' + curText + '\n';}
-                                if(bLocation){textString += '            - ' + hlLocation + '\n';}
+                                textString += '        ' + formatBullets + hlColor + '\n';
+                                if(bColor){textString += '            ' + formatBullets + curText + '\n';}
+                                if(bLocation){textString += '            ' + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + hlColor + '</li><ul>';
                                 if(bColor){htmlString += '<li>' + curText + '</li>';}
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
                                 break;
                             case 3:
-                                textString += '        - ' + hlColor + '\n';
-                                if(bColor){textString += '            - ' + curText + '\n';}
-                                if(bLocation){textString += '                - ' + hlLocation + '\n';}
+                                textString += '        ' + formatBullets + hlColor + '\n';
+                                if(bColor){textString += '            ' + formatBullets + curText + '\n';}
+                                if(bLocation){textString += '                ' + formatBullets + hlLocation + '\n';}
                                 htmlString += '<li>' + hlColor + '</li><ul>';
                                 if(bColor){htmlString += '<li>' + curText + '</li><ul>';}
                                 if(bLocation){htmlString += '<li>' + hlLocation + '</li>';}
@@ -778,12 +814,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     {
                         if(kindleHLstructure == 3)
                         {
-                            textString += '                - Note: ' + curText + '\n';
+                            textString += '                ' + formatBullets + 'Note: ' + curText + '\n';
                             htmlString += '<li>Note: ' + curText + '</li>';
                         }
                         else
                         {
-                            textString += '            - Note: ' + curText + '\n';
+                            textString += '            ' + formatBullets + 'Note: ' + curText + '\n';
                             htmlString += '<li>Note: ' + curText + '</li>';
                         }
                     }
@@ -1272,7 +1308,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 {
                     tempString = eachHighlight.trim().replace(/(\r\n|\n|\r)/gm," ");
                     tempString = tempString.replace(/\s+/g," ");
-                    plainText = `\t- ${tempString.trim()}\n`;
+                    plainText = `\t${formatBullets}${tempString.trim()}\n`;
                     htmlString = `<li>${tempString.trim()}</li>`;
                 }
             }
@@ -1283,7 +1319,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 {
                     tempString = eachHighlight.trim().replace(/(\r\n|\n|\r)/gm,"");
                     tempString = tempString.replace(/\s+/g,"");
-                    plainText = `\t- ${tempString.trim()}\n`;
+                    plainText = `\t${formatBullets}${tempString.trim()}\n`;
                     htmlString = `<li>${tempString.trim()}</li>`;
                 }
             }
@@ -1305,20 +1341,20 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         switch (sameBlock)
                         {
                             case 0:
-                                plainText += `\t- ${eachLine.trim()}\n`;
+                                plainText += `\t${formatBullets}${eachLine.trim()}\n`;
                                 htmlString += `<li>${eachLine.trim()}</li>`;
                                 break;
                             case 1:
                                 if(x > 0)
                                 {
                                     //Nested under the first bullet/linebreak from the highlight
-                                    plainText += `\t\t- ${eachLine.trim()}\n`;
+                                    plainText += `\t\t${formatBullets}${eachLine.trim()}\n`;
                                     htmlString += `<li>${eachLine.trim()}</li>`;
                                 }
                                 else
                                 {
                                     //First line which will go in parent bullet that the rest of the highlight will go under
-                                    plainText += `\t- ${eachLine.trim()}\n`;
+                                    plainText += `\t${formatBullets}${eachLine.trim()}\n`;
                                     if(lineBreaks.length > 1){htmlString += `<li>${eachLine.trim()}<ul>`;}else{htmlString += `<li>${eachLine.trim()}</li>`;}
                                 }
                                 break;
@@ -1333,13 +1369,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 else
                                 {
                                     //First line
-                                    plainText += `\t- ${eachLine.trim()}\n`;
+                                    plainText += `\t${formatBullets}${eachLine.trim()}\n`;
                                     if(lineBreaks.length > 1){htmlString += `<li>${eachLine.trim()}`;}else{htmlString += `<li>${eachLine.trim()}</li>`;}
                                 }
                                 break;
                             default:
-                                plainText += `\t- ${eachLine.trim()}\n`;
-                                htmlString += `\t- ${eachLine.trim()}\n`;
+                                plainText += `\t${formatBullets}${eachLine.trim()}\n`;
+                                htmlString += `\t${formatBullets}${eachLine.trim()}\n`;
                         }
                         lineCtr++
                     }
@@ -1387,7 +1423,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         }
         else {
             var bOnlyPageRef = false;
-            plainConcatHighlights = '- ' + reference + '\n' + plainConcatHighlights;
+            plainConcatHighlights = formatBullets + reference + '\n' + plainConcatHighlights;
             htmlConcatHighlights = '<li>' + reference + '</li><ul>' + htmlConcatHighlights;
         }
 
@@ -1538,6 +1574,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var lineBreaks = loopHtml.trim().split('\r\n');
 
         var newPlainText = "";
+        var indentAmount = '    ';
+        if(bIndents == false){indentAmount = '';}
         var indentCtr = 0;
         for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
         {
@@ -1550,10 +1588,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 var tmpIndentCtr = indentCtr;
                 while(tmpIndentCtr > 0)
                 {
-                    indentSpaces = indentSpaces + '    ';
+
+                    indentSpaces = indentSpaces + indentAmount;
                     tmpIndentCtr--;
                 }
-                newPlainText += '\n' + indentSpaces + '- ' + eachLine;
+                newPlainText += '\n' + indentSpaces + formatBullets + eachLine;
+                if(formatBullets == ''){newPlainText += '\n';}
             }
         }
 
