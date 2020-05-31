@@ -14,6 +14,7 @@ var formatCode = '`';
 var formatBullets = '- ';
 //var bHeaders = true;
 var bIndents = true;
+var pageTruncate = '';
 //Kindle settings
 var kindleHLref = "#[[Kindle-highlights]]";
 var bLocation = true;
@@ -85,6 +86,7 @@ async function startFunction()
         writeToConsole("formatCode: " + formatCode,-1);
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
+        writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -93,7 +95,7 @@ async function startFunction()
     }
 
     //Array to loop through to get values from browser.storage.local
-    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "formatBullets", "bIndents", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
+    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "formatBullets", "bIndents", "pageTruncate", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
 
     for(var s = 0; s < settingsArray.length; s++)
     {
@@ -149,6 +151,10 @@ async function startFunction()
                 if(varResult !== undefined){bIndents = varResult;}
                 setLocalStorageValue("bIndents", bIndents);
                 break;
+            case "pageTruncate":
+                if(varResult !== undefined){pageTruncate = varResult;}
+                setLocalStorageValue("pageTruncate", pageTruncate);
+                break;
             case "kindleHLref":
                 if(varResult !== undefined){kindleHLref = varResult;}
                 setLocalStorageValue("kindleHLref", kindleHLref);
@@ -184,6 +190,7 @@ async function startFunction()
         writeToConsole("formatCode: " + formatCode,-1);
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
+        writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -326,7 +333,7 @@ else
         divKindle.style.cssText = 'width:45%;height:100%;background-color:white;padding:15px;float:left;border-top:1px solid black';
         divSetElem.appendChild(divKindle);
 
-    var labelElem = createNewElement('label','Highlighter Link #Tag','rmHLtb','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem = createNewElement('label','Highlighter Link #Tag  (v' + verNum + ')','rmHLtb','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
     if(getPage.includes('read.amazon.com/notebook'))
     {
@@ -399,6 +406,8 @@ else
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
     var labelElem2 = createNewElement('label','Page Title for Alias Link','rmHLta2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var tbElemPgTrunc = createNewElement('input',pageTruncate,'','padding-left:0px;text-align:center;width:15px;margin-left:20%;margin-right:0px;margin-bottom:2px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbPgTrunc','rmHLtbPgTrunc');
+    var labelElemPgTruncate = createNewElement('label','Truncate','rmHLtbPgTrunc','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:5px',formElem,'','');
 
     formElem.appendChild(document.createElement('br'));
     var textElem2 = createNewElement('textarea',pageTitle,'','width:90%;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px',formElem,'rmHLta2','rmHLta2');
@@ -498,6 +507,7 @@ else
         var tbElemCode = document.getElementById("rmHLtbCode");
         var tbElemBullet = document.getElementById("rmHLtbBullet");
         var cbElemIndents = document.getElementById("rmHLcbIndents")
+        var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
         //Kindle settings
         var tbKinHLref = document.getElementById("rmHLkingleTb1");
         var cbLoc = document.getElementById("rmHLcbLoc");
@@ -517,6 +527,7 @@ else
         formatCode = tbElemCode.value;
         formatBullets = tbElemBullet.value;
         bIndents = cbElemIndents.checked;
+        pageTruncate = tbElemPgTrunc.value;
         //Kindle settings
         if(tbKinHLref != null)
         {
@@ -537,6 +548,7 @@ else
         setLocalStorageValue("formatCode", formatCode);
         setLocalStorageValue("formatBullets", formatBullets);
         setLocalStorageValue("bIndents", bIndents);
+        setLocalStorageValue("pageTruncate", pageTruncate);
         //Kindle settings
         setLocalStorageValue("kindleHLref", kindleHLref);
         setLocalStorageValue("bLocation", bLocation);
@@ -1145,9 +1157,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
     function updateClipboard(event) {
+        var pageTitle2 = pageTitle;
+        if(pageTruncate != '')
+        {
+            pageTitle2 = pageTitle2.split(pageTruncate)[0].trim();
+        }
         //Get page title and URL and put in Roam format [Page Title](URL)
-        pageTitle = pageTitle.split("[").join("(").split("]").join(")");
-        var reference = `[${pageTitle}](${location.href}) ${pageRef}`;
+        pageTitle2 = pageTitle2.split("[").join("(").split("]").join(")");
+        var reference = `[${pageTitle2}](${location.href}) ${pageRef}`;
         reference = reference.trim();
         if(debugMode != 0){writeToConsole('reference: ' + reference);}
 
@@ -1421,7 +1438,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
             plainConcatHighlights = reference;
             htmlConcatHighlights = reference;
         }
-        else {
+        else
+        {
             var bOnlyPageRef = false;
             plainConcatHighlights = formatBullets + reference + '\n' + plainConcatHighlights;
             htmlConcatHighlights = '<li>' + reference + '</li><ul>' + htmlConcatHighlights;
@@ -1565,7 +1583,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             ulList = ulList - 1;
         }
 
-        htmlConcatHighlights = htmlConcatHighlights + '</ul>';
+        if(htmlConcatHighlights.indexOf("<ul>") > -1){htmlConcatHighlights = htmlConcatHighlights + '</ul>';}
         htmlConcatHighlights = htmlConcatHighlights.split("<ul><ul>").join('<ul>');
         if(debugMode != 0){writeToConsole(htmlConcatHighlights);}
 
@@ -1597,7 +1615,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
         }
 
-        plainConcatHighlights = newPlainText.trim();
+        if(newPlainText.trim() != ''){plainConcatHighlights = newPlainText.trim();}
 
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
@@ -1614,7 +1632,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(cbElem1.checked)
             {
                 //textInput.value += '\n'
-                textInput.value += newPlainText;
+                textInput.value += plainConcatHighlights;
             }
             if(cbElem2.checked)
             {
