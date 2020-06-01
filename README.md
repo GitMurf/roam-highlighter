@@ -95,6 +95,17 @@ If you have any issues, questions or feedback for improving the instructions, pl
 
 ## Release Notes
 
+v1.9.7
+
+- Obsidian settings added (see [forum](https://forum.obsidian.md/t/web-clipper-highlighter-and-kindle-highlights-notes-extraction-extension/852))
+- double brackets around author for kindle highlights.
+- Checkbox next to page title in case you only want highlights and don’t want/need the title/URL link at top.
+- truncate option to put character(s) in textbox to shorten page title to location of first occurrence (e.g., “- “ to remove stuff after)
+- clear out formatting boxes like bold, italics, etc. and uncheck Headers to just bring in text results without any formatting (nesting/indents for headers still applies).
+- For Kindle extraction un-checking the page title checkbox will remove the first bullet nesting under the title of the book and just start with the attributes in root of page/bullets
+- When activating highlighter the page/URL is auto added to clipboard to use for quick grab of “bookmark” without any highlights.
+- Fixed some other random issues identified by folks.
+
 v1.9.5
 
 - Implemented auto indenting/nesting for Bullets/Lists
