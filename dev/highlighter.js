@@ -1,5 +1,5 @@
-//Date: May 31, 2020
-var verNum = '1.9.7.1';
+//Date: June 1, 2020
+var verNum = '1.9.7.2';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -510,7 +510,7 @@ else
     formElem.appendChild(document.createElement('br'));
 
     var labelElemDefaults = createNewElement('label','Reset to Default Settings','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var labelElemRefCase = createNewElement('label','Page Link/Ref Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:25px',formElem,'','');
+    var labelElemRefCase = createNewElement('label','Page Link/Ref Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-right:41px;float:right',formElem,'','');
     formElem.appendChild(document.createElement('br'));
 
     var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
@@ -519,7 +519,7 @@ else
 
     var butReset = createNewElement('button','SET','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',formElem,'rmHLreset','rmHLreset');
 
-    var selPgRefCase = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;margin-left:18px',formElem,'rmHLcaseSel','rmHLcaseSel');
+    var selPgRefCase = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;float:right',formElem,'rmHLcaseSel','rmHLcaseSel');
     selPgRefCase.options.add( new Option("As is on page","0", true, true) );
     selPgRefCase.options.add( new Option("Each Word Capitalized","1") );
     selPgRefCase.options.add( new Option("First word capitalized","2") );
