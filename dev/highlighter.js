@@ -1,5 +1,5 @@
 //Date: May 31, 2020
-var verNum = '1.9.7';
+var verNum = '1.9.7.1';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -461,15 +461,15 @@ else
     formElem.appendChild(document.createElement('br'));
     var labelElemBold = createNewElement('label','Bold:','rmHLtbBold','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
     var tbElemBold = createNewElement('input',formatBold,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbBold','rmHLtbBold');
-    tbElemBold.placeholder = '**';
+    //tbElemBold.placeholder = '**';
 
     var labelElemItalic = createNewElement('label','Italics:','rmHLtbItalic','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
     var tbElemItalic = createNewElement('input',formatItalics,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbItalic','rmHLtbItalic');
-    tbElemItalic.placeholder = '__';
+    //tbElemItalic.placeholder = '__';
 
     var labelElemCode = createNewElement('label','Code:','rmHLtbCode','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
     var tbElemCode = createNewElement('input',formatCode,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbCode','rmHLtbCode');
-    tbElemCode.placeholder = '`';
+    //tbElemCode.placeholder = '`';
 
     var labelElemHeaders = createNewElement('label','Headers:','rmHLcbHeaders','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
     var cbElemHeaders = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbHeaders','rmHLcbHeaders');
