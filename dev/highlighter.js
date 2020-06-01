@@ -1181,6 +1181,19 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(parParParNodeName == 'LI' && (parParParParNodeName == 'UL' || parParParParNodeName == 'OL')){levelsDeep = 2;}
             if(parParParParParNodeName == 'LI' && (parParParParParParNodeName == 'UL' || parParParParParParNodeName == 'OL')){levelsDeep = 3;}
             if(parParParParParParParNodeName == 'LI' && (parParParParParParParParNodeName == 'UL' || parParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
+            //Outlook webmail
+            if(parParNodeName == 'UL' && parParParNodeName == 'UL')
+            {
+                levelsDeep = 2;
+                if(parParParParNodeName == 'UL')
+                {
+                    levelsDeep = 3;
+                    if(parParParParParNodeName == 'UL')
+                    {
+                        levelsDeep = 4;
+                    }
+                }
+            }
 
             switch (levelsDeep)
             {
@@ -1235,6 +1248,19 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(parParParParNodeName == 'LI' && (parParParParParNodeName == 'UL' || parParParParParNodeName == 'OL')){levelsDeep = 2;}
             if(parParParParParParNodeName == 'LI' && (parParParParParParParNodeName == 'UL' || parParParParParParParNodeName == 'OL')){levelsDeep = 3;}
             if(parParParParParParParParNodeName == 'LI' && (parParParParParParParParParNodeName == 'UL' || parParParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
+            //Outlook webmail
+            if(parParParNodeName == 'UL' && parParParParNodeName == 'UL')
+            {
+                levelsDeep = 2;
+                if(parParParParParNodeName == 'UL')
+                {
+                    levelsDeep = 3;
+                    if(parParParParParParNodeName == 'UL')
+                    {
+                        levelsDeep = 4;
+                    }
+                }
+            }
 
             switch (levelsDeep)
             {
@@ -1517,7 +1543,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 var lineCtr = 0;
                 for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
                 {
-
                     //Replace all double white spaces with single spaces
                     //NOTE: Do not use this AFTER the loop of each line break as it removes the line breaks needed for each Bullet
                     eachLine = eachLine.replace(/\s+/g," ");
