@@ -509,7 +509,7 @@ else
     selDefaults.options.add( new Option("Roam Research","0", true, true) );
     selDefaults.options.add( new Option("Obsidian","1") );
 
-    var butReset = createNewElement('button','Reset','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',formElem,'rmHLreset','rmHLreset');
+    var butReset = createNewElement('button','SET','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',formElem,'rmHLreset','rmHLreset');
 
     butReset.addEventListener("click", function(){
         var divElemMain = document.getElementById("rmHLmain");
