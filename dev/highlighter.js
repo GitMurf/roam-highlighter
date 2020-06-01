@@ -1182,13 +1182,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(parParParParParNodeName == 'LI' && (parParParParParParNodeName == 'UL' || parParParParParParNodeName == 'OL')){levelsDeep = 3;}
             if(parParParParParParParNodeName == 'LI' && (parParParParParParParParNodeName == 'UL' || parParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
             //Outlook webmail
-            if(parParNodeName == 'UL' && parParParNodeName == 'UL')
+            if((parParNodeName == 'UL' || parParNodeName == 'OL') && (parParParNodeName == 'UL' || parParParNodeName == 'OL'))
             {
                 levelsDeep = 2;
-                if(parParParParNodeName == 'UL')
+                if(parParParParNodeName == 'UL' || parParParParNodeName == 'OL')
                 {
                     levelsDeep = 3;
-                    if(parParParParParNodeName == 'UL')
+                    if(parParParParParNodeName == 'UL' || parParParParParNodeName == 'OL')
                     {
                         levelsDeep = 4;
                     }
@@ -1249,13 +1249,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(parParParParParParNodeName == 'LI' && (parParParParParParParNodeName == 'UL' || parParParParParParParNodeName == 'OL')){levelsDeep = 3;}
             if(parParParParParParParParNodeName == 'LI' && (parParParParParParParParParNodeName == 'UL' || parParParParParParParParParNodeName == 'OL')){levelsDeep = 4;}
             //Outlook webmail
-            if(parParParNodeName == 'UL' && parParParParNodeName == 'UL')
+            if((parParParNodeName == 'UL' || parParParNodeName == 'OL') && (parParParParNodeName == 'UL' || parParParParNodeName == 'OL'))
             {
                 levelsDeep = 2;
-                if(parParParParParNodeName == 'UL')
+                if(parParParParParNodeName == 'UL' || parParParParParNodeName == 'OL')
                 {
                     levelsDeep = 3;
-                    if(parParParParParParNodeName == 'UL')
+                    if(parParParParParParNodeName == 'UL' || parParParParParParNodeName == 'OL')
                     {
                         levelsDeep = 4;
                     }
