@@ -15,6 +15,7 @@ var formatBullets = '- ';
 var bHeaders = true;
 var bIndents = true;
 var pageTruncate = '';
+var pgRefCase = Number(0);
 //Kindle settings
 var kindleHLref = "#[[Kindle-Highlights]]";
 var bLocation = true;
@@ -88,6 +89,7 @@ async function startFunction()
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
         writeToConsole("pageTruncate: " + pageTruncate,-1);
+        writeToConsole("pgRefCase: " + pgRefCase,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -96,7 +98,7 @@ async function startFunction()
     }
 
     //Array to loop through to get values from browser.storage.local
-    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "pageTruncate", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
+    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "pageTruncate", "pgRefCase", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
 
     for(var s = 0; s < settingsArray.length; s++)
     {
@@ -160,6 +162,10 @@ async function startFunction()
                 if(varResult !== undefined){pageTruncate = varResult;}
                 setLocalStorageValue("pageTruncate", pageTruncate);
                 break;
+            case "pgRefCase":
+                if(varResult !== undefined){pgRefCase = varResult;}
+                setLocalStorageValue("pgRefCase", pgRefCase);
+                break;
             case "kindleHLref":
                 if(varResult !== undefined){kindleHLref = varResult;}
                 setLocalStorageValue("kindleHLref", kindleHLref);
@@ -197,6 +203,7 @@ async function startFunction()
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
         writeToConsole("pageTruncate: " + pageTruncate,-1);
+        writeToConsole("pgRefCase: " + pgRefCase,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -502,7 +509,8 @@ else
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
 
-    var labelElemDefaults = createNewElement('label','Reset to Default Settings for:','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElemDefaults = createNewElement('label','Reset to Default Settings','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElemRefCase = createNewElement('label','Page Link/Ref Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:25px',formElem,'','');
     formElem.appendChild(document.createElement('br'));
 
     var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
@@ -510,6 +518,14 @@ else
     selDefaults.options.add( new Option("Obsidian","1") );
 
     var butReset = createNewElement('button','SET','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',formElem,'rmHLreset','rmHLreset');
+
+    var selPgRefCase = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;margin-left:18px',formElem,'rmHLcaseSel','rmHLcaseSel');
+    selPgRefCase.options.add( new Option("As is on page","0", true, true) );
+    selPgRefCase.options.add( new Option("Each Word Capitalized","1") );
+    selPgRefCase.options.add( new Option("First word capitalized","2") );
+    selPgRefCase.options.add( new Option("all lower case","3") );
+    selPgRefCase.options.add( new Option("ALL UPPER CASE","4") );
+    selPgRefCase.value = pgRefCase;
 
     butReset.addEventListener("click", function(){
         var divElemMain = document.getElementById("rmHLmain");
@@ -528,6 +544,7 @@ else
         var cbElem2 = document.getElementById("rmHLcbType2")
         var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
         var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
+        var selPgRefCase = document.getElementById("rmHLcaseSel");
         //Kindle settings
         var tbKinHLref = document.getElementById("rmHLkingleTb1");
         var cbLoc = document.getElementById("rmHLcbLoc");
@@ -571,6 +588,7 @@ else
         cbElem1.checked = true;
         cbElem2.checked = false;
         tbElemPgTrunc.value = '';
+        selPgRefCase.value = 0;
         if(tbKinHLref != null)
         {
             cbLoc.checked = true;
@@ -592,6 +610,7 @@ else
         formatBullets = tbElemBullet.value;
         bIndents = cbElemIndents.checked;
         pageTruncate = tbElemPgTrunc.value;
+        pgRefCase = Number(selPgRefCase.value);
         //Kindle settings
         if(tbKinHLref != null)
         {
@@ -614,6 +633,7 @@ else
         setLocalStorageValue("formatBullets", formatBullets);
         setLocalStorageValue("bIndents", bIndents);
         setLocalStorageValue("pageTruncate", pageTruncate);
+        setLocalStorageValue("pgRefCase", pgRefCase);
         //Kindle settings
         setLocalStorageValue("kindleHLref", kindleHLref);
         setLocalStorageValue("bLocation", bLocation);
@@ -646,6 +666,7 @@ else
         var tbElemBullet = document.getElementById("rmHLtbBullet");
         var cbElemIndents = document.getElementById("rmHLcbIndents")
         var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
+        var selPgRefCase = document.getElementById("rmHLcaseSel");
         //Kindle settings
         var tbKinHLref = document.getElementById("rmHLkingleTb1");
         var cbLoc = document.getElementById("rmHLcbLoc");
@@ -667,6 +688,7 @@ else
         formatBullets = tbElemBullet.value;
         bIndents = cbElemIndents.checked;
         pageTruncate = tbElemPgTrunc.value;
+        pgRefCase = Number(selPgRefCase.value);
         //Kindle settings
         if(tbKinHLref != null)
         {
@@ -689,6 +711,7 @@ else
         setLocalStorageValue("formatBullets", formatBullets);
         setLocalStorageValue("bIndents", bIndents);
         setLocalStorageValue("pageTruncate", pageTruncate);
+        setLocalStorageValue("pgRefCase", pgRefCase);
         //Kindle settings
         setLocalStorageValue("kindleHLref", kindleHLref);
         setLocalStorageValue("bLocation", bLocation);
@@ -1459,7 +1482,35 @@ Roam-highlighter Shortcut Keys (v${verNum})
                             var replaceLastText = lastMainSpanText.replace(formatBold + newHighlight + formatBold, newHighlight);
                             replaceLastText = replaceLastText.replace(formatItalics + newHighlight + formatItalics, newHighlight);
                             replaceLastText = replaceLastText.replace(formatCode + newHighlight + formatCode, newHighlight);
-                            replaceLastText = replaceLastText.replace(newHighlight,`|[|[${newHighlight}|]|]`);
+                            var newHighlightCase = newHighlight.toLowerCase();
+
+                            switch (pgRefCase)
+                            {
+                                case 0:
+                                    //Default as is on page
+                                    newHighlightCase = newHighlight;
+                                    break;
+                                case 1:
+                                    //Each Word Capitalized
+                                    newHighlightCase = newHighlightCase.replace(/\w\S*/g, function(txt){
+                                        return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();
+                                    });
+                                    break;
+                                case 2:
+                                    //First word capitalized
+                                    newHighlightCase = newHighlightCase.charAt(0).toUpperCase() + newHighlightCase.slice(1);
+                                    break;
+                                case 3:
+                                    //all lower
+                                    newHighlightCase = newHighlightCase;
+                                    break;
+                                case 4:
+                                    //ALL UPPER
+                                    newHighlightCase = newHighlightCase.toUpperCase();
+                                    break;
+                            }
+
+                            replaceLastText = replaceLastText.replace(newHighlight,`|[|[${newHighlightCase}|]|]`);
                             if(debugMode != 0)
                             {
                                 writeToConsole('replaceLastText: ' + replaceLastText);
