@@ -741,8 +741,8 @@ else
 
         if(butMax.innerHTML == "Expand")
         {
-            divElemMain.style.width = "90%";
-            divElemMain.style.height = "80%";
+            divElemMain.style.width = "95%";
+            divElemMain.style.height = "95%";
             butMax.innerHTML = 'Shrink';
             divElemMain.style.opacity = "1";
         }
