@@ -2056,6 +2056,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 //Quickly loop through each selected element to see if any are already highlighted
                 for(var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
                 {
+                    if(elem == endCont && endOff == 0)
+                    {
+                        //This typically occurs if you triple click a paragraph to select it all and the selection bleeds over into the next element but zero offset
+                        if(debugMode != 0){writeToConsole("Exiting the PRE loop as came to the EndContainer of Range and it has endOffset of 0");}
+                        break;
+                    }
                     if(debugMode != 0)
                     {
                         writeToConsole(elem,1,0);
@@ -2083,7 +2089,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                         removeHighlight(newCurElement);
                                         bRemoveHighlights = true;
                                     }
-                                }else{writeToConsole('NOT SELECTED newCurElement.className: ' + newCurElement,1);}
+                                }else{if(debugMode != 0){writeToConsole('NOT SELECTED newCurElement.className: ' + newCurElement,1);}}
                             }
                             //If the current element itself is a highlight, then remove
                             if(m == 0 && (elem.className == "roamJsHighlighter" || elem.className == "roamJsHighlighter pageLink"))
@@ -2093,7 +2099,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 bRemoveHighlights = true;
                             }
                         }
-                    }else{writeToConsole('NOT SELECTED elem.className: ' + elem,1);}
+                    }else{if(debugMode != 0){writeToConsole('NOT SELECTED elem.className: ' + elem,1);}}
                 }
             }
 
@@ -2105,12 +2111,20 @@ Roam-highlighter Shortcut Keys (v${verNum})
             else
             {
                 //loop through all of the elements contained in the parent container of the highest common level of selected text
-                writeToConsole("Starting loop through all elements contained in the parent container of the highest common level of selected text");
+                if(debugMode != 0){writeToConsole("Starting loop through all elements contained in the parent container of the highest common level of selected text");}
                 for (var i=0, elem; elem = allWithinRangeParent.childNodes[i]; i++)
                 {
+                    if(elem == endCont && endOff == 0)
+                    {
+                        //This typically occurs if you triple click a paragraph to select it all and the selection bleeds over into the next element but zero offset
+                        if(debugMode != 0){writeToConsole("Exiting the REAL loop as came to the EndContainer of Range and it has endOffset of 0");}
+                        //Clear the original user mouse selection
+                        document.getSelection().removeAllRanges();
+                        break;
+                    }
                     consoleTabLevel = '';
                     var elementNodeName = elem.nodeName;
-                    writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`,2);
+                    if(debugMode != 0){writeToConsole(`i: ${i} | Elem: ${elem} | Elem.nodeName: ${elementNodeName}`,2);}
                     var elementText = "";
                     if(elementNodeName == '#text'){elementText = elem.textContent;}else{elementText = elem.innerText;}
 
@@ -2139,7 +2153,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
                         //var findHierarchy = findLowestNode(elem, 'root:' + elementNodeName);
                         findLowestNode(elem, 'root');
-                        writeToConsole("foundStart: " + foundStartOfSelection + " foundEnd: " + foundEnd, 3);
+                        if(debugMode != 0){writeToConsole("foundStart: " + foundStartOfSelection + " foundEnd: " + foundEnd, 3);}
                         //If haven't found the beginning of the selection yet then can skip to next item/element in the loop
                         if(foundStartOfSelection == 0){continue;}
 
