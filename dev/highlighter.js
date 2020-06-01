@@ -316,22 +316,22 @@ else
     var divElem = document.createElement('div');
         divElem.id = 'rmHLmain';
         divElem.style.display = "block";
-        divElem.style.cssText = 'position:fixed;bottom:0px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999;font-size:12px;line-height:normal';
+        divElem.style.cssText = 'position:fixed;bottom:3px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999;font-size:12px;line-height:normal;border-bottom:1px solid black;';
         document.body.appendChild(divElem);
 
     var divButtonsElem = document.createElement('div');
         divButtonsElem.id = 'rmHLdivButt';
-        divButtonsElem.style.cssText = 'width:100%;display:flex';
+        divButtonsElem.style.cssText = 'width:100%;display:flex;height:30px';
         divElem.appendChild(divButtonsElem);
 
     var divTextElem = document.createElement('div');
         divTextElem.id = 'rmHLdivText';
-        divTextElem.style.cssText = 'width:100%;height:100%;float:right';
+        divTextElem.style.cssText = 'width:100%;height:calc(100% - 30px);float:right';
         divElem.appendChild(divTextElem);
 
     var divSetElem = document.createElement('div');
         divSetElem.id = 'rmHLdivSett';
-        divSetElem.style.cssText = 'width:50%;height:100%;display:none;float:left';
+        divSetElem.style.cssText = 'width:50%;height:calc(100% - 30px);display:none;float:left';
         divElem.appendChild(divSetElem);
 
     //Main settings DIV
@@ -765,7 +765,7 @@ else
         if(butMax.innerHTML == "Expand")
         {
             divElemMain.style.width = "95%";
-            divElemMain.style.height = "95%";
+            divElemMain.style.height = "92%";
             butMax.innerHTML = 'Shrink';
             divElemMain.style.opacity = "1";
         }
@@ -847,7 +847,7 @@ else
         }
     });
 
-    var textInput = createNewElement('textarea','','','width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',divTextElem,'rmHLtextArea','textAreaInput');
+    var textInput = createNewElement('textarea','','','width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;border-bottom:none',divTextElem,'rmHLtextArea','textAreaInput');
     textInput.value = `
 Roam-highlighter Shortcut Keys (v${verNum})
 *All settings are now saved tab to tab, session to session
