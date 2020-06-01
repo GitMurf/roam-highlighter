@@ -97,10 +97,10 @@ If you have any issues, questions or feedback for improving the instructions, pl
 
 v1.9.7.1
 
--Fixed issue when triple clicking paragraph to select entire paragraph to highlight (now works nicely)
--Added dropdown selection for how to handle page links/refs "Case" (lower, upper, capitalize all words, capitalize first word, as is on page)
--Fixed window size positioning that was cutting off the side window on smaller screens
--Fixed handling of outlook webmail bullets
+- Fixed issue when triple clicking paragraph to select entire paragraph to highlight (now works nicely)
+- Added dropdown selection for how to handle page links/refs "Case" (lower, upper, capitalize all words, capitalize first word, as is on page)
+- Fixed window size positioning that was cutting off the side window on smaller screens
+- Fixed handling of outlook webmail bullets
 
 v1.9.7
 
