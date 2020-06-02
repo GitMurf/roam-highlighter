@@ -2056,9 +2056,10 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         }
                         else
                         {
-                            if(endCont.textContent.trim() == inputNodeText.trim())
+                            if(endCont.textContent.trim() == inputNodeText.trim() && endCont.parentElement == elemInput.parentElement)
                             {
-                                if(debugMode != 0){writeToConsole(`******* FOUND THE END ********`,3);}
+                                if(debugMode != 0){writeToConsole(`******* FOUND THE END ********`);}
+                                if(debugMode != 0){writeToConsole(`inputNodeText.trim(): ${inputNodeText.trim()} | endCont.textContent.trim(): ${endCont.textContent.trim()}`);}
                                 resultText = endCont.textContent.substring(0, endOff);
                                 foundEnd = 1;
                                 endPos = endOff;
@@ -2147,6 +2148,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     }
                     if(selection.containsNode(elem, true))
                     {
+                        writeToConsole("Selection here found");
                         if (typeof elem.querySelectorAll !== "undefined")
                         {
                             var elemsInSameHighlight = elem.querySelectorAll(".roamJsHighlighter, .roamJsHighlighter pageLink");
@@ -2239,6 +2241,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         {
                             //Clear the original user mouse selection
                             document.getSelection().removeAllRanges();
+                            if(debugMode != 0){writeToConsole("Exiting the REAL loop as foundEnd == 1");}
                             break;
                         }
                         consoleTabLevel = '\t';
