@@ -849,36 +849,29 @@ else
 
     var textInput = createNewElement('textarea','','','width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;border-bottom:none',divTextElem,'rmHLtextArea','textAreaInput');
     textInput.value = `
+DEMO: youtube.com/watch?v=UzseaoxaSEM
 Roam-highlighter Shortcut Keys (v${verNum})
-*All settings are now saved tab to tab, session to session
 
 [ALT + X]
-
 \t- Activate Extension and Show/Hide Side Window
 
-[Ctrl + X]
-
+[Ctrl + X] (WIN) or [CMD + X] (MAC)
 \t- Highlights selected text
 \t- To remove part of a highlight, select text and press [Ctrl + X]
 
 [Alt + Click]
-
 \t- Removes an entire highlight
 
 [ALT + Q]
-
 \t- Remove all highlights on the page
 
 [ALT + A]
-
 \t- Makes selected highlighted a "header"; highlights following will nest until another highlight is selected as a "header"
 
 [Double-Click] a Single Word (has to be highlighted already)
-
 \t- Adds [[Double Brackets]] for Roam "Page Linking"
 
 [ALT + Z] (must already be highlighted)
-
 \t- Adds [[Double Brackets]] around selection for Roam "Page Linking"
 `;
 
@@ -1670,8 +1663,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 htmlString = htmlString.split("))").join("^)^)^");
             }
 
-            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]").split("||ul-one||").join("").split("||ul-two||").join("").split("||ul-three||").join("").split("||ul-four||").join("").split(":**__").join(":** __").split(":****").join(":** **").split("^)^)^").join("))").split(")[").join(") [");
-            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("^)^]^").join(")]]").split(":**__").join(":** __").split(":****").join(":** **").split("^)^)^").join("))").split(")[").join(") [");
+            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]").split("||ul-one||").join("").split("||ul-two||").join("").split("||ul-three||").join("").split("||ul-four||").join("").split(":**__").join(":** __").split(":****").join(":** **").split("^)^)^").join("))");
+            htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("^)^]^").join(")]]").split(":**__").join(":** __").split(":****").join(":** **").split("^)^)^").join("))");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
@@ -1861,6 +1854,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
         if(htmlConcatHighlights.indexOf("<ul>") > -1){htmlConcatHighlights = htmlConcatHighlights + '</ul>';}
         htmlConcatHighlights = htmlConcatHighlights.split("<ul><ul>").join('<ul>');
+        htmlConcatHighlights = htmlConcatHighlights.split(")[").join(") ["); //Fixing when two links are back to back next to each other. Need to add a space.
         if(debugMode != 0){writeToConsole(htmlConcatHighlights);}
 
         //lOOP THROUGH EACH LINE OF HTML TO MAKE THE PLAIN TEXT INDENT LIKE IT
