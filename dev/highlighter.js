@@ -1412,6 +1412,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 var linkTextToUse = eachLink.innerText;
                 //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
                 linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
+                linkTextToUse = linkTextToUse.trim().replace(/(\r\n|\n|\r)/gm," ");
                 var linkHref = eachLink.href;
                 //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
                 linkHref = linkHref.split("#").join("|HASHTAG|")
@@ -1428,7 +1429,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 foundALink = foundALink.split(")]").join("|)|]");
 
                 if(debugMode != 0){writeToConsole(`Here: [${eachLink.innerText}](${eachLink.href})`);}
-                eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
+                //eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
+                eachHighlight = foundALink;
             }
 
             eachHighlight = convertFormat(eachHighlight, elemSpan);
@@ -1528,6 +1530,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 var linkTextToUse = eachLink.innerText;
                                 //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
                                 linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
+                                linkTextToUse = linkTextToUse.trim().replace(/(\r\n|\n|\r)/gm," ");
                                 var linkHref = eachLink.href;
                                 //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
                                 linkHref = linkHref.split("#").join("|HASHTAG|")
@@ -1544,7 +1547,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 foundALink = foundALink.split(")]").join("|)|]");
 
                                 if(debugMode != 0){writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);}
-                                newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                                //newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                                newHighlight = foundALink;
                             }
 
                             if(bIsSameLine){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
