@@ -701,7 +701,39 @@ else
         pageTitle = textElem2.value;
         sameBlock = Number(selElem.value);
         sideWidth = tbSizeW.value;
+            if(sideWidth.indexOf("px") > -1 || sideWidth.indexOf("PX") > -1 || sideWidth.indexOf("Px") > -1 || sideWidth.indexOf("pX") > -1)
+            {
+                if(parseInt(sideWidth,10) < 300)
+                {
+                    sideWidth = "300px";
+                    tbSizeW.value = "300px";
+                }
+            }
+            if(sideWidth.indexOf("%") > -1)
+            {
+                if(parseInt(sideWidth,10) < 15)
+                {
+                    sideWidth = "15%";
+                    tbSizeW.value = "15%";
+                }
+            }
         sideHeight = tbSizeH.value;
+            if(sideHeight.indexOf("px") > -1 || sideHeight.indexOf("PX") > -1 || sideHeight.indexOf("Px") > -1 || sideHeight.indexOf("pX") > -1)
+            {
+                if(parseInt(sideHeight,10) < 200)
+                {
+                    sideHeight = "200px";
+                    tbSizeH.value = "200px";
+                }
+            }
+            if(sideHeight.indexOf("%") > -1)
+            {
+                if(parseInt(sideHeight,10) < 15)
+                {
+                    sideHeight = "15%";
+                    tbSizeH.value = "15%";
+                }
+            }
         formatBold = tbElemBold.value;
         formatItalics = tbElemItalic.value;
         formatCode = tbElemCode.value;
