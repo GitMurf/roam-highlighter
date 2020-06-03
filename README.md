@@ -1,6 +1,6 @@
 # Roam-highlighter
 
-This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use it!
+This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application (but can be used for other purposes as well) to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use it!
 
 Install the [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp) from the Chrome Web Store ([Release Notes and Change Log](https://github.com/GitMurf/roam-highlighter#release-notes)).
 
