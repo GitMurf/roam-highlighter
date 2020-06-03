@@ -424,12 +424,12 @@ else
     cbElemPgTitle.checked = true;
     //if(bPgTitle){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
 
-    var tbElemPgTrunc = createNewElement('input',pageTruncate,'','padding-left:0px;text-align:center;width:15px;margin-left:20%;margin-right:0px;margin-bottom:2px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbPgTrunc','rmHLtbPgTrunc');
+    var tbElemPgTrunc = createNewElement('input',pageTruncate,'','padding:0px;text-align:center;width:15px;margin-left:20%;margin-right:0px;margin-bottom:2px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbPgTrunc','rmHLtbPgTrunc');
     var labelElemPgTruncate = createNewElement('label','Truncate','rmHLtbPgTrunc','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:5px',formElem,'','');
 
     formElem.appendChild(document.createElement('br'));
-    var textElem2 = createNewElement('textarea',pageTitle,'','width:90%;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px',formElem,'rmHLta2','rmHLta2');
-    textElem2.rows = 3;
+    var textElem2 = createNewElement('textarea',pageTitle,'','width:90%;min-height:auto;height:auto;max-height:none;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px',formElem,'rmHLta2','rmHLta2');
+    textElem2.rows = 2;
 
     //5 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
         //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
@@ -441,7 +441,7 @@ else
     var labelElem3 = createNewElement('label','How to handle Line Breaks within each Highlight','rmHLsel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
     formElem.appendChild(document.createElement('br'));
-    var selElem = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer',formElem,'rmHLsel','rmHLsel');
+    var selElem = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:225px;max-width:225px;width:225px',formElem,'rmHLsel','rmHLsel');
     selElem.options.add( new Option("[DEFAULT] New bullets same level","0", true, true) );
     selElem.options.add( new Option("Nest under first Line Break","1") );
     selElem.options.add( new Option("Ctrl + Shift + V same bullet","2") );
@@ -456,26 +456,26 @@ else
     formElem.appendChild(document.createElement('br'));
     var labelElem8 = createNewElement('label','W:','rmHLtbSize','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
-    var tbSizeElem = createNewElement('input',sideWidth,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbSize','rmHLtbSize');
+    var tbSizeElem = createNewElement('input',sideWidth,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbSize','rmHLtbSize');
     tbSizeElem.placeholder = "17%";
 
     var labelElem9 = createNewElement('label','H:','rmHLtbSize2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
-    var tbSizeElem2 = createNewElement('input',sideHeight,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbSize2','rmHLtbSize2');
+    var tbSizeElem2 = createNewElement('input',sideHeight,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbSize2','rmHLtbSize2');
     tbSizeElem2.placeholder = "20%";
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
     var labelElemBold = createNewElement('label','Bold:','rmHLtbBold','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var tbElemBold = createNewElement('input',formatBold,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbBold','rmHLtbBold');
+    var tbElemBold = createNewElement('input',formatBold,'','padding:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbBold','rmHLtbBold');
     //tbElemBold.placeholder = '**';
 
     var labelElemItalic = createNewElement('label','Italics:','rmHLtbItalic','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var tbElemItalic = createNewElement('input',formatItalics,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbItalic','rmHLtbItalic');
+    var tbElemItalic = createNewElement('input',formatItalics,'','padding:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbItalic','rmHLtbItalic');
     //tbElemItalic.placeholder = '__';
 
     var labelElemCode = createNewElement('label','Code:','rmHLtbCode','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var tbElemCode = createNewElement('input',formatCode,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbCode','rmHLtbCode');
+    var tbElemCode = createNewElement('input',formatCode,'','padding:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbCode','rmHLtbCode');
     //tbElemCode.placeholder = '`';
 
     var labelElemHeaders = createNewElement('label','Headers:','rmHLcbHeaders','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
@@ -485,7 +485,7 @@ else
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
     var labelElemBullet = createNewElement('label','Bullets:','rmHLtbBullet','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var tbElemBullet = createNewElement('input',formatBullets,'','padding-left:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtbBullet','rmHLtbBullet');
+    var tbElemBullet = createNewElement('input',formatBullets,'','padding:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbBullet','rmHLtbBullet');
     //tbElemBullet.placeholder = '- ';
 
     var labelElemIndents = createNewElement('label','Indent:','rmHLcbIndents','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block',formElem,'','');
@@ -510,16 +510,16 @@ else
     formElem.appendChild(document.createElement('br'));
 
     var labelElemDefaults = createNewElement('label','Reset to Default Settings','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var labelElemRefCase = createNewElement('label','Page Link/Ref Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-right:41px;float:right',formElem,'','');
+    var labelElemRefCase = createNewElement('label','Page Link/Ref Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-right:58px;float:right',formElem,'','');
     formElem.appendChild(document.createElement('br'));
 
-    var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
+    var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:135px;max-width:135px;width:135px;display:inline-flex',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
     selDefaults.options.add( new Option("Roam Research","0", true, true) );
     selDefaults.options.add( new Option("Obsidian","1") );
 
-    var butReset = createNewElement('button','SET','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',formElem,'rmHLreset','rmHLreset');
+    //var butReset = createNewElement('button','SET','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;display:inline-flex',formElem,'rmHLreset','rmHLreset');
 
-    var selPgRefCase = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;float:right',formElem,'rmHLcaseSel','rmHLcaseSel');
+    var selPgRefCase = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;float:right;min-width:165px;max-width:165px;width:165px',formElem,'rmHLcaseSel','rmHLcaseSel');
     selPgRefCase.options.add( new Option("As is on page","0", true, true) );
     selPgRefCase.options.add( new Option("Each Word Capitalized","1") );
     selPgRefCase.options.add( new Option("First word capitalized","2") );
@@ -527,7 +527,7 @@ else
     selPgRefCase.options.add( new Option("ALL UPPER CASE","4") );
     selPgRefCase.value = pgRefCase;
 
-    butReset.addEventListener("click", function(){
+    selDefaults.addEventListener("change", function(evt){
         var divElemMain = document.getElementById("rmHLmain");
         var tbElem = document.getElementById("rmHLtb");
         var textElem2 = document.getElementById("rmHLta2");
@@ -645,12 +645,31 @@ else
         //We already have the "cut" event listener set to run our code, so this should activate it
         clickEvent = 1;
         document.execCommand('cut');
+
+        var butSave = document.getElementById("rmHLsave");
+        butSave.style.backgroundColor = 'grey';
+        butSave.style.cursor = 'default';
     });
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
 
-    var butSave = createNewElement('button','Save','','background-color:Blue;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',formElem,'rmHLsave','rmHLsave');
+    var butSave = createNewElement('button','Save','','background-color:grey;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:default;padding:5px;margin-left:0px;',formElem,'rmHLsave','rmHLsave');
+
+    formElem.addEventListener("change", function(evt){
+        if(evt.target.id != 'rmHLdefaultsSel')
+        {
+            var butSave = document.getElementById("rmHLsave");
+            butSave.style.backgroundColor = 'blue';
+            butSave.style.cursor = 'pointer';
+        }
+    });
+
+    divKindle.addEventListener("change", function(evt){
+        var butSave = document.getElementById("rmHLsave");
+        butSave.style.backgroundColor = 'blue';
+        butSave.style.cursor = 'pointer';
+    });
 
     butSave.addEventListener("click", function(){
         var divElemMain = document.getElementById("rmHLmain");
@@ -675,6 +694,9 @@ else
         var selKindle = document.getElementById("rmHLkindleSel");
 
         var butSave = document.getElementById("rmHLsave");
+
+        butSave.style.backgroundColor = 'grey';
+        butSave.style.cursor = 'default';
 
         pageRef = tbElem.value;
         pageTitle = textElem2.value;
@@ -731,30 +753,30 @@ else
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var link1 = createNewElement('a','Detailed Instructions and Shortcuts','','font-size:12px;line-height:normal',formElem,'','');
+    var link1 = createNewElement('a','Detailed Instructions and Shortcuts','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link1.href = 'https://github.com/GitMurf/roam-highlighter#how-to-use-the-highlighter';
 
     formElem.appendChild(document.createElement('br'));
-    var link2 = createNewElement('a','Demos and Videos','','font-size:12px;line-height:normal',formElem,'','');
+    var link2 = createNewElement('a','Demos and Videos','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link2.href = 'https://github.com/GitMurf/roam-highlighter#demo-1---activate-the-highlighter-extension-and-perform-a-simple-highlight';
 
     formElem.appendChild(document.createElement('br'));
-    var link3 = createNewElement('a','Report a Bug/Issue','','font-size:12px;line-height:normal',formElem,'','');
+    var link3 = createNewElement('a','Report a Bug/Issue','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link3.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
 
     formElem.appendChild(document.createElement('br'));
-    var link4 = createNewElement('a','Submit an Idea or Feature Request','','font-size:12px;line-height:normal',formElem,'','');
+    var link4 = createNewElement('a','Submit an Idea or Feature Request','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link4.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
 
     formElem.appendChild(document.createElement('br'));
-    var link5 = createNewElement('a','Ask a Question','','font-size:12px;line-height:normal',formElem,'','');
+    var link5 = createNewElement('a','Ask a Question','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link5.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
 
     formElem.appendChild(document.createElement('br'));
-    var link6 = createNewElement('a','Kindle Notes & Highlights','','font-size:12px;line-height:normal',formElem,'','');
+    var link6 = createNewElement('a','Kindle Notes & Highlights','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link6.href = 'https://read.amazon.com/notebook';
 
-    var butMax = createNewElement('button','Expand','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'rmHLexpand','rmHLexpand');
+    var butMax = createNewElement('button','Expand','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;height: 100%',divButtonsElem,'rmHLexpand','rmHLexpand');
 
     butMax.addEventListener("click", function(){
         var divElemMain = document.getElementById("rmHLmain");
@@ -785,7 +807,7 @@ else
         }
     });
 
-    var butHide = createNewElement('button','Hide','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'','');
+    var butHide = createNewElement('button','Hide','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;height: 100%',divButtonsElem,'','');
 
     butHide.addEventListener("click", function(){
         var divElemMain = document.getElementById("rmHLmain");
@@ -795,7 +817,7 @@ else
         setLocalStorageValue("showWindow", showWindow);
     });
 
-    var butWrap = createNewElement('button','Wrap','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'rmHLwrap','rmHLwrap');
+    var butWrap = createNewElement('button','Wrap','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;height: 100%',divButtonsElem,'rmHLwrap','rmHLwrap');
 
     butWrap.addEventListener("click", function(){
         var textInput = document.getElementById("rmHLtextArea");
@@ -815,7 +837,7 @@ else
         }
     });
 
-    var butSett = createNewElement('button','Settings','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divButtonsElem,'rmHLsettings','rmHLsettings');
+    var butSett = createNewElement('button','Settings','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;height: 100%',divButtonsElem,'rmHLsettings','rmHLsettings');
 
     butSett.addEventListener("click", function(){
         var divElemMain = document.getElementById("rmHLmain");
@@ -847,7 +869,7 @@ else
         }
     });
 
-    var textInput = createNewElement('textarea','','','width:100%;height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;border-bottom:none',divTextElem,'rmHLtextArea','textAreaInput');
+    var textInput = createNewElement('textarea','','','width:100%;max-width:100%;height:100%;max-height:100%;background-color:white;color:black;font-weight:bold;white-space:pre;float:right;padding-left:5px;padding-right:1px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;border-bottom:none',divTextElem,'rmHLtextArea','textAreaInput');
     textInput.value = `
 DEMO: youtube.com/watch?v=UzseaoxaSEM
 Roam-highlighter Shortcut Keys (v${verNum})
