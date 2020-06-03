@@ -348,17 +348,7 @@ else
 
     var labelElem = createNewElement('label','Highlighter Link #Tag','rmHLtb','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
-    if(getPage.includes('read.amazon.com/notebook'))
-    {
-        var butExtractKindle = createNewElement('button','Get Kindle Highlights','','background-color:black;color:white;border-color:white;margin-left:10px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right',formElem,'rmHLkindle','rmHLkindle');
-
-        butExtractKindle.addEventListener("click", function(){
-            kindleClickEvent = 1;
-            document.execCommand('cut');
-        });
-    }
-
-    var butClearAll = createNewElement('button','Clear All Highlights','','background-color:black;color:white;border-color:white;margin-left:15px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;float:right',formElem,'rmHLclear','rmHLclear');
+    var butClearAll = createNewElement('button','Clear All Highlights','','background-color:black;color:white;border-color:white;margin-left:55px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;vertical-align:bottom',formElem,'rmHLclear','rmHLclear');
 
     butClearAll.addEventListener("click", function(){
         removeAllHighlights();
@@ -378,22 +368,22 @@ else
 
         divKindle.appendChild(document.createElement('br'));
         divKindle.appendChild(document.createElement('br'));
-        var labelKindle1 = createNewElement('label','Include:','','margin-right:10px;margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle1 = createNewElement('label','Include:','','margin-right:8px;margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
 
         var cbElem4 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer',divKindle,'rmHLcbLoc','rmHLcbLoc');
         if(bLocation){cbElem4.checked = true;}else{cbElem4.checked = false;}
 
-        var labelKindle3 = createNewElement('label','Location','rmHLcbLoc','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle3 = createNewElement('label','Location','rmHLcbLoc','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
 
-        var cbElem3 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px;cursor:pointer',divKindle,'rmHLcbHlColor','rmHLcbHlColor');
+        var cbElem3 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer',divKindle,'rmHLcbHlColor','rmHLcbHlColor');
         if(bColor){cbElem3.checked = true;}else{cbElem3.checked = false;}
 
-        var labelKindle2 = createNewElement('label','HL Color','rmHLcbHlColor','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle2 = createNewElement('label','HL Color','rmHLcbHlColor','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
 
-        var cbElem5 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:15px;cursor:pointer',divKindle,'rmHLcbHlColorLink','rmHLcbHlColorLink');
+        var cbElem5 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer',divKindle,'rmHLcbHlColorLink','rmHLcbHlColorLink');
         if(bColorRef){cbElem5.checked = true;}else{cbElem5.checked = false;}
 
-        var labelKindle5 = createNewElement('label','HL Color #[[Ref]]','rmHLcbHlColorLink','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle5 = createNewElement('label','Color #[[Ref]]','rmHLcbHlColorLink','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
 
         //Selection combobox for where to have the HL Color in relation to the actual highlight
         divKindle.appendChild(document.createElement('br'));
@@ -414,6 +404,15 @@ else
 
         divKindle.appendChild(document.createElement('br'));
         var labelKindle8 = createNewElement('label','*Must Save changes before "Getting Highlights"','','font-size:12px;line-height:normal;color:red;font-weight:bold;display:inline-block',divKindle,'','');
+
+        divKindle.appendChild(document.createElement('br'));
+        divKindle.appendChild(document.createElement('br'));
+        var butExtractKindle = createNewElement('button','Get Kindle Highlights','','background-color:black;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px',divKindle,'rmHLkindle','rmHLkindle');
+
+        butExtractKindle.addEventListener("click", function(){
+            kindleClickEvent = 1;
+            document.execCommand('cut');
+        });
     }
 
     formElem.appendChild(document.createElement('br'));
@@ -786,8 +785,17 @@ else
 
         if(butMax.innerHTML == "Expand")
         {
-            divElemMain.style.width = "95%";
-            divElemMain.style.height = "92%";
+            if(getPage.includes('read.amazon.com/notebook'))
+            {
+                divElem.style.width = "90%";
+                divElem.style.height = "80%";
+            }
+            else
+            {
+                divElemMain.style.width = "95%";
+                divElemMain.style.height = "92%";
+            }
+
             butMax.innerHTML = 'Shrink';
             divElemMain.style.opacity = "1";
         }
@@ -945,18 +953,31 @@ Roam-highlighter Shortcut Keys (v${verNum})
                             htmlString += '<ul>';
                         }
 
-                        textString += initIndentAmount + formatBullets + 'Title: ' + curText + '\n';
-                        htmlString += '<li>Title:: ' + curText + '</li>';
+                        textString += initIndentAmount + formatBullets + 'Title: ' + '[[' + curText + ']]' + '\n';
+                        htmlString += '<li>Title:: ' + '[[' + curText + ']]' + '</li>';
                     }
                     if(curElement.nodeName == 'P' && curElement.classList.contains("a-color-secondary")) //Author
                     {
-                        textString += initIndentAmount + formatBullets + 'Author: ' + '[[' + curText + ']]' + '\n';
+                        //lOOP THROUGH EACH AUTHOR
+                        var origAuthors = curText;
+                        var loopAuthors = curText.split(", and ").join('\r\n').split(", ").join('\r\n');
+                        var lineBreaks = loopAuthors.trim().split('\r\n');
+
+                        for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
+                        {
+                            var newEachLine = '[[' + eachLine + ']]';
+                            origAuthors = origAuthors.replace(eachLine,newEachLine);
+                        }
+
+                        curText = origAuthors;
+
+                        textString += initIndentAmount + formatBullets + 'Author: ' + curText + '\n';
                         //textString += initIndentAmount + formatBullets + 'Author: ' + curText + '\n';
                         textString += initIndentAmount + formatBullets + 'Amazon-store: ' + amazonLink + '\n';
                         textString += initIndentAmount + formatBullets + coverImg + '\n';
                         if(formatBullets == ''){textString += '\n';}
 
-                        htmlString += '<li>Author:: ' + '[[' + curText + ']]' + '</li>';
+                        htmlString += '<li>Author:: ' + curText + '</li>';
                         //htmlString += '<li>Author:: ' + curText + '</li>';
                         htmlString += '<li>Amazon-store:: ' + amazonLink + '</li>';
                         htmlString += '<li>' + coverImg + '</li>';
