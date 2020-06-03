@@ -1145,7 +1145,9 @@ Roam-highlighter Shortcut Keys (v${verNum})
         }
         //debugMode = 0;
 
-        var origEachHighlight = eachHighlight;
+        //var origEachHighlight = eachHighlight;
+        //Adding to default setting to replace line breaks within an element with a space as for the most part, shouldn't have line breaks within a single element.
+        if(sameBlock == 0){eachHighlight = eachHighlight.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," ");}
 
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = formatBold + eachHighlight + formatBold;}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = formatItalics + eachHighlight + formatItalics;}
@@ -1429,8 +1431,10 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 foundALink = foundALink.split(")]").join("|)|]");
 
                 if(debugMode != 0){writeToConsole(`Here: [${eachLink.innerText}](${eachLink.href})`);}
-                //eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
-                eachHighlight = foundALink;
+                eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
+                //Can't just set to foundALink because there could be ||ul-two|| etc. in front of link which would be lost
+                //Fixed line breaks in middle of <a> links anyways with the new "default" option to remove line breaks within a single element
+                //eachHighlight = foundALink;
             }
 
             eachHighlight = convertFormat(eachHighlight, elemSpan);
@@ -1523,6 +1527,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                             lastParNodeName = parNodeName;
                             prevNode = elemSpan;
                             newHighlight = convertFormat(newHighlight, elemSpan);
+                            if(debugMode != 0){writeToConsole('newHighlight: ' + newHighlight);}
 
                             if(parNodeName == "A")
                             {
@@ -1547,8 +1552,10 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 foundALink = foundALink.split(")]").join("|)|]");
 
                                 if(debugMode != 0){writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);}
-                                //newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
-                                newHighlight = foundALink;
+                                newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
+                                //Can't just set to foundALink because there could be ||ul-two|| etc. in front of link which would be lost
+                                //Fixed line breaks in middle of <a> links anyways with the new "default" option to remove line breaks within a single element
+                                //newHighlight = foundALink;
                             }
 
                             if(bIsSameLine){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
@@ -2065,7 +2072,16 @@ Roam-highlighter Shortcut Keys (v${verNum})
                             allTextFound += '\n' + resultText;
                         }
 
-                        if(foundStartOfSelection == 1){createSpanElement(elemInput, startPos, elemInput, endPos);}
+                        if(endOff == 0 && (elemInput.parentElement == endCont || elemInput.parentElement == endCont.parentElement))
+                        {
+                            if(debugMode != 0){writeToConsole(`******* FOUND THE END here ********`);}
+                            foundEnd = 1;
+                            endPos = endOff;
+                        }
+                        else
+                        {
+                            if(foundStartOfSelection == 1 && elemInput.parentElement.nodeName != 'STYLE'){createSpanElement(elemInput, startPos, elemInput, endPos);}
+                        }
                     }
                     if(debugMode != 0){writeToConsole(`ENDING hierarchyLevel: ${thisHierarchyLevel} | inputNodeName: ${inputNodeName} | inputNodeText: ${inputNodeText}`,3);}
                 }
