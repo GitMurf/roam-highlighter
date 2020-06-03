@@ -370,17 +370,17 @@ else
         divKindle.appendChild(document.createElement('br'));
         var labelKindle1 = createNewElement('label','Include:','','margin-right:8px;margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
 
-        var cbElem4 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer',divKindle,'rmHLcbLoc','rmHLcbLoc');
+        var cbElem4 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',divKindle,'rmHLcbLoc','rmHLcbLoc');
         if(bLocation){cbElem4.checked = true;}else{cbElem4.checked = false;}
 
         var labelKindle3 = createNewElement('label','Location','rmHLcbLoc','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
 
-        var cbElem3 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer',divKindle,'rmHLcbHlColor','rmHLcbHlColor');
+        var cbElem3 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',divKindle,'rmHLcbHlColor','rmHLcbHlColor');
         if(bColor){cbElem3.checked = true;}else{cbElem3.checked = false;}
 
         var labelKindle2 = createNewElement('label','HL Color','rmHLcbHlColor','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
 
-        var cbElem5 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer',divKindle,'rmHLcbHlColorLink','rmHLcbHlColorLink');
+        var cbElem5 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',divKindle,'rmHLcbHlColorLink','rmHLcbHlColorLink');
         if(bColorRef){cbElem5.checked = true;}else{cbElem5.checked = false;}
 
         var labelKindle5 = createNewElement('label','Color #[[Ref]]','rmHLcbHlColorLink','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
@@ -419,7 +419,7 @@ else
     formElem.appendChild(document.createElement('br'));
     var labelElem2 = createNewElement('label','Page Title for Alias Link','rmHLta2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
-    var cbElemPgTitle = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbPgTitle','rmHLcbPgTitle');
+    var cbElemPgTitle = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbPgTitle','rmHLcbPgTitle');
     cbElemPgTitle.checked = true;
     //if(bPgTitle){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
 
@@ -478,7 +478,7 @@ else
     //tbElemCode.placeholder = '`';
 
     var labelElemHeaders = createNewElement('label','Headers:','rmHLcbHeaders','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var cbElemHeaders = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbHeaders','rmHLcbHeaders');
+    var cbElemHeaders = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbHeaders','rmHLcbHeaders');
     if(bHeaders){cbElemHeaders.checked = true;}else{cbElemHeaders.checked = false;}
 
     formElem.appendChild(document.createElement('br'));
@@ -488,19 +488,19 @@ else
     //tbElemBullet.placeholder = '- ';
 
     var labelElemIndents = createNewElement('label','Indent:','rmHLcbIndents','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var cbElemIndents = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbIndents','rmHLcbIndents');
+    var cbElemIndents = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbIndents','rmHLcbIndents');
     if(bIndents){cbElemIndents.checked = true;}else{cbElemIndents.checked = false;}
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
     var labelElem4 = createNewElement('label','Show the Clipboard in:','','margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
-    var cbElem1 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbType1','rmHLcbType1');
+    var cbElem1 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbType1','rmHLcbType1');
     cbElem1.checked = true;
 
     var labelElem5 = createNewElement('label','Plain Text','rmHLcbType1','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
-    var cbElem2 = createNewElement('checkbox','','','vertical-align:inherit;margin-left:20px;font-size:12px;line-height:normal;cursor:pointer',formElem,'rmHLcbType2','rmHLcbType2');
+    var cbElem2 = createNewElement('checkbox','','','vertical-align:inherit;margin-left:20px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbType2','rmHLcbType2');
     cbElem2.checked = false;
 
     var labelElem6 = createNewElement('label','HTML','rmHLcbType2','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
