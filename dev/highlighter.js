@@ -1439,6 +1439,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             || parNodeName == "SUP" || parOfparNodeName == "SUP" || curHighlight.substring(0,1) == "."
             || curNode.parentElement.parentElement.className == "mw-editsection"
             || (lastParNodeName == "A" && parNodeName == "A" && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim().substring(0,curHighlight.toString().trim().length)))
+            || (curHighlight.substring(0,1) == " " && prevNode.innerText.substring(prevNode.innerText.length - 1) == " ")
         )
         {
             return true;
@@ -1928,7 +1929,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
 
             if(debugMode != 0){writeToConsole(eachLine);}
-            htmlConcatHighlights = htmlConcatHighlights + eachLine;
+            htmlConcatHighlights = htmlConcatHighlights + eachLine.split("  ").join(" ");
             //debugMode = 0;
         }
 
