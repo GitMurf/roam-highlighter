@@ -1793,16 +1793,25 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var lastLevelNumber = 0;
         var rootBullet = 0;
         var htmlConcatHighlights = "";
+        var lastWasHeader = 0;
         for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
         {
             //debugMode = 1;
             if(debugMode != 0){writeToConsole(x);}
             if(debugMode != 0){writeToConsole(eachLine);}
+            if(debugMode != 0){writeToConsole('indentLevel: ' + indentLevel);}
+            if(debugMode != 0){writeToConsole('ulList: ' + ulList);}
+            if(debugMode != 0){writeToConsole('rootBullet: ' + rootBullet);}
+            if(debugMode != 0){writeToConsole('levelNumber: ' + levelNumber);}
+            if(debugMode != 0){writeToConsole('lastLevelNumber: ' + lastLevelNumber);}
+
             //var elemType = eachLine.substring(0,4);
             //if(elemType == '<h1>' || elemType == '<h2>' || elemType == '<h3>' || elemType == '<h4>' || elemType == '<h5>')
             //{
+            var thisIsHeader = 0;
             if(eachLine.substring(0,10) == '<li>||h1||')
             {
+                thisIsHeader = 1;
                 eachLine = eachLine.split("||h1||").join('').split("<li>").join('').split("</li>").join('');
                 //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
                 if(bHeaders)
@@ -1817,6 +1826,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
             if(eachLine.substring(0,10) == '<li>||h2||')
             {
+                thisIsHeader = 1;
                 eachLine = eachLine.split("||h2||").join('').split("<li>").join('').split("</li>").join('');
                 //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
                 if(bHeaders)
@@ -1831,6 +1841,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
             if(eachLine.substring(0,10) == '<li>||h3||')
             {
+                thisIsHeader = 1;
                 eachLine = eachLine.split("||h3||").join('').split("<li>").join('').split("</li>").join('');
                 //if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
                 if(bHeaders)
@@ -1846,6 +1857,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
             if(eachLine.substring(0,8) == '<li><h6>')
             {
+                thisIsHeader = 1;
                 //In case multi element part line and added manually header H6 for indent, need to remove all <h6></h6> stuff and add on just ends so not multiple
                 eachLine = eachLine.split("<h6>").join('').split("</h6>").join('').split("<li>").join('').split("</li>").join('');
                 if(bHeaders){eachLine = '<li><h6>' + eachLine + '</h6></li>';}else{eachLine = '<li>' + eachLine + '</li>';}
@@ -1911,12 +1923,25 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     eachLine = '<li>' + eachLine + '</li>';
                 }
 
+                if(debugMode != 0){writeToConsole('indentLevel: ' + indentLevel);}
+                if(debugMode != 0){writeToConsole('ulList: ' + ulList);}
+                if(debugMode != 0){writeToConsole('rootBullet: ' + rootBullet);}
+                if(debugMode != 0){writeToConsole('levelNumber: ' + levelNumber);}
+                if(debugMode != 0){writeToConsole('lastLevelNumber: ' + lastLevelNumber);}
+                if(debugMode != 0){writeToConsole('lastWasHeader: ' + lastWasHeader);}
+
+                if(lastWasHeader == 1 && lastLevelNumber == 0 && levelNumber == 1 && ulList > 0){ulList--} //Accounts for when a header is followed directly by bullet/numbered list so shouldn't have ulList becasue already nested naturally under header
                 lastLevelNumber = origLevelNumber;
             }
             else
             {
                 levelNumber = 0;
+                if(rootBullet == lastLevelNumber)
+                {
+                    ulList = 0;
+                }
                 rootBullet = 0;
+
                 if(levelNumber - lastLevelNumber < 0)
                 {
                     while(ulList > 0)
@@ -1927,10 +1952,10 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 }
                 lastLevelNumber = levelNumber;
             }
-
             if(debugMode != 0){writeToConsole(eachLine);}
             htmlConcatHighlights = htmlConcatHighlights + eachLine.split("  ").join(" ");
             //debugMode = 0;
+            lastWasHeader = thisIsHeader;
         }
 
         if(indentLevel > 0){htmlConcatHighlights = htmlConcatHighlights + '</ul>';}
