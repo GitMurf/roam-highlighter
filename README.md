@@ -1,12 +1,12 @@
 # Roam-highlighter
 
-For any **_Issues, Questions, Ideas, or Requests_** please use the GitHub Issue tracker: [Submit an Issue](https://github.com/GitMurf/roam-highlighter/issues/new)
+This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use it!
 
-Install the Extension from the Chrome Web Store here: [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp).
+Install the [Roam-highlighter Extension](https://chrome.google.com/webstore/detail/roam-highlighter/mcoimieglmhdjdoplhpcmifgplkbfibp) from the Chrome Web Store ([Release Notes and Change Log](https://github.com/GitMurf/roam-highlighter#release-notes)).
 
 For Firefox, see the [Getting Started](https://github.com/GitMurf/roam-highlighter/blob/master/README.md#getting-started) section below...
 
-This Highlighter extension is meant for use with the [Roam Research](https://roamresearch.com/) note taking application to help "clip" web pages by highlighting all the areas you want to save in Roam and then easily copying/pasting into Roam in a Roam friendly format. You also are able to Double Bracket words / phrases with the extension so that they create Page/Link references when pasted into Roam. See below for details on how to use it!
+For any **_Issues, Questions, Ideas, or Requests_** please use the GitHub Issue tracker: [Submit an Issue](https://github.com/GitMurf/roam-highlighter/issues/new).
 
 # How to Use the Highlighter
 
@@ -94,6 +94,21 @@ If you have any issues, questions or feedback for improving the instructions, pl
 ![](https://user-images.githubusercontent.com/64155612/82953429-9e9cb100-9f5f-11ea-8122-e0c125b6053e.gif)
 
 ## Release Notes
+
+v1.9.7.2
+
+Not many new features but a ton of optimization and fixes for some minor formatting issues that folks have been sending me. I think we are very close to having something that should be pretty darn accurate even with weird websites / HTML!!
+
+* Added logic to double bracket link each author from Kindle books if there are multiple authors, but all still tied to the author:: attribute
+* Changed the default settings dropdown to apply "onChange" so you no longer have to use the RESET/SET box.
+* The Save button in Settings is greyed out when nothing to save, but whenever you change a setting and it needs to be saved the Save button turns blue and is clickable.
+* BIG improvements on annoying line break issues with messy HTML / webpages. I think it should be very accurate going forward.
+* Added link to YouTube DEMO / instructions to the side window startup.
+* Fixed some HTML / CSS / Visual issues with the side window / settings window on some websites with weird HTML / CSS rules.
+* Fixed some complex bullet/header nesting issues.
+* Fixed some issues when triple clicking to select an entire paragraph. It would sometimes overflow and catch/highlight part of the next paragraph.
+* Fixed issues with `<a>` links back to back which was causing to move the second to the next line/bullet.
+* Fixed some minor other random stuff.
 
 v1.9.7.1
 
