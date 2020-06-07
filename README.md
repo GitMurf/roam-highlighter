@@ -177,3 +177,9 @@ There are both Chrome and Firefox Extensions of the Roam-highlighter. For the ti
 * Thanks to @anthilemoon with [+Roam bookmarklet](https://github.com/anthilemoon/plus-roam)
 * Thanks to @ryanguill with his modifications to [+Roam mod](https://github.com/ryanguill/plus-roam/tree/development)
 * Thanks to Daniel Wirtz for his Demo on the highlighter he is working on https://twitter.com/wirtzdan/status/1251965560684007424?s=20
+
+# License
+
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
+This project is licensed under the **MIT license** - see the [LICENSE](LICENSE) file for details
