@@ -18,6 +18,8 @@ var bLinks = true;
 var pageTruncate = '';
 var pgRefCase = Number(0);
 //Kindle settings
+var kindleNotesAddress = 'read.amazon.com/notebook';
+var kindleNotesLoginAddress = 'read.amazon.com/kp/notebook';
 var kindleHLref = "#[[Kindle-Highlights]]";
 var bLocation = true;
 var bColor = true;
@@ -370,7 +372,7 @@ else
     var tbElem = createNewElement('input',pageRef,'','padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtb','rmHLtb');
     tbElem.placeholder = "#[[Roam-Highlights]]";
 
-    if(getPage.includes('read.amazon.com/notebook'))
+    if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress))
     {
         //Text box for Kindle-highlights tag
         var labelKindle4 = createNewElement('label','Highlights #Tag: ','rmHLkingleTb1','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline;margin-right:5px;vertical-align:middle;padding:0px',divKindle,'','');
@@ -841,7 +843,7 @@ else
 
         if(butMax.innerHTML == "Expand")
         {
-            if(getPage.includes('read.amazon.com/notebook'))
+            if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress))
             {
                 divElem.style.width = "90%";
                 divElem.style.height = "80%";
@@ -1132,7 +1134,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         }
         else
         {
-            window.alert('Not on kindle page. Go to: https://read.amazon.com/notebook');
+            window.alert('You are on: "' + pageTitle + '". Not on kindle page. Go to: https://read.amazon.com/notebook');
         }
     }
 
