@@ -240,6 +240,11 @@ if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearc
             setLocalStorageValue("showWindow", showWindow);
         }
     }
+    else
+    {
+        //On Roam website so will not load highlighter but need to set this variable so no console error after mainFunction() ran
+        showWindow = 1;
+    }
 }
 else
 {
@@ -1997,6 +2002,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 newPlainText += '\n' + indentSpaces + formatBullets + eachLine;
                 if(formatBullets == ''){newPlainText += '\n';}
             }
+            if(x == 0 && cbElemPgTitle.checked){newPlainText = eachLine + '\n';} //Page link does not need bullet
         }
 
         if(newPlainText.trim() != ''){plainConcatHighlights = newPlainText.trim();}
@@ -2028,6 +2034,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
         }
 
         veryFirstRun = 0;
+        //Scroll to the bottom of the textArea element to see the latest highlights when your window is full
+        textInput.scrollTop = textInput.scrollHeight;
         return;
     }
 
