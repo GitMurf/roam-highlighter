@@ -1455,7 +1455,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             )
             || (
                 (
-                    (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "KBD" || lastParNodeName == "EM" || lastParNodeName == "I" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP")
+                    (lastParNodeName == "A" || lastParNodeName == "CODE" || lastParNodeName == "KBD" || lastParNodeName == "EM" || lastParNodeName == "I" || lastParNodeName == "U" || lastParNodeName == "G-EMOJI" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "SUP" || lastParNodeName == "SUB")
                     || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "KBD" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B")
                 )
                 && (
@@ -1464,6 +1464,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
             )
             || parNodeName == "SUP" || parOfparNodeName == "SUP" || curHighlight.substring(0,1) == "."
+            || parNodeName == "SUB"
             || curNode.parentElement.parentElement.className == "mw-editsection"
             || (lastParNodeName == "A" && parNodeName == "A" && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim().substring(0,curHighlight.toString().trim().length)))
             || (curHighlight.substring(0,1) == " " && prevNode.innerText.substring(prevNode.innerText.length - 1) == " ")
