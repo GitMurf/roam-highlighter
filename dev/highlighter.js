@@ -1274,7 +1274,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         if(sameBlock == 0){eachHighlight = eachHighlight.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," ");}
 
         //* NEW FEATURE from 10-21-20 to add "..." at beginning and/or end of highlights that are mid-sentence
-        if(parNodeName != 'LI' && parNodeName != 'UL' && parNodeName != 'OL')
+        if(parNodeName != 'LI' && parNodeName != 'UL' && parNodeName != 'OL' && parNodeName != 'A')
         {
             var getFirstChar = eachHighlight.substring(0,1)
             var getLastChar = eachHighlight.slice(-1)
