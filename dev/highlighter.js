@@ -1,5 +1,5 @@
-//Date: June 1, 2020
-var verNum = '1.9.7.2';
+//Date: October 21, 2020
+var verNum = '1.9.8';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -14,6 +14,7 @@ var formatCode = '`';
 var formatBullets = '- ';
 var bHeaders = true;
 var bIndents = true;
+var bLinks = true;
 var pageTruncate = '';
 var pgRefCase = Number(0);
 //Kindle settings
@@ -88,6 +89,7 @@ async function startFunction()
         writeToConsole("bHeaders: " + bHeaders,-1);
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
+        writeToConsole("bLinks: " + bLinks,-1);
         writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("pgRefCase: " + pgRefCase,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
@@ -98,7 +100,7 @@ async function startFunction()
     }
 
     //Array to loop through to get values from browser.storage.local
-    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "pageTruncate", "pgRefCase", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
+    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "bLinks", "pageTruncate", "pgRefCase", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
 
     for(var s = 0; s < settingsArray.length; s++)
     {
@@ -158,6 +160,10 @@ async function startFunction()
                 if(varResult !== undefined){bIndents = varResult;}
                 setLocalStorageValue("bIndents", bIndents);
                 break;
+            case "bLinks":
+                if(varResult !== undefined){bLinks = varResult;}
+                setLocalStorageValue("bLinks", bLinks);
+                break;
             case "pageTruncate":
                 if(varResult !== undefined){pageTruncate = varResult;}
                 setLocalStorageValue("pageTruncate", pageTruncate);
@@ -202,6 +208,7 @@ async function startFunction()
         writeToConsole("bHeaders: " + bHeaders,-1);
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
+        writeToConsole("bLinks: " + bLinks,-1);
         writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("pgRefCase: " + pgRefCase,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
@@ -496,6 +503,10 @@ else
     var cbElemIndents = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbIndents','rmHLcbIndents');
     if(bIndents){cbElemIndents.checked = true;}else{cbElemIndents.checked = false;}
 
+    var labelElemLinks = createNewElement('label','Links:','rmHLcbLinks','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var cbElemLinks = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbLinks','rmHLcbLinks');
+    if(bLinks){cbElemLinks.checked = true;}else{cbElemLinks.checked = false;}
+
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
     var labelElem4 = createNewElement('label','Show the Clipboard in:','','margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
@@ -544,6 +555,7 @@ else
         var cbElemHeaders = document.getElementById("rmHLcbHeaders")
         var tbElemBullet = document.getElementById("rmHLtbBullet");
         var cbElemIndents = document.getElementById("rmHLcbIndents")
+        var cbElemLinks = document.getElementById("rmHLcbLinks")
         var cbElem1 = document.getElementById("rmHLcbType1")
         var cbElem2 = document.getElementById("rmHLcbType2")
         var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
@@ -569,6 +581,7 @@ else
                 cbElemHeaders.checked = true;
                 tbElemBullet.value = '- ';
                 cbElemIndents.checked = true;
+                cbElemLinks.checked = true;
                 //Kindle settings
                 if(tbKinHLref != null){tbKinHLref.value = '#[[Kindle-Highlights]]';}
                 break;
@@ -581,6 +594,7 @@ else
                 cbElemHeaders.checked = false;
                 tbElemBullet.value = '';
                 cbElemIndents.checked = false;
+                cbElemLinks.checked = true;
                 //Kindle settings
                 if(tbKinHLref != null){tbKinHLref.value = '[[Kindle-Highlights]]';}
                 break;
@@ -613,6 +627,7 @@ else
         bHeaders = cbElemHeaders.checked;
         formatBullets = tbElemBullet.value;
         bIndents = cbElemIndents.checked;
+        bLinks = cbElemLinks.checked;
         pageTruncate = tbElemPgTrunc.value;
         pgRefCase = Number(selPgRefCase.value);
         //Kindle settings
@@ -636,6 +651,7 @@ else
         setLocalStorageValue("bHeaders", bHeaders);
         setLocalStorageValue("formatBullets", formatBullets);
         setLocalStorageValue("bIndents", bIndents);
+        setLocalStorageValue("bLinks", bLinks);
         setLocalStorageValue("pageTruncate", pageTruncate);
         setLocalStorageValue("pgRefCase", pgRefCase);
         //Kindle settings
@@ -688,6 +704,7 @@ else
         var cbElemHeaders = document.getElementById("rmHLcbHeaders")
         var tbElemBullet = document.getElementById("rmHLtbBullet");
         var cbElemIndents = document.getElementById("rmHLcbIndents")
+        var cbElemLinks = document.getElementById("rmHLcbLinks")
         var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
         var selPgRefCase = document.getElementById("rmHLcaseSel");
         //Kindle settings
@@ -745,6 +762,7 @@ else
         bHeaders = cbElemHeaders.checked;
         formatBullets = tbElemBullet.value;
         bIndents = cbElemIndents.checked;
+        bLinks = cbElemLinks.checked;
         pageTruncate = tbElemPgTrunc.value;
         pgRefCase = Number(selPgRefCase.value);
         //Kindle settings
@@ -768,6 +786,7 @@ else
         setLocalStorageValue("bHeaders", bHeaders);
         setLocalStorageValue("formatBullets", formatBullets);
         setLocalStorageValue("bIndents", bIndents);
+        setLocalStorageValue("bLinks", bLinks);
         setLocalStorageValue("pageTruncate", pageTruncate);
         setLocalStorageValue("pgRefCase", pgRefCase);
         //Kindle settings
@@ -1512,6 +1531,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 }
 
                 foundALink = foundALink.split(")]").join("|)|]");
+                if(!bLinks){foundALink = formatItalics + eachLink.innerText + formatItalics} //Remove link formatting like from Wikipedia as it can be distracting
 
                 if(debugMode != 0){writeToConsole(`Here: [${eachLink.innerText}](${eachLink.href})`);}
                 eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
@@ -1633,6 +1653,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 }
 
                                 foundALink = foundALink.split(")]").join("|)|]");
+                                if(!bLinks){foundALink = formatItalics + eachLink.innerText + formatItalics} //Remove link formatting like from Wikipedia as it can be distracting
 
                                 if(debugMode != 0){writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);}
                                 newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
