@@ -17,6 +17,7 @@ var bIndents = true;
 var bLinks = true;
 var pageTruncate = '';
 var pgRefCase = Number(0);
+var elipOpt = Number(0);
 //Kindle settings
 var kindleNotesAddress = 'read.amazon.com/notebook';
 var kindleNotesLoginAddress = 'read.amazon.com/kp/notebook';
@@ -95,6 +96,7 @@ async function startFunction()
         writeToConsole("bLinks: " + bLinks,-1);
         writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("pgRefCase: " + pgRefCase,-1);
+        writeToConsole("elipOpt: " + elipOpt,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -103,7 +105,7 @@ async function startFunction()
     }
 
     //Array to loop through to get values from browser.storage.local
-    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "bLinks", "pageTruncate", "pgRefCase", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
+    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "bLinks", "pageTruncate", "pgRefCase", "elipOpt", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
 
     for(var s = 0; s < settingsArray.length; s++)
     {
@@ -175,6 +177,10 @@ async function startFunction()
                 if(varResult !== undefined){pgRefCase = varResult;}
                 setLocalStorageValue("pgRefCase", pgRefCase);
                 break;
+            case "elipOpt":
+                if(varResult !== undefined){elipOpt = varResult;}
+                setLocalStorageValue("elipOpt", elipOpt);
+                break;
             case "kindleHLref":
                 if(varResult !== undefined){kindleHLref = varResult;}
                 setLocalStorageValue("kindleHLref", kindleHLref);
@@ -214,6 +220,7 @@ async function startFunction()
         writeToConsole("bLinks: " + bLinks,-1);
         writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("pgRefCase: " + pgRefCase,-1);
+        writeToConsole("elipOpt: " + elipOpt,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -529,6 +536,7 @@ else
 
     var labelElemDefaults = createNewElement('label','Reset to Default Settings','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
     var labelElemRefCase = createNewElement('label','Page Link/Ref Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-right:58px;float:right',formElem,'','');
+    var labelElemElip = createNewElement('label','Ellipsis','rmHLelip','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-right:58px;float:right',formElem,'','');
     formElem.appendChild(document.createElement('br'));
 
     var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:135px;max-width:135px;width:135px;display:inline-flex',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
@@ -544,6 +552,13 @@ else
     selPgRefCase.options.add( new Option("all lower case","3") );
     selPgRefCase.options.add( new Option("ALL UPPER CASE","4") );
     selPgRefCase.value = pgRefCase;
+
+    var selElip = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;float:right;min-width:165px;max-width:165px;width:165px',formElem,'rmHLelip','rmHLelip');
+    selElip.options.add( new Option("None","0", true, true) );
+    selElip.options.add( new Option("Front","1") );
+    selElip.options.add( new Option("Back","2") );
+    selElip.options.add( new Option("Both","3") );
+    selElip.value = elipOpt;
 
     selDefaults.addEventListener("change", function(evt){
         var divElemMain = document.getElementById("rmHLmain");
@@ -564,6 +579,7 @@ else
         var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
         var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
         var selPgRefCase = document.getElementById("rmHLcaseSel");
+        var selElip = document.getElementById("rmHLelip");
         //Kindle settings
         var tbKinHLref = document.getElementById("rmHLkingleTb1");
         var cbLoc = document.getElementById("rmHLcbLoc");
@@ -610,6 +626,7 @@ else
         cbElem2.checked = false;
         tbElemPgTrunc.value = '';
         selPgRefCase.value = 0;
+        selElip.value = 0;
         if(tbKinHLref != null)
         {
             cbLoc.checked = true;
@@ -633,6 +650,7 @@ else
         bLinks = cbElemLinks.checked;
         pageTruncate = tbElemPgTrunc.value;
         pgRefCase = Number(selPgRefCase.value);
+        elipOpt = Number(selElip.value);
         //Kindle settings
         if(tbKinHLref != null)
         {
@@ -657,6 +675,7 @@ else
         setLocalStorageValue("bLinks", bLinks);
         setLocalStorageValue("pageTruncate", pageTruncate);
         setLocalStorageValue("pgRefCase", pgRefCase);
+        setLocalStorageValue("elipOpt", elipOpt);
         //Kindle settings
         setLocalStorageValue("kindleHLref", kindleHLref);
         setLocalStorageValue("bLocation", bLocation);
@@ -710,6 +729,7 @@ else
         var cbElemLinks = document.getElementById("rmHLcbLinks")
         var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
         var selPgRefCase = document.getElementById("rmHLcaseSel");
+        var selElip = document.getElementById("rmHLelip");
         //Kindle settings
         var tbKinHLref = document.getElementById("rmHLkingleTb1");
         var cbLoc = document.getElementById("rmHLcbLoc");
@@ -768,6 +788,7 @@ else
         bLinks = cbElemLinks.checked;
         pageTruncate = tbElemPgTrunc.value;
         pgRefCase = Number(selPgRefCase.value);
+        elipOpt = Number(selElip.value);
         //Kindle settings
         if(tbKinHLref != null)
         {
@@ -792,6 +813,7 @@ else
         setLocalStorageValue("bLinks", bLinks);
         setLocalStorageValue("pageTruncate", pageTruncate);
         setLocalStorageValue("pgRefCase", pgRefCase);
+        setLocalStorageValue("elipOpt", elipOpt);
         //Kindle settings
         setLocalStorageValue("kindleHLref", kindleHLref);
         setLocalStorageValue("bLocation", bLocation);
@@ -1250,6 +1272,32 @@ Roam-highlighter Shortcut Keys (v${verNum})
         //var origEachHighlight = eachHighlight;
         //Adding to default setting to replace line breaks within an element with a space as for the most part, shouldn't have line breaks within a single element.
         if(sameBlock == 0){eachHighlight = eachHighlight.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," ");}
+
+        //* NEW FEATURE from 10-21-20 to add "..." at beginning and/or end of highlights that are mid-sentence
+        if(parNodeName != 'LI' && parNodeName != 'UL' && parNodeName != 'OL')
+        {
+            var getFirstChar = eachHighlight.substring(0,1)
+            var getLastChar = eachHighlight.slice(-1)
+            switch (elipOpt)
+            {
+                case 0:
+                    //Default
+                    break;
+                case 1:
+                    //Front - Start lower case, and not a bullet
+                    if((/[a-z]/.test(getFirstChar))){eachHighlight = '...' + eachHighlight}
+                    break;
+                case 2:
+                    //Back - End with letter, and not a bullet
+                    if((/[A-Za-z]/.test(getLastChar))){eachHighlight = eachHighlight + '...'}
+                    break;
+                case 3:
+                    //Both - combine front and back
+                    if((/[a-z]/.test(getFirstChar))){eachHighlight = '...' + eachHighlight}
+                    if((/[A-Za-z]/.test(getLastChar))){eachHighlight = eachHighlight + '...'}
+                    break;
+            }
+        }
 
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = formatBold + eachHighlight + formatBold;}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = formatItalics + eachHighlight + formatItalics;}
