@@ -1273,32 +1273,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
         //Adding to default setting to replace line breaks within an element with a space as for the most part, shouldn't have line breaks within a single element.
         if(sameBlock == 0){eachHighlight = eachHighlight.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," ");}
 
-        //* NEW FEATURE from 10-21-20 to add "..." at beginning and/or end of highlights that are mid-sentence
-        if(parNodeName != 'LI' && parNodeName != 'UL' && parNodeName != 'OL' && parNodeName != 'A')
-        {
-            var getFirstChar = eachHighlight.substring(0,1)
-            var getLastChar = eachHighlight.slice(-1)
-            switch (elipOpt)
-            {
-                case 0:
-                    //Default
-                    break;
-                case 1:
-                    //Front - Start lower case, and not a bullet
-                    if((/[a-z]/.test(getFirstChar))){eachHighlight = '...' + eachHighlight}
-                    break;
-                case 2:
-                    //Back - End with letter, and not a bullet
-                    if((/[A-Za-z]/.test(getLastChar))){eachHighlight = eachHighlight + '...'}
-                    break;
-                case 3:
-                    //Both - combine front and back
-                    if((/[a-z]/.test(getFirstChar))){eachHighlight = '...' + eachHighlight}
-                    if((/[A-Za-z]/.test(getLastChar))){eachHighlight = eachHighlight + '...'}
-                    break;
-            }
-        }
-
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = formatBold + eachHighlight + formatBold;}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = formatItalics + eachHighlight + formatItalics;}
         if(parNodeName == "CODE"){eachHighlight = formatCode + eachHighlight + formatCode;}
@@ -1521,6 +1495,83 @@ Roam-highlighter Shortcut Keys (v${verNum})
             return true;
         }
         else{return false;}
+    }
+
+    function addEllipsis(wholeLine, thisIsHeader, thisIsBullet)
+    {
+        //* NEW FEATURE from 10-21-20 to add "..." at beginning and/or end of highlights that are mid-sentence
+        var tmpwholeLine = wholeLine
+        if(thisIsHeader == 0 && thisIsBullet == 0)
+        {
+            var tmp1 = tmpwholeLine.indexOf('<li>')
+            var tmp2 = tmpwholeLine.indexOf('</li>')
+//!spm delete
+console.log(tmp1)
+console.log(tmp2)
+            if(tmp1 > -1 && tmp2 > -1)
+            {
+                var begOfLine = tmpwholeLine.substring(0,tmp1+4)
+                var endOfLine = tmpwholeLine.substring(tmp2)
+                tmpwholeLine = tmpwholeLine.substring(tmp1 + 4, tmp2)
+                var begBold = tmpwholeLine.startsWith(formatBold)
+                var endBold = tmpwholeLine.endsWith(formatBold)
+                var begItalics = tmpwholeLine.startsWith(formatItalics)
+                var endItalics = tmpwholeLine.endsWith(formatItalics)
+                if(begBold){tmpwholeLine = tmpwholeLine.substring(formatBold.length)}
+                if(endBold){tmpwholeLine = tmpwholeLine.substring(0,tmpwholeLine.length-formatBold.length)}
+                if(begItalics){tmpwholeLine = tmpwholeLine.substring(formatItalics.length)}
+                if(endItalics){tmpwholeLine = tmpwholeLine.substring(0,tmpwholeLine.length-formatItalics.length)}
+//!spm delete
+console.log(begOfLine)
+console.log(endOfLine)
+console.log(tmpwholeLine)
+            }
+
+            var getFirstChar = tmpwholeLine.substring(0,1)
+            var begEllips = false
+            var getLastChar = tmpwholeLine.slice(-1)
+            var endEllips = false
+console.log(getFirstChar)
+console.log(getLastChar)
+            switch (elipOpt)
+            {
+                case 0:
+                    //Default
+                    break;
+                case 1:
+                    //Front - Start lower case
+                    if((/[a-z]/.test(getFirstChar))){begEllips = true}
+                    break;
+                case 2:
+                    //Back - End with letter, and not a LI bullet
+                    if((/[A-Za-z]/.test(getLastChar))){endEllips = true}
+                    break;
+                case 3:
+                    //Both - combine front and back
+                    if((/[a-z]/.test(getFirstChar))){begEllips = true}
+                    if((/[A-Za-z]/.test(getLastChar))){endEllips = true}
+                    break;
+            }
+console.log(tmpwholeLine)
+            if(tmp1 > -1 && tmp2 > -1)
+            {
+                if(begItalics){tmpwholeLine = formatItalics + tmpwholeLine}
+                if(endItalics){tmpwholeLine = tmpwholeLine + formatItalics}
+                if(begBold){tmpwholeLine = formatBold + tmpwholeLine}
+                if(endBold){tmpwholeLine = tmpwholeLine + formatBold}
+            }
+
+            if(begEllips){tmpwholeLine = '...' + tmpwholeLine}
+            if(endEllips){tmpwholeLine = tmpwholeLine + '...'}
+
+            if(tmp1 > -1 && tmp2 > -1)
+            {
+                tmpwholeLine = begOfLine + tmpwholeLine + endOfLine
+            }
+console.log(tmpwholeLine)
+        }
+
+        return tmpwholeLine
     }
 
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
@@ -1864,7 +1915,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         //htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("<h1>").join('\n<h1>').split("<h2>").join('\n<h2>').split("<h3>").join('\n<h3>') //.split("<h4>").join('\n<h4>').split("<h5>").join('\n<h5>') //.split("<h6>").join('\n<h6>')
         htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\r\n<ul>').split("<li>").join('\r\n<li>').split("<h1>").join('\r\n<h1>').split("<h2>").join('\r\n<h2>').split("<h3>").join('\r\n<h3>')
         var lineBreaks = htmlConcatHighlights.trim().split('\r\n');
-
+console.log(lineBreaks)
         var indentLevel = 0;
         var ulList = 0;
         var levelNumber = 0;
@@ -1874,6 +1925,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var lastWasHeader = 0;
         for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
         {
+console.log(eachLine)
             //debugMode = 1;
             if(debugMode != 0){writeToConsole(x);}
             if(debugMode != 0){writeToConsole(eachLine);}
@@ -1944,8 +1996,10 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
 
             //if(eachLine.substring(0,9) == '<li>||ul-')
+            var thisIsBullet = 0;
             if(eachLine.indexOf('||ul-') > -1)
             {
+                thisIsBullet = 1
                 if(debugMode != 0){writeToConsole(eachLine.substring(0,9));}
                 /*
                 if(eachLine.substring(0,12) == '<li>||ul-one'){levelNumber = 1;}
@@ -2031,7 +2085,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 lastLevelNumber = levelNumber;
             }
             if(debugMode != 0){writeToConsole(eachLine);}
-            htmlConcatHighlights = htmlConcatHighlights + eachLine.split("  ").join(" ");
+            eachLine = eachLine.split("  ").join(" ")
+console.log(eachLine)
+console.log(thisIsHeader)
+console.log(thisIsBullet)
+            if(elipOpt > 0){eachLine = addEllipsis(eachLine, thisIsHeader, thisIsBullet)}
+console.log(eachLine)
+            htmlConcatHighlights = htmlConcatHighlights + eachLine;
             //debugMode = 0;
             lastWasHeader = thisIsHeader;
         }
