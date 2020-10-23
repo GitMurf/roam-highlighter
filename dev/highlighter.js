@@ -1649,9 +1649,11 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 var linkTextToUse = eachLink.innerText;
                 //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
                 linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
+                //Replace hashtag # in the markdown link name to No. as they mess with in Roam messing up the link (example is Github Issue # references)
+                linkTextToUse = linkTextToUse.split("#").join("No.");
                 linkTextToUse = linkTextToUse.trim().replace(/(\r\n|\n|\r)/gm," ");
                 var linkHref = eachLink.href;
-                //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
+                //Change # in a link address for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
                 linkHref = linkHref.split("#").join("|HASHTAG|")
 
                 if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
@@ -1771,9 +1773,11 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 var linkTextToUse = eachLink.innerText;
                                 //Account for footnote numbering like [7] because it turns to double brackets then which we don't want
                                 linkTextToUse = linkTextToUse.split("[").join("(").split("]").join(")");
+                                //Replace hashtag # in the markdown link name to No. as they mess with in Roam messing up the link (example is Github Issue # references)
+                                linkTextToUse = linkTextToUse.split("#").join("No.");
                                 linkTextToUse = linkTextToUse.trim().replace(/(\r\n|\n|\r)/gm," ");
                                 var linkHref = eachLink.href;
-                                //Change # in a link for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
+                                //Change # in a link address for now so can replace later in script because otherwise it will auto replace # with `#` and ruin link
                                 linkHref = linkHref.split("#").join("|HASHTAG|")
 
                                 if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
