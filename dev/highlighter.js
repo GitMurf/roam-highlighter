@@ -1490,6 +1490,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             writeToConsole('parOfparNodeName: ' + parOfparNodeName);
             writeToConsole(curNode.parentElement.parentElement,1,0);
             writeToConsole(prevNode,1,0);
+            writeToConsole(prevNode.parentElement.parentElement,1,0);
             writeToConsole('prevSibNodeName: ' + prevSibNodeName);
             writeToConsole('prevNode.innerText: ' + prevNode.innerText);
             writeToConsole('prevNode.innerText (last 1 char): "' + prevNode.innerText.substring(prevNode.innerText.length - 1) + '"');
@@ -1514,7 +1515,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ")" && curHighlight.substring(0,1) == "#")
                     || ((prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == " " || prevNode.parentElement.innerText.substring(prevNode.parentElement.innerText.length - 1) == '\xa0') && prevSibNodeName == "")
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ":" && (curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == '\xa0'))
-                    || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ":" && (lastParNodeName == "EM" || lastParNodeName == "I" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "DEL" || lastParNodeName == "STRIKE" || lastParNodeName == "S" || lastParNodeName == "INS"))
+                    || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ":" && (lastParNodeName == "EM" || lastParNodeName == "I" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "DEL" || lastParNodeName == "STRIKE" || lastParNodeName == "S" || lastParNodeName == "INS") && curNode.parentElement.parentElement.innerText.toString().trim() != curHighlight.toString().trim())
                 )
                 && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
             )
@@ -1531,7 +1532,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             || parNodeName == "SUP" || parOfparNodeName == "SUP" || curHighlight.substring(0,1) == "."
             || parNodeName == "SUB"
             || curNode.parentElement.parentElement.className == "mw-editsection"
-            || (lastParNodeName == "A" && parNodeName == "A" && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim().substring(0,curHighlight.toString().trim().length)))
+            || (lastParNodeName == "A" && parNodeName == "A" && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim().substring(0,curHighlight.toString().trim().length)) && curNode.parentElement.parentElement.innerText.toString().trim() != curHighlight.toString().trim() && prevNode.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.parentElement.innerText.toString().trim()) //Was added due to Wikipedia back to back link use case ; adding one more requirement though as created another issue
             || (curHighlight.substring(0,1) == " " && prevNode.innerText.substring(prevNode.innerText.length - 1) == " ")
         )
         {
