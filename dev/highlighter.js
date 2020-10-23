@@ -2136,6 +2136,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         htmlConcatHighlights = htmlConcatHighlights.split("<ul><ul>").join('<ul>');
         htmlConcatHighlights = htmlConcatHighlights.split(")[").join(") ["); //Fixing when two links are back to back next to each other. Need to add a space.
         htmlConcatHighlights = htmlConcatHighlights.split("||SOL||").join("").split("||EOL||").join(""); //start of line and end of line used for ellipsis logic
+        htmlConcatHighlights = htmlConcatHighlights.split("<li> ").join("<li>").split(" </li>").join("</li>"); //Fixing when two links are back to back next to each other. Need to add a space.
         if(debugMode != 0){writeToConsole(htmlConcatHighlights);}
 
         //lOOP THROUGH EACH LINE OF HTML TO MAKE THE PLAIN TEXT INDENT LIKE IT
