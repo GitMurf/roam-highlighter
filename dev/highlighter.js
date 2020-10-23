@@ -534,18 +534,18 @@ else
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
 
-    var labelElemDefaults = createNewElement('label','Reset to Default Settings','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var labelElemRefCase = createNewElement('label','Page Link/Ref Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-right:58px;float:right',formElem,'','');
-    var labelElemElip = createNewElement('label','Ellipsis','rmHLelip','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-right:58px;float:right',formElem,'','');
+    var labelElemDefaults = createNewElement('label','Reset to Defaults','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;width:115px',formElem,'','');
+    var labelElemRefCase = createNewElement('label','Page/Tag Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:15px;width:145px',formElem,'','');
+    var labelElemElip = createNewElement('label','Ellipsis','rmHLelip','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:15px;width:85px',formElem,'','');
     formElem.appendChild(document.createElement('br'));
 
-    var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:135px;max-width:135px;width:135px;display:inline-flex',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
+    var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:115px;max-width:115px;width:115px;display:inline-flex',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
     selDefaults.options.add( new Option("Roam Research","0", true, true) );
     selDefaults.options.add( new Option("Obsidian","1") );
 
     //var butReset = createNewElement('button','SET','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;display:inline-flex',formElem,'rmHLreset','rmHLreset');
 
-    var selPgRefCase = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;float:right;min-width:165px;max-width:165px;width:165px',formElem,'rmHLcaseSel','rmHLcaseSel');
+    var selPgRefCase = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:145px;max-width:145px;width:145px;margin-left:15px',formElem,'rmHLcaseSel','rmHLcaseSel');
     selPgRefCase.options.add( new Option("As is on page","0", true, true) );
     selPgRefCase.options.add( new Option("Each Word Capitalized","1") );
     selPgRefCase.options.add( new Option("First word capitalized","2") );
@@ -553,7 +553,7 @@ else
     selPgRefCase.options.add( new Option("ALL UPPER CASE","4") );
     selPgRefCase.value = pgRefCase;
 
-    var selElip = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;float:right;min-width:165px;max-width:165px;width:165px',formElem,'rmHLelip','rmHLelip');
+    var selElip = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:85px;max-width:85px;width:85px;margin-left:15px',formElem,'rmHLelip','rmHLelip');
     selElip.options.add( new Option("None","0", true, true) );
     selElip.options.add( new Option("Front","1") );
     selElip.options.add( new Option("Back","2") );
