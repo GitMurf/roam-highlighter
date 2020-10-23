@@ -10,6 +10,8 @@ var sideHeight = "30%";
 var showWindow = Number(1);
 var formatBold = '**';
 var formatItalics = '__';
+var formatStrike = '~~';
+var formatInsert = formatBold;
 var formatCode = '`';
 var formatBullets = '- ';
 var bHeaders = true;
@@ -1315,6 +1317,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = formatBold + eachHighlight + formatBold;}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = formatItalics + eachHighlight + formatItalics;}
         if(parNodeName == "CODE"){eachHighlight = formatCode + eachHighlight + formatCode;}
+        if(parNodeName == "STRIKE" || parNodeName == "S" || parNodeName == "DEL"){eachHighlight = formatStrike + eachHighlight + formatStrike;}
+        if(parNodeName == "INS"){eachHighlight = formatInsert + eachHighlight + formatInsert;}
         //if(origEachHighlight == parElemText || origEachHighlight == parParElemText || origEachHighlight == parParParElemText)
         //{
             if(parNodeName == "H1" || parNodeName == "H2" || parNodeName == "H3" || parParNodeName == "H1" || parParNodeName == "H2" || parParNodeName == "H3" || parParParNodeName == "H1" || parParParNodeName == "H2" || parParParNodeName == "H3")
