@@ -1273,6 +1273,45 @@ Roam-highlighter Shortcut Keys (v${verNum})
         //Adding to default setting to replace line breaks within an element with a space as for the most part, shouldn't have line breaks within a single element.
         if(sameBlock == 0){eachHighlight = eachHighlight.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," ");}
 
+        //Determine whether to add ellipsis later in the code
+        var prevElemSib = elemSpan.parentElement.previousElementSibling
+        var prevNodeSib = elemSpan.parentElement.previousSibling
+        var nextELemSib = elemSpan.parentElement.nextElementSibling
+        var nextNodeSib = elemSpan.parentElement.nextSibling
+        var nextSibNode = elemSpan.nextSibling
+        var nextSibELem = elemSpan.nextElementSibling
+        var prevSibNode = elemSpan.previousSibling
+        var prevSibElem = elemSpan.previousElementSibling
+
+        if(prevElemSib){var prevElemSibName = prevElemSib.nodeName}else{var prevElemSibName = ""}
+        if(prevNodeSib){var prevNodeSibName = prevNodeSib.nodeName}else{var prevNodeSibName = ""}
+        if(prevNodeSib){var prevNodeSibText = prevNodeSib.textContent.replace(/\n|\r/g,'').trim()}else{var prevNodeSibText = ""}
+        if(nextELemSib){var nextElemSibName = nextELemSib.nodeName}else{var nextElemSibName = ""}
+        if(nextNodeSib){var nextNodeSibName = nextNodeSib.nodeName}else{var nextNodeSibName = ""}
+        if(nextNodeSib){var nextNodeSibText = nextNodeSib.textContent.replace(/\n|\r/g,'').trim()}else{var nextNodeSibText = ""}
+        if(prevSibElem){var prevSibElemName = prevSibElem.nodeName}else{var prevSibElemName = ""}
+        if(nextSibELem){var nextSibELemName = nextSibELem.nodeName}else{var nextSibELemName = ""}
+        if(prevSibNode){var prevSibNodeText = prevSibNode.textContent.replace(/\n|\r/g,'').trim()}else{var prevSibNodeText = ""}
+        if(nextSibNode){var nextSibNodeText = nextSibNode.textContent.replace(/\n|\r/g,'').trim()}else{var nextSibNodeText = ""}
+
+        var tmpEachHighlight = eachHighlight
+        if(parNodeName == "STRONG" || parNodeName == "B" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "CODE")
+        {
+            //Check if start of line (SOL) ; this is used for determining later whether to add ellipsis on front / end
+            if(prevNodeSibName == 'BR' || (prevElemSibName == 'BR' && prevNodeSibText == '') || eachHighlight == parParElemText.substring(0,eachHighlight.length)){tmpEachHighlight = '||SOL||' + eachHighlight}
+            //Check if end of line (EOL)
+            if(nextNodeSibName == 'BR' || (nextElemSibName == 'BR' && nextNodeSibText == '') || eachHighlight == parParElemText.slice(-1*eachHighlight.length)){tmpEachHighlight = tmpEachHighlight + '||EOL||'}
+        }
+        else
+        {
+            //Check if start of line (SOL) ; this is used for determining later whether to add ellipsis on front / end
+            if(eachHighlight == parElemText.substring(0,eachHighlight.length) || (prevSibElemName == 'BR' && prevSibNodeText == '')){tmpEachHighlight = '||SOL||' + eachHighlight}
+            //Check if end of line (EOL)
+            if(eachHighlight == parElemText.slice(-1*eachHighlight.length) || (nextSibELemName == 'BR' && nextSibNodeText == '')){tmpEachHighlight = tmpEachHighlight + '||EOL||'}
+        }
+
+        eachHighlight = tmpEachHighlight
+
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = formatBold + eachHighlight + formatBold;}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = formatItalics + eachHighlight + formatItalics;}
         if(parNodeName == "CODE"){eachHighlight = formatCode + eachHighlight + formatCode;}
@@ -1505,9 +1544,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
         {
             var tmp1 = tmpwholeLine.indexOf('<li>')
             var tmp2 = tmpwholeLine.indexOf('</li>')
-//!spm delete
-console.log(tmp1)
-console.log(tmp2)
             if(tmp1 > -1 && tmp2 > -1)
             {
                 var begOfLine = tmpwholeLine.substring(0,tmp1+4)
@@ -1521,18 +1557,13 @@ console.log(tmp2)
                 if(endBold){tmpwholeLine = tmpwholeLine.substring(0,tmpwholeLine.length-formatBold.length)}
                 if(begItalics){tmpwholeLine = tmpwholeLine.substring(formatItalics.length)}
                 if(endItalics){tmpwholeLine = tmpwholeLine.substring(0,tmpwholeLine.length-formatItalics.length)}
-//!spm delete
-console.log(begOfLine)
-console.log(endOfLine)
-console.log(tmpwholeLine)
             }
 
             var getFirstChar = tmpwholeLine.substring(0,1)
             var begEllips = false
             var getLastChar = tmpwholeLine.slice(-1)
             var endEllips = false
-console.log(getFirstChar)
-console.log(getLastChar)
+
             switch (elipOpt)
             {
                 case 0:
@@ -1552,7 +1583,7 @@ console.log(getLastChar)
                     if((/[A-Za-z]/.test(getLastChar))){endEllips = true}
                     break;
             }
-console.log(tmpwholeLine)
+
             if(tmp1 > -1 && tmp2 > -1)
             {
                 if(begItalics){tmpwholeLine = formatItalics + tmpwholeLine}
@@ -1568,7 +1599,6 @@ console.log(tmpwholeLine)
             {
                 tmpwholeLine = begOfLine + tmpwholeLine + endOfLine
             }
-console.log(tmpwholeLine)
         }
 
         return tmpwholeLine
@@ -1915,7 +1945,6 @@ console.log(tmpwholeLine)
         //htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n<li>').split("<h1>").join('\n<h1>').split("<h2>").join('\n<h2>').split("<h3>").join('\n<h3>') //.split("<h4>").join('\n<h4>').split("<h5>").join('\n<h5>') //.split("<h6>").join('\n<h6>')
         htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\r\n<ul>').split("<li>").join('\r\n<li>').split("<h1>").join('\r\n<h1>').split("<h2>").join('\r\n<h2>').split("<h3>").join('\r\n<h3>')
         var lineBreaks = htmlConcatHighlights.trim().split('\r\n');
-console.log(lineBreaks)
         var indentLevel = 0;
         var ulList = 0;
         var levelNumber = 0;
@@ -1925,7 +1954,6 @@ console.log(lineBreaks)
         var lastWasHeader = 0;
         for(var x=0, eachLine; eachLine = lineBreaks[x]; x++)
         {
-console.log(eachLine)
             //debugMode = 1;
             if(debugMode != 0){writeToConsole(x);}
             if(debugMode != 0){writeToConsole(eachLine);}
@@ -2086,11 +2114,7 @@ console.log(eachLine)
             }
             if(debugMode != 0){writeToConsole(eachLine);}
             eachLine = eachLine.split("  ").join(" ")
-console.log(eachLine)
-console.log(thisIsHeader)
-console.log(thisIsBullet)
             if(elipOpt > 0){eachLine = addEllipsis(eachLine, thisIsHeader, thisIsBullet)}
-console.log(eachLine)
             htmlConcatHighlights = htmlConcatHighlights + eachLine;
             //debugMode = 0;
             lastWasHeader = thisIsHeader;
@@ -2107,6 +2131,7 @@ console.log(eachLine)
         if(htmlConcatHighlights.indexOf("<ul>") > -1){htmlConcatHighlights = htmlConcatHighlights + '</ul>';}
         htmlConcatHighlights = htmlConcatHighlights.split("<ul><ul>").join('<ul>');
         htmlConcatHighlights = htmlConcatHighlights.split(")[").join(") ["); //Fixing when two links are back to back next to each other. Need to add a space.
+        htmlConcatHighlights = htmlConcatHighlights.split("||SOL||").join("").split("||EOL||").join(""); //start of line and end of line used for ellipsis logic
         if(debugMode != 0){writeToConsole(htmlConcatHighlights);}
 
         //lOOP THROUGH EACH LINE OF HTML TO MAKE THE PLAIN TEXT INDENT LIKE IT
