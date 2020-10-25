@@ -1014,6 +1014,34 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 indentAmount = '';
                 initIndentAmount = '';
             }
+
+            function convertToRoamDate(dateString)
+            {
+                var newDateString = dateString.replace("st,",",").replace("rd,",",").replace("th,",",").replace("nd,",",")
+                var foundDate = new Date(Date.parse(newDateString))
+                if(isNaN(foundDate))
+                {
+                    return dateString
+                }
+                else
+                {
+                    //Convert to Roam date page format
+                    const nth = function(d) {
+                        if (d > 3 && d < 21) return 'th';
+                        switch (d % 10) {
+                          case 1:  return "st";
+                          case 2:  return "nd";
+                          case 3:  return "rd";
+                          default: return "th";
+                        }
+                      }
+                      const dateStr = foundDate.getDate();
+                      const monthStr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][foundDate.getMonth()];
+                      
+                      return `[[${monthStr} ${dateStr}${nth(dateStr)}, ${foundDate.getFullYear()}]]`;
+                }
+            }
+
             //var titleElem = document.getElementById('');
             //var bookTitle = "";
             for(var i = 0; i < myHighlights.length; i++)
@@ -1056,6 +1084,15 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
                         textString += initIndentAmount + formatBullets + 'Author: ' + curText + '\n';
                         //textString += initIndentAmount + formatBullets + 'Author: ' + curText + '\n';
+                        var lastAccess = document.getElementById('kp-notebook-annotated-date'); //Last accessed date
+                        if(lastAccess)
+                        {
+                            //Put date in Roam format
+                            var lastAccessStr = convertToRoamDate(lastAccess.innerText)
+                            textString += initIndentAmount + formatBullets + 'Last-Read: ' + lastAccessStr + '\n';
+                            htmlString += '<li>Last-Read:: ' + lastAccessStr + '</li>';
+                        }
+
                         textString += initIndentAmount + formatBullets + 'Amazon-store: ' + amazonLink + '\n';
                         textString += initIndentAmount + formatBullets + coverImg + '\n';
                         if(formatBullets == ''){textString += '\n';}
