@@ -1,5 +1,5 @@
 //Date: October 21, 2020
-var verNum = '1.9.8';
+var verNum = '1.9.8.1';
 var getPage = location.href;
 
 //Default settings in case no local storage saved
@@ -23,7 +23,8 @@ var elipOpt = Number(0);
 //Kindle settings
 var kindleNotesAddress = 'read.amazon.com/notebook';
 var kindleNotesLoginAddress = 'read.amazon.com/kp/notebook';
-var kindleNotesAddressFR = 'lire.amazon.fr/notebook';
+var kindleNotesAddressFR = 'lire.amazon.fr/notebook'; //French
+var kindleNotesAddressDE = 'lesen.amazon.de/notebook'; //German
 var kindleHLref = "#[[Kindle-Highlights]]";
 var bLocation = true;
 var bColor = true;
@@ -382,7 +383,7 @@ else
     var tbElem = createNewElement('input',pageRef,'','padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtb','rmHLtb');
     tbElem.placeholder = "#[[Roam-Highlights]]";
 
-    if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR))
+    if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE))
     {
         //Text box for Kindle-highlights tag
         var labelKindle4 = createNewElement('label','Highlights #Tag: ','rmHLkingleTb1','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline;margin-right:5px;vertical-align:middle;padding:0px',divKindle,'','');
@@ -868,7 +869,7 @@ else
 
         if(butMax.innerHTML == "Expand")
         {
-            if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR))
+            if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE))
             {
                 divElem.style.width = "90%";
                 divElem.style.height = "80%";
