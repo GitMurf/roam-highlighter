@@ -1,6 +1,7 @@
 //Date: October 21, 2020
 var verNum = '1.9.8.1';
 var getPage = location.href;
+var iframeDoc = document; //Placeholder for later setting global variable to iframe document
 
 //Default settings in case no local storage saved
 var sameBlock = Number(0);
@@ -233,7 +234,7 @@ async function startFunction()
 
     mainFunction();
 
-    var sideWindow = document.getElementById("rmHLmain");
+    var sideWindow = document.getElementById('rmHLiframe');
     if(showWindow == 0){sideWindow.style.setProperty('display', 'none', 'important');}
 }
 
@@ -246,7 +247,8 @@ if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearc
     //Variable already present/set so therefore do not need to run again as don't want to duplicate load the Javascript code
     if(roamHighlighterLoaded == 1)
     {
-        var divElemMain = document.getElementById("rmHLmain");
+        var divElemMain = document.getElementById('rmHLiframe');
+        iframeDoc = divElemMain.contentWindow.document;
         if(divElemMain.style.display != "none")
         {
             divElemMain.style.setProperty('display', 'none', 'important');
@@ -338,11 +340,21 @@ else
         var butExtractKindle = createNewElement('span','TEXT','','CSS',divKindle,'ID','NAME');
         var butExtractKindle = createNewElement('a','TEXT','','CSS',divKindle,'ID','NAME');
     */
+    var iframeElem = document.createElement('iframe');
+        iframeElem.id = 'rmHLiframe';
+        iframeElem.style.setProperty('display', 'block', 'important');
+        iframeElem.style.cssText = 'position:fixed;bottom:3px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999;font-size:12px;line-height:normal;border-bottom:1px solid black;border-top:none;border-left:none;border-right:none;';
+        document.body.appendChild(iframeElem);
+        iframeDoc = iframeElem.contentWindow.document;
+        iframeDoc.body.style.cssText = 'margin:0px;';
+    var divElem = iframeDoc.body;
+    /*
     var divElem = document.createElement('div');
         divElem.id = 'rmHLmain';
         divElem.style.setProperty('display', 'block', 'important');
         divElem.style.cssText = 'position:fixed;bottom:3px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999;font-size:12px;line-height:normal;border-bottom:1px solid black;';
-        document.body.appendChild(divElem);
+        iframeDoc.body.appendChild(divElem);
+    */
 
     var divButtonsElem = document.createElement('div');
         divButtonsElem.id = 'rmHLdivButt';
@@ -564,33 +576,33 @@ else
     selElip.value = elipOpt;
 
     selDefaults.addEventListener("change", function(evt){
-        var divElemMain = document.getElementById("rmHLmain");
-        var tbElem = document.getElementById("rmHLtb");
-        var textElem2 = document.getElementById("rmHLta2");
-        var selElem = document.getElementById("rmHLsel");
-        var tbSizeW = document.getElementById("rmHLtbSize");
-        var tbSizeH = document.getElementById("rmHLtbSize2");
-        var tbElemBold = document.getElementById("rmHLtbBold");
-        var tbElemItalic = document.getElementById("rmHLtbItalic");
-        var tbElemCode = document.getElementById("rmHLtbCode");
-        var cbElemHeaders = document.getElementById("rmHLcbHeaders")
-        var tbElemBullet = document.getElementById("rmHLtbBullet");
-        var cbElemIndents = document.getElementById("rmHLcbIndents")
-        var cbElemLinks = document.getElementById("rmHLcbLinks")
-        var cbElem1 = document.getElementById("rmHLcbType1")
-        var cbElem2 = document.getElementById("rmHLcbType2")
-        var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
-        var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
-        var selPgRefCase = document.getElementById("rmHLcaseSel");
-        var selElip = document.getElementById("rmHLelip");
+        //var divElemMain = iframeDoc.getElementById("rmHLmain");
+        var tbElem = iframeDoc.getElementById("rmHLtb");
+        var textElem2 = iframeDoc.getElementById("rmHLta2");
+        var selElem = iframeDoc.getElementById("rmHLsel");
+        var tbSizeW = iframeDoc.getElementById("rmHLtbSize");
+        var tbSizeH = iframeDoc.getElementById("rmHLtbSize2");
+        var tbElemBold = iframeDoc.getElementById("rmHLtbBold");
+        var tbElemItalic = iframeDoc.getElementById("rmHLtbItalic");
+        var tbElemCode = iframeDoc.getElementById("rmHLtbCode");
+        var cbElemHeaders = iframeDoc.getElementById("rmHLcbHeaders")
+        var tbElemBullet = iframeDoc.getElementById("rmHLtbBullet");
+        var cbElemIndents = iframeDoc.getElementById("rmHLcbIndents")
+        var cbElemLinks = iframeDoc.getElementById("rmHLcbLinks")
+        var cbElem1 = iframeDoc.getElementById("rmHLcbType1")
+        var cbElem2 = iframeDoc.getElementById("rmHLcbType2")
+        var tbElemPgTrunc = iframeDoc.getElementById("rmHLtbPgTrunc");
+        var cbElemPgTitle = iframeDoc.getElementById("rmHLcbPgTitle");
+        var selPgRefCase = iframeDoc.getElementById("rmHLcaseSel");
+        var selElip = iframeDoc.getElementById("rmHLelip");
         //Kindle settings
-        var tbKinHLref = document.getElementById("rmHLkingleTb1");
-        var cbLoc = document.getElementById("rmHLcbLoc");
-        var cbCol = document.getElementById("rmHLcbHlColor");
-        var cbColRef = document.getElementById("rmHLcbHlColorLink");
-        var selKindle = document.getElementById("rmHLkindleSel");
+        var tbKinHLref = iframeDoc.getElementById("rmHLkingleTb1");
+        var cbLoc = iframeDoc.getElementById("rmHLcbLoc");
+        var cbCol = iframeDoc.getElementById("rmHLcbHlColor");
+        var cbColRef = iframeDoc.getElementById("rmHLcbHlColorLink");
+        var selKindle = iframeDoc.getElementById("rmHLkindleSel");
 
-        var selDefaults = document.getElementById("rmHLdefaultsSel");
+        var selDefaults = iframeDoc.getElementById("rmHLdefaultsSel");
 
         switch (Number(selDefaults.value))
         {
@@ -691,7 +703,7 @@ else
         clickEvent = 1;
         document.execCommand('cut');
 
-        var butSave = document.getElementById("rmHLsave");
+        var butSave = iframeDoc.getElementById("rmHLsave");
         butSave.style.backgroundColor = 'grey';
         butSave.style.cursor = 'default';
     });
@@ -704,43 +716,43 @@ else
     formElem.addEventListener("change", function(evt){
         if(evt.target.id != 'rmHLdefaultsSel')
         {
-            var butSave = document.getElementById("rmHLsave");
+            var butSave = iframeDoc.getElementById("rmHLsave");
             butSave.style.backgroundColor = 'blue';
             butSave.style.cursor = 'pointer';
         }
     });
 
     divKindle.addEventListener("change", function(evt){
-        var butSave = document.getElementById("rmHLsave");
+        var butSave = iframeDoc.getElementById("rmHLsave");
         butSave.style.backgroundColor = 'blue';
         butSave.style.cursor = 'pointer';
     });
 
     butSave.addEventListener("click", function(){
-        var divElemMain = document.getElementById("rmHLmain");
-        var tbElem = document.getElementById("rmHLtb");
-        var textElem2 = document.getElementById("rmHLta2");
-        var selElem = document.getElementById("rmHLsel");
-        var tbSizeW = document.getElementById("rmHLtbSize");
-        var tbSizeH = document.getElementById("rmHLtbSize2");
-        var tbElemBold = document.getElementById("rmHLtbBold");
-        var tbElemItalic = document.getElementById("rmHLtbItalic");
-        var tbElemCode = document.getElementById("rmHLtbCode");
-        var cbElemHeaders = document.getElementById("rmHLcbHeaders")
-        var tbElemBullet = document.getElementById("rmHLtbBullet");
-        var cbElemIndents = document.getElementById("rmHLcbIndents")
-        var cbElemLinks = document.getElementById("rmHLcbLinks")
-        var tbElemPgTrunc = document.getElementById("rmHLtbPgTrunc");
-        var selPgRefCase = document.getElementById("rmHLcaseSel");
-        var selElip = document.getElementById("rmHLelip");
+        //var divElemMain = iframeDoc.getElementById("rmHLmain");
+        var tbElem = iframeDoc.getElementById("rmHLtb");
+        var textElem2 = iframeDoc.getElementById("rmHLta2");
+        var selElem = iframeDoc.getElementById("rmHLsel");
+        var tbSizeW = iframeDoc.getElementById("rmHLtbSize");
+        var tbSizeH = iframeDoc.getElementById("rmHLtbSize2");
+        var tbElemBold = iframeDoc.getElementById("rmHLtbBold");
+        var tbElemItalic = iframeDoc.getElementById("rmHLtbItalic");
+        var tbElemCode = iframeDoc.getElementById("rmHLtbCode");
+        var cbElemHeaders = iframeDoc.getElementById("rmHLcbHeaders")
+        var tbElemBullet = iframeDoc.getElementById("rmHLtbBullet");
+        var cbElemIndents = iframeDoc.getElementById("rmHLcbIndents")
+        var cbElemLinks = iframeDoc.getElementById("rmHLcbLinks")
+        var tbElemPgTrunc = iframeDoc.getElementById("rmHLtbPgTrunc");
+        var selPgRefCase = iframeDoc.getElementById("rmHLcaseSel");
+        var selElip = iframeDoc.getElementById("rmHLelip");
         //Kindle settings
-        var tbKinHLref = document.getElementById("rmHLkingleTb1");
-        var cbLoc = document.getElementById("rmHLcbLoc");
-        var cbCol = document.getElementById("rmHLcbHlColor");
-        var cbColRef = document.getElementById("rmHLcbHlColorLink");
-        var selKindle = document.getElementById("rmHLkindleSel");
+        var tbKinHLref = iframeDoc.getElementById("rmHLkingleTb1");
+        var cbLoc = iframeDoc.getElementById("rmHLcbLoc");
+        var cbCol = iframeDoc.getElementById("rmHLcbHlColor");
+        var cbColRef = iframeDoc.getElementById("rmHLcbHlColorLink");
+        var selKindle = iframeDoc.getElementById("rmHLkindleSel");
 
-        var butSave = document.getElementById("rmHLsave");
+        var butSave = iframeDoc.getElementById("rmHLsave");
 
         butSave.style.backgroundColor = 'grey';
         butSave.style.cursor = 'default';
@@ -836,43 +848,49 @@ else
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var link1 = createNewElement('a','Detailed Instructions and Shortcuts','','font-size:12px;line-height:normal;color:blue',formElem,'','');
+    var link1 = createNewElement('a','Detailed Instructions, Shortcuts, and Features','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link1.href = 'https://github.com/GitMurf/roam-highlighter#how-to-use-the-highlighter';
+    link1.target = '_blank';
 
     formElem.appendChild(document.createElement('br'));
-    var link2 = createNewElement('a','Demos and Videos','','font-size:12px;line-height:normal;color:blue',formElem,'','');
-    link2.href = 'https://github.com/GitMurf/roam-highlighter#demo-1---activate-the-highlighter-extension-and-perform-a-simple-highlight';
+    var link2 = createNewElement('a','YouTube Tutorial & Demo','','font-size:12px;line-height:normal;color:blue',formElem,'','');
+    link2.href = 'https://www.youtube.com/watch?v=UzseaoxaSEM';
+    link2.target = '_blank';
 
     formElem.appendChild(document.createElement('br'));
     var link3 = createNewElement('a','Report a Bug/Issue','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link3.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+    link3.target = '_blank';
 
     formElem.appendChild(document.createElement('br'));
     var link4 = createNewElement('a','Submit an Idea or Feature Request','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link4.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+    link4.target = '_blank';
 
     formElem.appendChild(document.createElement('br'));
     var link5 = createNewElement('a','Ask a Question','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link5.href = 'https://github.com/GitMurf/roam-highlighter/issues/new';
+    link5.target = '_blank';
 
     formElem.appendChild(document.createElement('br'));
     var link6 = createNewElement('a','Kindle Notes & Highlights','','font-size:12px;line-height:normal;color:blue',formElem,'','');
     link6.href = 'https://read.amazon.com/notebook';
+    link6.target = '_blank';
 
     var butMax = createNewElement('button','Expand','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;height: 100%',divButtonsElem,'rmHLexpand','rmHLexpand');
 
     butMax.addEventListener("click", function(){
-        var divElemMain = document.getElementById("rmHLmain");
-        var divTextElem = document.getElementById("rmHLdivText");
-        var butMax = document.getElementById("rmHLexpand");
-        var divSetElem = document.getElementById("rmHLdivSett");
+        var divElemMain = document.getElementById('rmHLiframe');
+        var divTextElem = iframeDoc.getElementById("rmHLdivText");
+        var butMax = iframeDoc.getElementById("rmHLexpand");
+        var divSetElem = iframeDoc.getElementById("rmHLdivSett");
 
         if(butMax.innerHTML == "Expand")
         {
             if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE))
             {
-                divElem.style.width = "90%";
-                divElem.style.height = "80%";
+                divElemMain.style.width = "90%";
+                divElemMain.style.height = "80%";
             }
             else
             {
@@ -902,7 +920,7 @@ else
     var butHide = createNewElement('button','Hide','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;height: 100%',divButtonsElem,'','');
 
     butHide.addEventListener("click", function(){
-        var divElemMain = document.getElementById("rmHLmain");
+        var divElemMain = document.getElementById('rmHLiframe');
         divElemMain.style.setProperty('display', 'none', 'important');
         //divElemMain.style.setProperty('display', 'block', 'important');
         showWindow = 0;
@@ -912,8 +930,8 @@ else
     var butWrap = createNewElement('button','Wrap','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;height: 100%',divButtonsElem,'rmHLwrap','rmHLwrap');
 
     butWrap.addEventListener("click", function(){
-        var textInput = document.getElementById("rmHLtextArea");
-        var butWrap = document.getElementById("rmHLwrap");
+        var textInput = iframeDoc.getElementById("rmHLtextArea");
+        var butWrap = iframeDoc.getElementById("rmHLwrap");
 
         if(butWrap.innerHTML == "Wrap")
         {
@@ -932,15 +950,15 @@ else
     var butSett = createNewElement('button','Settings','','float:right;background-color:black;color:white;border-color:white;width:25%;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;height: 100%',divButtonsElem,'rmHLsettings','rmHLsettings');
 
     butSett.addEventListener("click", function(){
-        var divElemMain = document.getElementById("rmHLmain");
-        var divSetElem = document.getElementById("rmHLdivSett");
-        var divTextElem = document.getElementById("rmHLdivText");
-        var tbElem = document.getElementById("rmHLtb");
-        var textElem2 = document.getElementById("rmHLta2");
-        var selElem = document.getElementById("rmHLsel");
-        var butSett = document.getElementById("rmHLsettings");
-        var butMax = document.getElementById("rmHLexpand");
-        var butWrap = document.getElementById("rmHLwrap");
+        var divElemMain = document.getElementById('rmHLiframe');
+        var divSetElem = iframeDoc.getElementById("rmHLdivSett");
+        var divTextElem = iframeDoc.getElementById("rmHLdivText");
+        var tbElem = iframeDoc.getElementById("rmHLtb");
+        var textElem2 = iframeDoc.getElementById("rmHLta2");
+        var selElem = iframeDoc.getElementById("rmHLsel");
+        var butSett = iframeDoc.getElementById("rmHLsettings");
+        var butMax = iframeDoc.getElementById("rmHLexpand");
+        var butWrap = iframeDoc.getElementById("rmHLwrap");
 
         if(divSetElem.style.display == "none")
         {
@@ -1006,7 +1024,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var hlCtr = 0;
 
             var initIndentAmount = '    ';
-            var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
+            var cbElemPgTitle = iframeDoc.getElementById("rmHLcbPgTitle");
             if(cbElemPgTitle.checked == false){initIndentAmount = '';}
 
             var indentAmount = '    ';
@@ -1190,7 +1208,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var clipboardDataEvt = event.clipboardData;
             clipboardDataEvt.setData('text/plain', textString);
             clipboardDataEvt.setData('text/html', htmlString);
-            var textInput = document.getElementById("rmHLtextArea");
+            var textInput = iframeDoc.getElementById("rmHLtextArea");
             //htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>') //.split("</ul>").join('\n</ul>').split("</li>").join('\n</li>');
 
             textInput.value = textString;
@@ -1965,7 +1983,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             if(htmlString.trim().length > 0){htmlConcatHighlights += `${htmlString}`;}
         }
 
-        var cbElemPgTitle = document.getElementById("rmHLcbPgTitle");
+        var cbElemPgTitle = iframeDoc.getElementById("rmHLcbPgTitle");
         //Check if no highlights and just want the page name in Roam link format [Page Title](URL)
         if(plainConcatHighlights == "" || htmlConcatHighlights == "")
         {
@@ -2216,7 +2234,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var clipboardDataEvt = event.clipboardData;
         clipboardDataEvt.setData('text/plain', plainConcatHighlights);
         clipboardDataEvt.setData('text/html', htmlConcatHighlights);
-        var textInput = document.getElementById("rmHLtextArea");
+        var textInput = iframeDoc.getElementById("rmHLtextArea");
         if(debugMode != 0){writeToConsole("UPDATED THE CLIPBOARD");}
         //textInput.value = 'tESTING MAKING empty';
         htmlConcatHighlights = htmlConcatHighlights.split("<ul>").join('\n<ul>').split("<li>").join('\n\t<li>') //.split("</ul>").join('\n</ul>').split("</li>").join('\n</li>');
