@@ -234,7 +234,7 @@ async function startFunction()
     mainFunction();
 
     var sideWindow = document.getElementById("rmHLmain");
-    if(showWindow == 0){sideWindow.style.display = "none";}
+    if(showWindow == 0){sideWindow.style.setProperty('display', 'none', 'important');}
 }
 
 startFunction();
@@ -249,13 +249,13 @@ if(typeof roamHighlighterLoaded !== "undefined" || getPage.includes('roamresearc
         var divElemMain = document.getElementById("rmHLmain");
         if(divElemMain.style.display != "none")
         {
-            divElemMain.style.display = "none";
+            divElemMain.style.setProperty('display', 'none', 'important');
             showWindow = 0;
             setLocalStorageValue("showWindow", showWindow);
         }
         else
         {
-            divElemMain.style.display = "block";
+            divElemMain.style.setProperty('display', 'block', 'important');
             showWindow = 1;
             setLocalStorageValue("showWindow", showWindow);
         }
@@ -340,13 +340,13 @@ else
     */
     var divElem = document.createElement('div');
         divElem.id = 'rmHLmain';
-        divElem.style.display = "block";
+        divElem.style.setProperty('display', 'block', 'important');
         divElem.style.cssText = 'position:fixed;bottom:3px;right:3px;width:' + sideWidth + ';height:' + sideHeight + ';opacity:0.8;z-index:9999;font-size:12px;line-height:normal;border-bottom:1px solid black;';
         document.body.appendChild(divElem);
 
     var divButtonsElem = document.createElement('div');
         divButtonsElem.id = 'rmHLdivButt';
-        divButtonsElem.style.cssText = 'width:100%;display:flex;height:30px';
+        divButtonsElem.style.cssText = 'width:100%;display:flex !important;height:30px';
         divElem.appendChild(divButtonsElem);
 
     var divTextElem = document.createElement('div');
@@ -356,7 +356,7 @@ else
 
     var divSetElem = document.createElement('div');
         divSetElem.id = 'rmHLdivSett';
-        divSetElem.style.cssText = 'width:50%;height:calc(100% - 30px);display:none;float:left';
+        divSetElem.style.cssText = 'width:50%;height:calc(100% - 30px);display:none !important;float:left';
         divElem.appendChild(divSetElem);
 
     //Main settings DIV
@@ -371,7 +371,7 @@ else
         divKindle.style.cssText = 'width:45%;height:100%;background-color:white;padding:15px;float:left;border-top:1px solid black';
         divSetElem.appendChild(divKindle);
 
-    var labelElem = createNewElement('label','Highlighter Link #Tag','rmHLtb','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem = createNewElement('label','Highlighter Link #Tag','rmHLtb','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
 
     var butClearAll = createNewElement('button','Clear All Highlights','','background-color:black;color:white;border-color:white;margin-left:55px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;vertical-align:bottom',formElem,'rmHLclear','rmHLclear');
 
@@ -386,34 +386,34 @@ else
     if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE))
     {
         //Text box for Kindle-highlights tag
-        var labelKindle4 = createNewElement('label','Highlights #Tag: ','rmHLkingleTb1','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline;margin-right:5px;vertical-align:middle;padding:0px',divKindle,'','');
+        var labelKindle4 = createNewElement('label','Highlights #Tag: ','rmHLkingleTb1','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline !important;margin-right:5px;vertical-align:middle;padding:0px',divKindle,'','');
         //divKindle.appendChild(document.createElement('br'));
         var tbKindle1 = createNewElement('input',kindleHLref,'','padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;width:60%',divKindle,'rmHLkingleTb1','rmHLkingleTb1');
         tbKindle1.placeholder = "#[[Kindle-Highlights]]";
 
         divKindle.appendChild(document.createElement('br'));
         divKindle.appendChild(document.createElement('br'));
-        var labelKindle1 = createNewElement('label','Include:','','margin-right:8px;margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle1 = createNewElement('label','Include:','','margin-right:8px;margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',divKindle,'','');
 
-        var cbElem4 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',divKindle,'rmHLcbLoc','rmHLcbLoc');
+        var cbElem4 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex !important;pointer-events:auto',divKindle,'rmHLcbLoc','rmHLcbLoc');
         if(bLocation){cbElem4.checked = true;}else{cbElem4.checked = false;}
 
-        var labelKindle3 = createNewElement('label','Location','rmHLcbLoc','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle3 = createNewElement('label','Location','rmHLcbLoc','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',divKindle,'','');
 
-        var cbElem3 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',divKindle,'rmHLcbHlColor','rmHLcbHlColor');
+        var cbElem3 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer;opacity:1;display:inline-flex !important;pointer-events:auto',divKindle,'rmHLcbHlColor','rmHLcbHlColor');
         if(bColor){cbElem3.checked = true;}else{cbElem3.checked = false;}
 
-        var labelKindle2 = createNewElement('label','HL Color','rmHLcbHlColor','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle2 = createNewElement('label','HL Color','rmHLcbHlColor','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',divKindle,'','');
 
-        var cbElem5 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',divKindle,'rmHLcbHlColorLink','rmHLcbHlColorLink');
+        var cbElem5 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;margin-left:5px;cursor:pointer;opacity:1;display:inline-flex !important;pointer-events:auto',divKindle,'rmHLcbHlColorLink','rmHLcbHlColorLink');
         if(bColorRef){cbElem5.checked = true;}else{cbElem5.checked = false;}
 
-        var labelKindle5 = createNewElement('label','Color #[[Ref]]','rmHLcbHlColorLink','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle5 = createNewElement('label','Color #[[Ref]]','rmHLcbHlColorLink','margin-left:0px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',divKindle,'','');
 
         //Selection combobox for where to have the HL Color in relation to the actual highlight
         divKindle.appendChild(document.createElement('br'));
         divKindle.appendChild(document.createElement('br'));
-        var labelKindle6 = createNewElement('label','Structure of Highlights, Color, Location and Notes','rmHLkindleSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle6 = createNewElement('label','Structure of Highlights, Color, Location and Notes','rmHLkindleSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',divKindle,'','');
         divKindle.appendChild(document.createElement('br'));
 
         var selKindle = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer',divKindle,'rmHLkindleSel','rmHLkindleSel');
@@ -425,10 +425,10 @@ else
 
         divKindle.appendChild(document.createElement('br'));
         divKindle.appendChild(document.createElement('br'));
-        var labelKindle7 = createNewElement('label','HL = Highlights from Kindle<br>> = Nesting child bullet<br>- = Bullet/block<br>#Color --> Example: #[[Yellow highlight]]','','font-size:12px;line-height:normal;color:black;font-weight:normal;display:inline-block',divKindle,'','');
+        var labelKindle7 = createNewElement('label','HL = Highlights from Kindle<br>> = Nesting child bullet<br>- = Bullet/block<br>#Color --> Example: #[[Yellow highlight]]','','font-size:12px;line-height:normal;color:black;font-weight:normal;display:inline-block !important',divKindle,'','');
 
         divKindle.appendChild(document.createElement('br'));
-        var labelKindle8 = createNewElement('label','*Must Save changes before "Getting Highlights"','','font-size:12px;line-height:normal;color:red;font-weight:bold;display:inline-block',divKindle,'','');
+        var labelKindle8 = createNewElement('label','*Must Save changes before "Getting Highlights"','','font-size:12px;line-height:normal;color:red;font-weight:bold;display:inline-block !important',divKindle,'','');
 
         divKindle.appendChild(document.createElement('br'));
         divKindle.appendChild(document.createElement('br'));
@@ -442,14 +442,14 @@ else
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var labelElem2 = createNewElement('label','Page Title for Alias Link','rmHLta2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem2 = createNewElement('label','Page Title for Alias Link','rmHLta2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
 
-    var cbElemPgTitle = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbPgTitle','rmHLcbPgTitle');
+    var cbElemPgTitle = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex !important;pointer-events:auto',formElem,'rmHLcbPgTitle','rmHLcbPgTitle');
     cbElemPgTitle.checked = true;
     //if(bPgTitle){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
 
-    var tbElemPgTrunc = createNewElement('input',pageTruncate,'','padding:0px;text-align:center;width:15px;margin-left:20%;margin-right:0px;margin-bottom:2px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbPgTrunc','rmHLtbPgTrunc');
-    var labelElemPgTruncate = createNewElement('label','Truncate','rmHLtbPgTrunc','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:5px',formElem,'','');
+    var tbElemPgTrunc = createNewElement('input',pageTruncate,'','padding:0px;text-align:center;width:15px;margin-left:20%;margin-right:0px;margin-bottom:2px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex !important',formElem,'rmHLtbPgTrunc','rmHLtbPgTrunc');
+    var labelElemPgTruncate = createNewElement('label','Truncate','rmHLtbPgTrunc','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important;margin-left:5px',formElem,'','');
 
     formElem.appendChild(document.createElement('br'));
     var textElem2 = createNewElement('textarea',pageTitle,'','width:90%;min-height:auto;height:auto;max-height:none;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px',formElem,'rmHLta2','rmHLta2');
@@ -462,7 +462,7 @@ else
         //Set to 3 if you want line breaks (e.g., each paragraph) to be replaced with a "space" and simply concatenated into a single bullet and without any line breaks
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var labelElem3 = createNewElement('label','How to handle Line Breaks within each Highlight','rmHLsel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem3 = createNewElement('label','How to handle Line Breaks within each Highlight','rmHLsel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
 
     formElem.appendChild(document.createElement('br'));
     var selElem = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:225px;max-width:225px;width:225px',formElem,'rmHLsel','rmHLsel');
@@ -475,78 +475,78 @@ else
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var labelElem7 = createNewElement('label','Side Window Size (width minimum: 300px or 15%)','','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem7 = createNewElement('label','Side Window Size (width minimum: 300px or 15%)','','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
 
     formElem.appendChild(document.createElement('br'));
-    var labelElem8 = createNewElement('label','W:','rmHLtbSize','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem8 = createNewElement('label','W:','rmHLtbSize','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
 
-    var tbSizeElem = createNewElement('input',sideWidth,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbSize','rmHLtbSize');
+    var tbSizeElem = createNewElement('input',sideWidth,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;margin-right:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex !important',formElem,'rmHLtbSize','rmHLtbSize');
     tbSizeElem.placeholder = "17%";
 
-    var labelElem9 = createNewElement('label','H:','rmHLtbSize2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem9 = createNewElement('label','H:','rmHLtbSize2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
 
-    var tbSizeElem2 = createNewElement('input',sideHeight,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbSize2','rmHLtbSize2');
+    var tbSizeElem2 = createNewElement('input',sideHeight,'','padding-left:5px;text-align:center;width:50px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex !important',formElem,'rmHLtbSize2','rmHLtbSize2');
     tbSizeElem2.placeholder = "20%";
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var labelElemBold = createNewElement('label','Bold:','rmHLtbBold','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var tbElemBold = createNewElement('input',formatBold,'','padding:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbBold','rmHLtbBold');
+    var labelElemBold = createNewElement('label','Bold:','rmHLtbBold','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
+    var tbElemBold = createNewElement('input',formatBold,'','padding:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex !important',formElem,'rmHLtbBold','rmHLtbBold');
     //tbElemBold.placeholder = '**';
 
-    var labelElemItalic = createNewElement('label','Italics:','rmHLtbItalic','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var tbElemItalic = createNewElement('input',formatItalics,'','padding:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbItalic','rmHLtbItalic');
+    var labelElemItalic = createNewElement('label','Italics:','rmHLtbItalic','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
+    var tbElemItalic = createNewElement('input',formatItalics,'','padding:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex !important',formElem,'rmHLtbItalic','rmHLtbItalic');
     //tbElemItalic.placeholder = '__';
 
-    var labelElemCode = createNewElement('label','Code:','rmHLtbCode','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var tbElemCode = createNewElement('input',formatCode,'','padding:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbCode','rmHLtbCode');
+    var labelElemCode = createNewElement('label','Code:','rmHLtbCode','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
+    var tbElemCode = createNewElement('input',formatCode,'','padding:0px;text-align:center;width:25px;margin-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex !important',formElem,'rmHLtbCode','rmHLtbCode');
     //tbElemCode.placeholder = '`';
 
-    var labelElemHeaders = createNewElement('label','Headers:','rmHLcbHeaders','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var cbElemHeaders = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbHeaders','rmHLcbHeaders');
+    var labelElemHeaders = createNewElement('label','Headers:','rmHLcbHeaders','font-size:12px;line-height:normal;margin-left:5px;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
+    var cbElemHeaders = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex !important;pointer-events:auto',formElem,'rmHLcbHeaders','rmHLcbHeaders');
     if(bHeaders){cbElemHeaders.checked = true;}else{cbElemHeaders.checked = false;}
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var labelElemBullet = createNewElement('label','Bullets:','rmHLtbBullet','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var tbElemBullet = createNewElement('input',formatBullets,'','padding:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbBullet','rmHLtbBullet');
+    var labelElemBullet = createNewElement('label','Bullets:','rmHLtbBullet','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
+    var tbElemBullet = createNewElement('input',formatBullets,'','padding:0px;text-align:center;width:25px;margin-left:5px;margin-right:0px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex !important',formElem,'rmHLtbBullet','rmHLtbBullet');
     //tbElemBullet.placeholder = '- ';
 
-    var labelElemIndents = createNewElement('label','Indent:','rmHLcbIndents','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var cbElemIndents = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbIndents','rmHLcbIndents');
+    var labelElemIndents = createNewElement('label','Indent:','rmHLcbIndents','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
+    var cbElemIndents = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex !important;pointer-events:auto',formElem,'rmHLcbIndents','rmHLcbIndents');
     if(bIndents){cbElemIndents.checked = true;}else{cbElemIndents.checked = false;}
 
-    var labelElemLinks = createNewElement('label','Links:','rmHLcbLinks','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block',formElem,'','');
-    var cbElemLinks = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbLinks','rmHLcbLinks');
+    var labelElemLinks = createNewElement('label','Links:','rmHLcbLinks','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
+    var cbElemLinks = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex !important;pointer-events:auto',formElem,'rmHLcbLinks','rmHLcbLinks');
     if(bLinks){cbElemLinks.checked = true;}else{cbElemLinks.checked = false;}
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var labelElem4 = createNewElement('label','Show the Clipboard in:','','margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem4 = createNewElement('label','Show the Clipboard in:','','margin-right:20px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
 
-    var cbElem1 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbType1','rmHLcbType1');
+    var cbElem1 = createNewElement('checkbox','','','vertical-align:inherit;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex !important;pointer-events:auto',formElem,'rmHLcbType1','rmHLcbType1');
     cbElem1.checked = true;
 
-    var labelElem5 = createNewElement('label','Plain Text','rmHLcbType1','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem5 = createNewElement('label','Plain Text','rmHLcbType1','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
 
-    var cbElem2 = createNewElement('checkbox','','','vertical-align:inherit;margin-left:20px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbType2','rmHLcbType2');
+    var cbElem2 = createNewElement('checkbox','','','vertical-align:inherit;margin-left:20px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex !important;pointer-events:auto',formElem,'rmHLcbType2','rmHLcbType2');
     cbElem2.checked = false;
 
-    var labelElem6 = createNewElement('label','HTML','rmHLcbType2','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem6 = createNewElement('label','HTML','rmHLcbType2','margin-left:5px;font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important',formElem,'','');
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
 
-    var labelElemDefaults = createNewElement('label','Reset to Defaults','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;width:115px',formElem,'','');
-    var labelElemRefCase = createNewElement('label','Page/Tag Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:15px;width:145px',formElem,'','');
-    var labelElemElip = createNewElement('label','Ellipsis','rmHLelip','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:15px;width:85px',formElem,'','');
+    var labelElemDefaults = createNewElement('label','Reset to Defaults','rmHLdefaultsSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important;width:115px',formElem,'','');
+    var labelElemRefCase = createNewElement('label','Page/Tag Case','rmHLcaseSel','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important;margin-left:15px;width:145px',formElem,'','');
+    var labelElemElip = createNewElement('label','Ellipsis','rmHLelip','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block !important;margin-left:15px;width:85px',formElem,'','');
     formElem.appendChild(document.createElement('br'));
 
-    var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:115px;max-width:115px;width:115px;display:inline-flex',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
+    var selDefaults = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:115px;max-width:115px;width:115px;display:inline-flex !important',formElem,'rmHLdefaultsSel','rmHLdefaultsSel');
     selDefaults.options.add( new Option("Roam Research","0", true, true) );
     selDefaults.options.add( new Option("Obsidian","1") );
 
-    //var butReset = createNewElement('button','SET','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;display:inline-flex',formElem,'rmHLreset','rmHLreset');
+    //var butReset = createNewElement('button','SET','','background-color:black;color:white;border-color:white;margin-left:5px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;display:inline-flex !important',formElem,'rmHLreset','rmHLreset');
 
     var selPgRefCase = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:145px;max-width:145px;width:145px;margin-left:15px',formElem,'rmHLcaseSel','rmHLcaseSel');
     selPgRefCase.options.add( new Option("As is on page","0", true, true) );
@@ -832,7 +832,7 @@ else
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var spanElem1 = createNewElement('span','Important Links and Resources (v' + verNum + ')','','font-weight:bold;color:red;font-size:12px;line-height:normal;display:inline-block',formElem,'','');
+    var spanElem1 = createNewElement('span','Important Links and Resources (v' + verNum + ')','','font-weight:bold;color:red;font-size:12px;line-height:normal;display:inline-block !important',formElem,'','');
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
@@ -888,7 +888,7 @@ else
             if(divSetElem.style.display == "flex")
             {
                 divTextElem.style.width = "100%";
-                divSetElem.style.display = "none";
+                divSetElem.style.setProperty('display', 'none', 'important');
             }
 
             divElemMain.style.width = sideWidth;
@@ -903,8 +903,8 @@ else
 
     butHide.addEventListener("click", function(){
         var divElemMain = document.getElementById("rmHLmain");
-        divElemMain.style.display = "none";
-        //divElemMain.style.display = "block";
+        divElemMain.style.setProperty('display', 'none', 'important');
+        //divElemMain.style.setProperty('display', 'block', 'important');
         showWindow = 0;
         setLocalStorageValue("showWindow", showWindow);
     });
@@ -946,7 +946,7 @@ else
         {
             divElemMain.style.opacity = "1";
             divTextElem.style.width = "50%";
-            divSetElem.style.display = "flex";
+            divSetElem.style.setProperty('display', 'flex', 'important');
             tbElem.value = pageRef;
             textElem2.value = pageTitle;
             selElem.value = sameBlock;
@@ -956,7 +956,7 @@ else
         {
             //divElemMain.style.opacity = "0.8";
             divTextElem.style.width = "100%";
-            divSetElem.style.display = "none";
+            divSetElem.style.setProperty('display', 'none', 'important');
             //butMax.click();
         }
     });
