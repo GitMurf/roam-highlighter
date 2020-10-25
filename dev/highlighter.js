@@ -990,7 +990,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
     function getKindleHighlights(event)
     {
-        if(pageTitle == 'Kindle: Your Notes and Highlights')
+        if(pageTitle == 'Kindle: Your Notes and Highlights' || pageTitle == 'Kindle: Ihre Notizen und Markierungen')
         {
             //window.alert('Ready to extract notes');
 
