@@ -713,7 +713,7 @@ else
 
     var butSave = createNewElement('button','Save','','background-color:grey;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:default;padding:5px;margin-left:0px;',formElem,'rmHLsave','rmHLsave');
 
-    formElem.addEventListener("change", function(evt){
+    formElem.addEventListener("input", function(evt){
         if(evt.target.id != 'rmHLdefaultsSel')
         {
             var butSave = iframeDoc.getElementById("rmHLsave");
@@ -722,7 +722,7 @@ else
         }
     });
 
-    divKindle.addEventListener("change", function(evt){
+    divKindle.addEventListener("input", function(evt){
         var butSave = iframeDoc.getElementById("rmHLsave");
         butSave.style.backgroundColor = 'blue';
         butSave.style.cursor = 'pointer';
