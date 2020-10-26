@@ -1727,7 +1727,17 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 }
 
                 foundALink = foundALink.split(")]").join("|)|]");
-                if(!bLinks){foundALink = formatItalics + eachLink.innerText + formatItalics} //Remove link formatting like from Wikipedia as it can be distracting
+                if(!bLinks) //Remove link formatting like from Wikipedia as it can be distracting
+                {
+                    if(eachLink.innerText == eachLink.href || (eachLink.innerText + '/') == eachLink.href || ('http://' + eachLink.innerText) == eachLink.href || ('https://' + eachLink.innerText) == eachLink.href || ('http://' + eachLink.innerText + '/') == eachLink.href || ('https://' + eachLink.innerText + '/') == eachLink.href)
+                    {
+                        foundALink = eachLink.href
+                    }
+                    else
+                    {
+                        foundALink = formatItalics + eachLink.innerText + formatItalics
+                    }
+                }
 
                 if(debugMode != 0){writeToConsole(`Here: [${eachLink.innerText}](${eachLink.href})`);}
                 eachHighlight = eachHighlight.replace(eachLink.innerText, foundALink);
@@ -1851,7 +1861,17 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 }
 
                                 foundALink = foundALink.split(")]").join("|)|]");
-                                if(!bLinks){foundALink = formatItalics + eachLink.innerText + formatItalics} //Remove link formatting like from Wikipedia as it can be distracting
+                                if(!bLinks) //Remove link formatting like from Wikipedia as it can be distracting
+                                {
+                                    if(eachLink.innerText == eachLink.href || (eachLink.innerText + '/') == eachLink.href || ('http://' + eachLink.innerText) == eachLink.href || ('https://' + eachLink.innerText) == eachLink.href || ('http://' + eachLink.innerText + '/') == eachLink.href || ('https://' + eachLink.innerText + '/') == eachLink.href)
+                                    {
+                                        foundALink = eachLink.href
+                                    }
+                                    else
+                                    {
+                                        foundALink = formatItalics + eachLink.innerText + formatItalics
+                                    }
+                                }
 
                                 if(debugMode != 0){writeToConsole(`HERE2: [${eachLink.innerText}](${eachLink.href})`);}
                                 newHighlight = newHighlight.replace(eachLink.innerText, foundALink);
