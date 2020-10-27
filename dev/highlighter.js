@@ -1589,14 +1589,15 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     || (parNodeName == "A" || parNodeName == "CODE" || parNodeName == "KBD" || parNodeName == "EM" || parNodeName == "I" || parNodeName == "U" || parNodeName == "G-EMOJI" || parNodeName == "STRONG" || parNodeName == "B" || parNodeName == "DEL" || parNodeName == "STRIKE" || parNodeName == "S" || parNodeName == "INS")
                 )
                 && (
-                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == '\xa0' || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']' || curHighlight.substring(0,1) == '+' || curHighlight.substring(0,1) == "–" || curHighlight.substring(0,1) == "-" || curHighlight.substring(0,1) == "'" || curHighlight.substring(0,1) == '"'
+                    curHighlight.substring(0,1) == " " || curHighlight.substring(0,1) == '\xa0' || curHighlight.substring(0,1) == ")" || curHighlight.substring(0,1) == "." || curHighlight.substring(0,1) == "?" || curHighlight.substring(0,1) == "!" || curHighlight.substring(0,1) == "," || curHighlight.substring(0,1) == ":" || curHighlight.substring(0,1) == ";" || curHighlight.substring(0,1) == '”' || curHighlight.substring(0,1) == '“' || curHighlight.substring(0,1) == ']' || curHighlight.substring(0,1) == '+' || curHighlight.substring(0,1) == "–" || curHighlight.substring(0,1) == "-" || curHighlight.substring(0,1) == "'" || curHighlight.substring(0,1) == '"' ||
+                    prevNode.parentElement.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.innerText.toString().trim()
                 )
                 && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
             )
             || parNodeName == "SUP" || parOfparNodeName == "SUP" || curHighlight.substring(0,1) == "."
             || parNodeName == "SUB"
             || curNode.parentElement.parentElement.className == "mw-editsection"
-            || (lastParNodeName == "A" && parNodeName == "A" && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim().substring(0,curHighlight.toString().trim().length)) && curNode.parentElement.parentElement.innerText.toString().trim() != curHighlight.toString().trim() && prevNode.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.parentElement.innerText.toString().trim()) //Was added due to Wikipedia back to back link use case ; adding one more requirement though as created another issue
+            || (lastParNodeName == "A" && parNodeName == "A" && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim().substring(0,curHighlight.toString().trim().length)) && curNode.parentElement.parentElement.innerText.toString().trim() != curHighlight.toString().trim() && (prevNode.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.parentElement.innerText.toString().trim() || prevNode.parentElement.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.parentElement.innerText.toString().trim())) //Was added due to Wikipedia back to back link use case ; adding one more requirement though as created another issue; and another case for Slack
             || (curHighlight.substring(0,1) == " " && prevNode.innerText.substring(prevNode.innerText.length - 1) == " ")
         )
         {
@@ -1739,11 +1740,11 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 {
                     if(eachLink.innerText == eachLink.href || (eachLink.innerText + '/') == eachLink.href || ('http://' + eachLink.innerText) == eachLink.href || ('https://' + eachLink.innerText) == eachLink.href || ('http://' + eachLink.innerText + '/') == eachLink.href || ('https://' + eachLink.innerText + '/') == eachLink.href)
                     {
-                        foundALink = eachLink.href
+                        foundALink = eachLink.href;
                     }
                     else
                     {
-                        foundALink = formatItalics + eachLink.innerText + formatItalics
+                        foundALink = formatItalics + eachLink.innerText.split("#").join("_") + formatItalics;
                     }
                 }
 
@@ -1873,11 +1874,11 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 {
                                     if(eachLink.innerText == eachLink.href || (eachLink.innerText + '/') == eachLink.href || ('http://' + eachLink.innerText) == eachLink.href || ('https://' + eachLink.innerText) == eachLink.href || ('http://' + eachLink.innerText + '/') == eachLink.href || ('https://' + eachLink.innerText + '/') == eachLink.href)
                                     {
-                                        foundALink = eachLink.href
+                                        foundALink = eachLink.href;
                                     }
                                     else
                                     {
-                                        foundALink = formatItalics + eachLink.innerText + formatItalics
+                                        foundALink = formatItalics + eachLink.innerText.split("#").join("_") + formatItalics;
                                     }
                                 }
 
@@ -1888,7 +1889,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 //newHighlight = foundALink;
                             }
 
-                            if(bIsSameLine){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
+                            if(bIsSameLine && elemSpan.getAttribute('hlheader') != 1){eachHighlight += newHighlight;}else{eachHighlight += '\n' + newHighlight;}
                             lastMainSpanText = newHighlight;
                         }
                         if(debugMode != 0){writeToConsole('newHighlight: ' + newHighlight);}
@@ -2370,6 +2371,22 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 return newSpan;
             }
 
+            function ignoreElement(elemInput)
+            {
+                //Skipping certain types of elements we don't want to add to highlighter
+                //Slack post reactions, timestamps, media etc.
+                var elemClassCheck = elemInput.parentElement.className;
+                var parElemClassCheck = elemInput.parentElement.parentElement.className;
+                if(elemClassCheck == 'c-reaction__count' || elemClassCheck == 'c-timestamp__label' || elemClassCheck == 'c-message__edited_label' || elemClassCheck == 'c-message_kit__file__meta__text' || elemClassCheck == 'c-message_kit__file__meta' || elemClassCheck == 'c-pillow_file__swap' || elemClassCheck == 'c-pillow_file__title' || elemClassCheck == 'c-pillow_file__slide c-pillow_file__size__action' || parElemClassCheck == 'c-message_kit__file__meta__text' || elemClassCheck == 'c-link--button c-message_kit__labels__link' || parElemClassCheck == 'c-pillow_file__header c-pillow_file__header--tombstone' || elemClassCheck == 'c-message_attachment__author_name' || elemClassCheck == 'c-message_attachment__author c-message_attachment__author--has_subname' || elemClassCheck == 'c-message_attachment__author_subname' || parElemClassCheck == 'c-link c-message_attachment__title_link' || elemClassCheck == 'p-threads_flexpane__separator_count')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
             function findLowestNode(elemInput, hierarchyLevel)
             {
                 //Since creating new elements we have to make sure we skip any highlighted because otherwise an infinite loop
@@ -2443,7 +2460,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         }
                         else
                         {
-                            if(foundStartOfSelection == 1 && elemInput.parentElement.nodeName != 'STYLE'){createSpanElement(elemInput, startPos, elemInput, endPos);}
+                            //Skipping certain types of elements we don't want to add to highlighter like Slack reactions to posts
+                            var skipElement = ignoreElement(elemInput);
+                            if(!skipElement)
+                            {
+                                if(foundStartOfSelection == 1 && elemInput.parentElement.nodeName != 'STYLE'){createSpanElement(elemInput, startPos, elemInput, endPos);}
+                            }
                         }
                     }
                     if(debugMode != 0){writeToConsole(`ENDING hierarchyLevel: ${thisHierarchyLevel} | inputNodeName: ${inputNodeName} | inputNodeText: ${inputNodeText}`,3);}
