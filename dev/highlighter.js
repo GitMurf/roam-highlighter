@@ -1846,6 +1846,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 writeToConsole('eachHighlight: ' + eachHighlight);
                             }
                             eachHighlight = eachHighlight.replace(lastMainSpanText,replaceLastText);
+                            eachHighlight = eachHighlight.split(formatBold + "|[|[").join("|[|[").split(formatItalics + "|[|[").join("|[|[").split(formatCode + "|[|[").join("|[|[").split("|]|]" + formatBold).join("|]|]").split("|]|]" + formatItalics).join("|]|]").split("|]|]" + formatCode).join("|]|]");
                             if(debugMode != 0){writeToConsole('eachHighlight: ' + eachHighlight);}
                             lastMainSpanText = replaceLastText;
                         }
