@@ -1380,6 +1380,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
         eachHighlight = tmpEachHighlight
 
+        if(parNodeName == "STRONG" || parNodeName == "B" || parNodeName == "EM" || parNodeName == "U" || parNodeName == "CODE" || parNodeName == "STRIKE" || parNodeName == "S" || parNodeName == "DEL" || parNodeName == "INS"){eachHighlight = eachHighlight.split("#").join("_")} //Replace hashtag with _ because otherwise later in script we put `#` backticks around it and then formatting won't work around it
+
         if(parNodeName == "STRONG" || parNodeName == "B"){eachHighlight = formatBold + eachHighlight + formatBold;}
         if(parNodeName == "EM" || parNodeName == "U"){eachHighlight = formatItalics + eachHighlight + formatItalics;}
         if(parNodeName == "CODE"){eachHighlight = formatCode + eachHighlight + formatCode;}
