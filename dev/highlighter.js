@@ -115,7 +115,6 @@ async function startFunction()
     {
         var storageVar = settingsArray[s];
         var storResult = await getLocalStorageValue(storageVar);
-        var storResult = await getLocalStorageValue(storageVar);
         var varResult = storResult[Object.keys(storResult)[0]];
         if(debugMode != 0)
         {
