@@ -1750,6 +1750,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     if(eachLink.innerText == eachLink.href || (eachLink.innerText + '/') == eachLink.href || ('http://' + eachLink.innerText) == eachLink.href || ('https://' + eachLink.innerText) == eachLink.href || ('http://' + eachLink.innerText + '/') == eachLink.href || ('https://' + eachLink.innerText + '/') == eachLink.href)
                     {
                         foundALink = eachLink.href;
+                        foundALink = foundALink.split("#").join("|HASHTAG|")
                     }
                     else
                     {
@@ -1884,6 +1885,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                     if(eachLink.innerText == eachLink.href || (eachLink.innerText + '/') == eachLink.href || ('http://' + eachLink.innerText) == eachLink.href || ('https://' + eachLink.innerText) == eachLink.href || ('http://' + eachLink.innerText + '/') == eachLink.href || ('https://' + eachLink.innerText + '/') == eachLink.href)
                                     {
                                         foundALink = eachLink.href;
+                                        foundALink = foundALink.split("#").join("|HASHTAG|")
                                     }
                                     else
                                     {
