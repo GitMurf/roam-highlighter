@@ -1557,8 +1557,10 @@ Roam-highlighter Shortcut Keys (v${verNum})
             writeToConsole('parNodeName: ' + parNodeName);
             writeToConsole('parOfparNodeName: ' + parOfparNodeName);
             writeToConsole(curNode.parentElement.parentElement,1,0);
+            writeToConsole(curNode.parentElement.parentElement.parentElement,1,0);
             writeToConsole(prevNode,1,0);
             writeToConsole(prevNode.parentElement.parentElement,1,0);
+            writeToConsole(prevNode.parentElement.parentElement.parentElement,1,0);
             writeToConsole('prevSibNodeName: ' + prevSibNodeName);
             writeToConsole('prevNode.innerText: ' + prevNode.innerText);
             writeToConsole('prevNode.innerText (last 1 char): "' + prevNode.innerText.substring(prevNode.innerText.length - 1) + '"');
@@ -1604,7 +1606,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             || parNodeName == "SUP" || parOfparNodeName == "SUP" || curHighlight.substring(0,1) == "."
             || parNodeName == "SUB"
             || curNode.parentElement.parentElement.className == "mw-editsection"
-            || (lastParNodeName == "A" && parNodeName == "A" && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim().substring(0,curHighlight.toString().trim().length)) && curNode.parentElement.parentElement.innerText.toString().trim() != curHighlight.toString().trim() && (prevNode.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.parentElement.innerText.toString().trim() || prevNode.parentElement.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.parentElement.innerText.toString().trim())) //Was added due to Wikipedia back to back link use case ; adding one more requirement though as created another issue; and another case for Slack
+            || (lastParNodeName == "A" && parNodeName == "A" && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim().substring(0,curHighlight.toString().trim().length)) && (curNode.parentElement.parentElement.innerText.toString().trim() != curHighlight.toString().trim() || (curNode.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.innerText.toString().trim() && curNode.parentElement.parentElement.dataset.sk == 'tooltip_parent')) && (prevNode.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.parentElement.innerText.toString().trim() || prevNode.parentElement.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.parentElement.innerText.toString().trim() || prevNode.parentElement.parentElement.parentElement.innerText.toString().trim() == curNode.parentElement.parentElement.parentElement.innerText.toString().trim())) //Was added due to Wikipedia back to back link use case ; adding one more requirement though as created another issue; and another case for Slack
             || (curHighlight.substring(0,1) == " " && prevNode.innerText.substring(prevNode.innerText.length - 1) == " ")
         )
         {
