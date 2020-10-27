@@ -1308,6 +1308,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
         var parParParParElemText = "";
         if(parParParParNodeName != 'DIV' && parParParParNodeName != 'BODY' && parParParParNodeName != 'ARTICLE'){parParParParElemText = elemSpan.parentElement.parentElement.parentElement.parentElement.innerText;}
 
+        if(parNodeName == "A")
+        {
+            if(elemSpan.parentElement.classList.contains("c-message__sender_link")) //Slack username link
+            {
+                elemSpan.setAttribute("hlHeader", "1");
+            }
+        }
+
         var foundHeader = elemSpan.getAttribute('hlheader'); //Red text selected by user
         var bFoundHeader = false;
         var bFoundUlBullet = false;
@@ -1727,7 +1735,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 }
 
                 foundALink = foundALink.split(")]").join("|)|]");
-                if(!bLinks) //Remove link formatting like from Wikipedia as it can be distracting
+                if(!bLinks || eachLink.classList.contains("c-message__sender_link") || eachLink.classList.contains("c-member_slug--link")) //Remove link formatting like from Wikipedia as it can be distracting... also slack username links
                 {
                     if(eachLink.innerText == eachLink.href || (eachLink.innerText + '/') == eachLink.href || ('http://' + eachLink.innerText) == eachLink.href || ('https://' + eachLink.innerText) == eachLink.href || ('http://' + eachLink.innerText + '/') == eachLink.href || ('https://' + eachLink.innerText + '/') == eachLink.href)
                     {
@@ -1861,7 +1869,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                                 }
 
                                 foundALink = foundALink.split(")]").join("|)|]");
-                                if(!bLinks) //Remove link formatting like from Wikipedia as it can be distracting
+                                if(!bLinks || eachLink.classList.contains("c-message__sender_link") || eachLink.classList.contains("c-member_slug--link")) //Remove link formatting like from Wikipedia as it can be distracting... also slack username links
                                 {
                                     if(eachLink.innerText == eachLink.href || (eachLink.innerText + '/') == eachLink.href || ('http://' + eachLink.innerText) == eachLink.href || ('https://' + eachLink.innerText) == eachLink.href || ('http://' + eachLink.innerText + '/') == eachLink.href || ('https://' + eachLink.innerText + '/') == eachLink.href)
                                     {
