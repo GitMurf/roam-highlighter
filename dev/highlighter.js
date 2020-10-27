@@ -1295,10 +1295,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
     function convertFormat(eachHighlight, elemSpan) {
         var parNodeName = elemSpan.parentElement.nodeName;
         var parElemText = elemSpan.parentElement.innerText;
+        if(parElemText == null){parElemText = ''}
 
         var parParNodeName = elemSpan.parentElement.parentElement.nodeName;
         var parParElemText = "";
         if(parParNodeName != 'DIV' && parParNodeName != 'BODY' && parParNodeName != 'ARTICLE'){parParElemText = elemSpan.parentElement.parentElement.innerText;}
+        if(parParElemText == null){parParElemText = ''}
 
         var parParParNodeName = elemSpan.parentElement.parentElement.parentElement.nodeName;
         var parParParElemText = "";
@@ -1563,6 +1565,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
             writeToConsole('lastParNodeName: ' + lastParNodeName);
         }
         //debugMode = 0;
+
+        if(prevNode.parentElement == null || curNode.parentElement == null || prevNode.parentElement.innerText == null || curNode.parentElement.innerText == null){return false}
 
         if(
             (
@@ -2374,6 +2378,10 @@ Roam-highlighter Shortcut Keys (v${verNum})
             function ignoreElement(elemInput)
             {
                 //Skipping certain types of elements we don't want to add to highlighter
+
+                //Toggl Tracker hidden svg creates errors
+                if(elemInput.parentElement.parentElement.nodeName == 'svg' || elemInput.parentElement.nodeName == 'svg'){return true}
+
                 //Slack post reactions, timestamps, media etc.
                 var elemClassCheck = elemInput.parentElement.className;
                 var parElemClassCheck = elemInput.parentElement.parentElement.className;
@@ -2462,6 +2470,22 @@ Roam-highlighter Shortcut Keys (v${verNum})
                         {
                             //Skipping certain types of elements we don't want to add to highlighter like Slack reactions to posts
                             var skipElement = ignoreElement(elemInput);
+
+                            //debugMode = 1;
+                            if(debugMode != 0)
+                            {
+                                writeToConsole('');
+                                writeToConsole('skipElement: ' + skipElement);
+                                writeToConsole('foundStartOfSelection: ' + foundStartOfSelection);
+                                writeToConsole(elemInput,1,0);
+                                writeToConsole(elemInput.parentElement,1,0);
+                                writeToConsole('elemInput.parentElement.nodeName: ' + elemInput.parentElement.nodeName);
+                                writeToConsole('startPos: ' + startPos);
+                                writeToConsole('endPos: ' + endPos);
+                                writeToConsole('elemInput.parentElement.className: ' + elemInput.parentElement.className);
+                            }
+                            //debugMode = 0;
+
                             if(!skipElement)
                             {
                                 if(foundStartOfSelection == 1 && elemInput.parentElement.nodeName != 'STYLE'){createSpanElement(elemInput, startPos, elemInput, endPos);}
