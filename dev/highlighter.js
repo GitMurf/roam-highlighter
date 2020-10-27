@@ -1737,7 +1737,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
                 if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
                 {
-                    var foundALink = `[${linkTextToUse}](${linkHref})`;
+                    if(eachLink.innerText == eachLink.href || eachLink.innerText == eachLink.href + '/' || eachLink.innerText + '/' == eachLink.href)
+                    {
+                        var foundALink = linkHref;
+                    }
+                    else
+                    {
+                        var foundALink = `[${linkTextToUse}](${linkHref})`;
+                    }
                 }
                 else
                 {
@@ -1873,7 +1880,14 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
                                 if(linkHref.indexOf("http") > -1 || linkHref.indexOf("www.") > -1)
                                 {
-                                    var foundALink = `[${linkTextToUse}](${linkHref})`;
+                                    if(eachLink.innerText == eachLink.href || eachLink.innerText == eachLink.href + '/' || eachLink.innerText + '/' == eachLink.href)
+                                    {
+                                        var foundALink = linkHref;
+                                    }
+                                    else
+                                    {
+                                        var foundALink = `[${linkTextToUse}](${linkHref})`;
+                                    }
                                 }
                                 else
                                 {
