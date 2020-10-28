@@ -1760,6 +1760,105 @@ Roam-highlighter Shortcut Keys (v${verNum})
         return tmpwholeLine
     }
 
+    function customDate(dateValue, dateFormat = 'mm-dd-yyyy')
+    {
+        //var dateString = dateValue.toLocaleDateString();
+        var dateString = dateFormat.toLowerCase().trim();
+        var monthFound = dateValue.getMonth();
+        var monthStr = ("0" + (monthFound+1)).slice(-2);
+
+        const months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+          ]
+        var monthNameStr = months[monthFound];
+
+        var dayFound = dateValue.getDate();
+        var dayStr = ("0" + dayFound).slice(-2);
+
+        var dayOfWeek = dateValue.getDay();
+        const daysOfWeek = [
+            'Sun',
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            'Sat'
+          ]
+        var dayOfWeekStr = daysOfWeek[dayOfWeek];
+
+        var yearFound = dateValue.getFullYear();
+        var yearStr = yearFound.toString();
+
+        var lookFor = '';
+        var replaceWith = '';
+
+        lookFor = 'mm';
+        replaceWith = monthStr;
+        if(dateString.indexOf(lookFor) > -1)
+        {
+            dateString = dateString.replace(lookFor,replaceWith);
+        }
+
+        lookFor = 'month';
+        replaceWith = monthNameStr;
+        if(dateString.indexOf(lookFor) > -1)
+        {
+            dateString = dateString.replace(lookFor,replaceWith);
+        }
+
+        lookFor = 'dd';
+        replaceWith = dayStr;
+        if(dateString.indexOf(lookFor) > -1)
+        {
+            dateString = dateString.replace(lookFor,replaceWith);
+        }
+
+        lookFor = 'day';
+        replaceWith = dayOfWeekStr;
+        if(dateString.indexOf(lookFor) > -1)
+        {
+            dateString = dateString.replace(lookFor,replaceWith);
+        }
+
+        lookFor = 'yyyy';
+        replaceWith = yearStr;
+        if(dateString.indexOf(lookFor) > -1)
+        {
+            dateString = dateString.replace(lookFor,replaceWith);
+        }
+
+        lookFor = 'yy';
+        replaceWith = yearStr.slice(-2);
+        if(dateString.indexOf(lookFor) > -1)
+        {
+            dateString = dateString.replace(lookFor,replaceWith);
+        }
+
+        lookFor = 'roam';
+            var itm = 0;
+            if (dayFound <= 0) {itm = 4;}
+            else if ((dayFound > 3 && dayFound < 21) || dayFound % 10 > 3) {itm = 0;} //% gives you remainder after dividing
+            else {itm = dayFound % 10;}
+        replaceWith = monthNameStr + ' ' + (dayFound + ['th', 'st', 'nd', 'rd', ''][itm]) + ', ' + yearStr;
+        if(dateString.indexOf(lookFor) > -1)
+        {
+            dateString = dateString.replace(lookFor,replaceWith);
+        }
+        return dateString;
+    }
+
     function parseParentTitle()
     {
         var textElem2 = iframeDoc.getElementById("rmHLta2");
@@ -1793,6 +1892,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                             break;
                         case 'date':
                             var parsedText = ptDate.toLocaleDateString();
+                            if(eachValParam != ''){parsedText = customDate(ptDate, eachValParam);}
                             break;
                         case 'time':
                             var parsedText = ( ("0" + ptDate.getHours()).slice(-2) ) + ":" + ( ("0" + ptDate.getMinutes()).slice(-2) );
