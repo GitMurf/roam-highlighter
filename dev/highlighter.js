@@ -2573,6 +2573,20 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var allWithinRangeParent = range.commonAncestorContainer;
 
             var startCont = range.startContainer;
+            if(startCont.nodeName != '#text')
+            {
+                if(startCont.textContent == '' && startCont.innerText == '')
+                {
+                    var loopCtr = 0;
+                    do
+                    {
+                        startCont = startCont.parentElement;
+                        if(startCont.innerText){var foundText = startCont.innerText}else{var foundText = ''}
+                        if(foundText != '' && foundText){break;}
+                        loopCtr++;
+                    }while (loopCtr < 10 && startCont.parentElement.nodeName != 'BODY')
+                }
+            }
             var startOff = range.startOffset;
             var endCont = range.endContainer;
             var endOff = range.endOffset;
@@ -2688,20 +2702,20 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     var skipElement = ignoreElementContainer(elemInput);
                     if(!skipElement)
                     {
-                    for(var k=0, newElemInput; newElemInput = elemInput.childNodes[k]; k++)
-                    {
-                        if(selection.containsNode(newElemInput, true))
+                        for(var k=0, newElemInput; newElemInput = elemInput.childNodes[k]; k++)
                         {
-                            if(debugMode != 0){writeToConsole(`hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);}
-                            //thisHierarchyLevel += ':' + newElemInput.nodeName;
-                            findLowestNode(newElemInput, thisHierarchyLevel);
-                        }
-                        else
-                        {
-                            if(debugMode != 0){writeToConsole(`NOT SELECTED: hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);}
+                            if(selection.containsNode(newElemInput, true))
+                            {
+                                if(debugMode != 0){writeToConsole(`hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);}
+                                //thisHierarchyLevel += ':' + newElemInput.nodeName;
+                                findLowestNode(newElemInput, thisHierarchyLevel);
+                            }
+                            else
+                            {
+                                if(debugMode != 0){writeToConsole(`NOT SELECTED: hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);}
+                            }
                         }
                     }
-                }
                 }
                 else
                 {
