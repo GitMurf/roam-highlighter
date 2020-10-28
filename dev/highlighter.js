@@ -473,9 +473,9 @@ else
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
-    var labelElem2 = createNewElement('label','Page Title for Alias Link','rmHLta2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var labelElem2 = createNewElement('label','Parent Title for Highlights','rmHLta2','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
 
-    var cbElemPgTitle = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbPgTitle','rmHLcbPgTitle');
+    var cbElemPgTitle = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto;display:none',formElem,'rmHLcbPgTitle','rmHLcbPgTitle');
     cbElemPgTitle.checked = true;
     //if(bPgTitle){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
 
