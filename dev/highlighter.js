@@ -2627,6 +2627,27 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 return newSpan;
             }
 
+            function ignoreElementContainer(elemInput)
+            {
+                //This will stop parsing through any children of an element found so you can add a parent element class instead of having to add all the variations under it like in the ignoreElement function
+                //Slack post reactions, timestamps, media etc.
+                var elemClassCheck = elemInput.className;
+                if (typeof elemClassCheck === 'string' || elemClassCheck instanceof String){elemClassCheck = elemClassCheck.trim()}else{elemClassCheck = ''}
+                var parElemClassCheck = elemInput.parentElement.className;
+                if (typeof parElemClassCheck === 'string' || parElemClassCheck instanceof String){parElemClassCheck = parElemClassCheck.trim()}else{parElemClassCheck = ''}
+                var parParElemClassCheck = elemInput.parentElement.parentElement.className;
+                if (typeof parParElemClassCheck === 'string' || parParElemClassCheck instanceof String){parParElemClassCheck = parParElemClassCheck.trim()}else{parParElemClassCheck = ''}
+
+                if(elemClassCheck == 'c-message_kit__attachments' || elemClassCheck == 'toggl-button slack-message min')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
             function ignoreElement(elemInput)
             {
                 //Skipping certain types of elements we don't want to add to highlighter
@@ -2662,6 +2683,10 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 }
                 if(elemInput.childNodes.length > 0)
                 {
+                    //Skip parsing deeper into this element if on ignored list (primarily for Slack where we don't want to dig into Attachments like videos etc.)
+                    var skipElement = ignoreElementContainer(elemInput);
+                    if(!skipElement)
+                    {
                     for(var k=0, newElemInput; newElemInput = elemInput.childNodes[k]; k++)
                     {
                         if(selection.containsNode(newElemInput, true))
@@ -2675,6 +2700,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                             if(debugMode != 0){writeToConsole(`NOT SELECTED: hierarchyLevel: ${thisHierarchyLevel} | k: ${k} | elementText: ${newElemInput.nodeName}`, 3);}
                         }
                     }
+                }
                 }
                 else
                 {
