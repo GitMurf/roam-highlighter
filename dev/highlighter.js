@@ -6,6 +6,8 @@ var iframeDoc = document; //Placeholder for later setting global variable to ifr
 //Default settings in case no local storage saved
 var sameBlock = Number(0);
 var pageRef = "#[[Roam-Highlights]]";
+var parentTitleArr = [['NONE',''],['DEFAULT','[{%title%}]({%url%}) #[[Roam-Highlights]]'],['two','[{%title%}]({%url%}) [[other option]]'],['three','text before [{%title%}]({%url%}) text after'],['four','[{%title%}]({%url%}) {%date%} {%time%}']];
+var parentTitle = parentTitleArr[0][1];
 var sideWidth = "20%";
 var sideHeight = "30%";
 var showWindow = Number(1);
@@ -362,37 +364,62 @@ else
 
     var divTextElem = document.createElement('div');
         divTextElem.id = 'rmHLdivText';
-        divTextElem.style.cssText = 'width:100%;height:calc(100% - 30px);float:right';
+        divTextElem.style.cssText = 'width:100%;height:calc(100% - 31px);float:right';
         divElem.appendChild(divTextElem);
 
     var divSetElem = document.createElement('div');
         divSetElem.id = 'rmHLdivSett';
-        divSetElem.style.cssText = 'width:50%;height:calc(100% - 30px);display:none;float:left';
+        divSetElem.style.cssText = 'width:50%;height:calc(100% - 31px);display:none;float:left';
         divElem.appendChild(divSetElem);
 
     //Main settings DIV
     var formElem = document.createElement('div');
         formElem.id = 'rmHLform';
-        formElem.style.cssText = 'width:55%;height:100%;background-color:white;padding:15px;float:left;border-left:1px solid black;border-top:1px solid black';
+        formElem.style.cssText = 'width:55%;height:calc(100% - 30px);background-color:white;padding:15px;float:left;border-left:1px solid black;border-top:1px solid black';
         divSetElem.appendChild(formElem);
 
     //Kindle settings DIV
     var divKindle = document.createElement('div');
         divKindle.id = 'rmHLdivKindle';
-        divKindle.style.cssText = 'width:45%;height:100%;background-color:white;padding:15px;float:left;border-top:1px solid black';
+        divKindle.style.cssText = 'width:45%;height:calc(100% - 30px);background-color:white;padding:15px;float:left;border-top:1px solid black';
         divSetElem.appendChild(divKindle);
 
+    /* Removing as adding new Parent Title format
     var labelElem = createNewElement('label','Highlighter Link #Tag','rmHLtb','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    */
 
-    var butClearAll = createNewElement('button','Clear All Highlights','','background-color:black;color:white;border-color:white;margin-left:55px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;vertical-align:bottom',formElem,'rmHLclear','rmHLclear');
+    var butClearAll = createNewElement('button','Clear All Highlights','','background-color:black;color:white;border-color:white;margin-left:0px;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;vertical-align:bottom',formElem,'rmHLclear','rmHLclear');
 
     butClearAll.addEventListener("click", function(){
         removeAllHighlights();
     });
 
     formElem.appendChild(document.createElement('br'));
+    formElem.appendChild(document.createElement('br'));
+
+    var labelElemPT = createNewElement('label','Parent Title Format','rmHLparentTitle','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block',formElem,'','');
+
+    formElem.appendChild(document.createElement('br'));
+    var selElemPT = createNewElement('select','','','padding:3px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;cursor:pointer;min-width:225px;max-width:225px;width:225px',formElem,'rmHLparentTitle','rmHLparentTitle');
+
+    var arrLength = parentTitleArr.length;
+    for (var i = 0; i < arrLength; i++)
+    {
+        if(i == 0)
+        {
+            selElemPT.options.add( new Option(parentTitleArr[i][0],parentTitleArr[i][1], true, true) );
+        }
+        else
+        {
+            selElemPT.options.add( new Option(parentTitleArr[i][0],parentTitleArr[i][1]) );
+        }
+    }
+    selElemPT.value = parentTitle;
+
+    /* Removing as adding new Parent Title format
     var tbElem = createNewElement('input',pageRef,'','padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtb','rmHLtb');
     tbElem.placeholder = "#[[Roam-Highlights]]";
+    */
 
     if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE))
     {
@@ -576,7 +603,7 @@ else
 
     selDefaults.addEventListener("change", function(evt){
         //var divElemMain = iframeDoc.getElementById("rmHLmain");
-        var tbElem = iframeDoc.getElementById("rmHLtb");
+        var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
         var textElem2 = iframeDoc.getElementById("rmHLta2");
         var selElem = iframeDoc.getElementById("rmHLsel");
         var tbSizeW = iframeDoc.getElementById("rmHLtbSize");
@@ -607,7 +634,7 @@ else
         {
             case 0:
                 //Roam
-                tbElem.value = '#[[Roam-Highlights]]';
+                /*tbElem.value = '#[[Roam-Highlights]]';*/
                 tbElemBold.value = '**';
                 tbElemItalic.value = '__';
                 tbElemCode.value = '`';
@@ -620,7 +647,7 @@ else
                 break;
             case 1:
                 //Obsidian
-                tbElem.value = '[[Obsidian-Highlights]]';
+                /*tbElem.value = '[[Obsidian-Highlights]]';*/
                 tbElemBold.value = '**';
                 tbElemItalic.value = '_';
                 tbElemCode.value = '`';
@@ -650,8 +677,8 @@ else
         }
         cbElemPgTitle.checked = true;
 
-        pageRef = tbElem.value;
-        pageTitle = textElem2.value;
+        /*pageRef = tbElem.value;*/
+        /*pageTitle = textElem2.value;*/
         sameBlock = Number(selElem.value);
         sideWidth = tbSizeW.value;
         sideHeight = tbSizeH.value;
@@ -729,7 +756,7 @@ else
 
     butSave.addEventListener("click", function(){
         //var divElemMain = iframeDoc.getElementById("rmHLmain");
-        var tbElem = iframeDoc.getElementById("rmHLtb");
+        var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
         var textElem2 = iframeDoc.getElementById("rmHLta2");
         var selElem = iframeDoc.getElementById("rmHLsel");
         var tbSizeW = iframeDoc.getElementById("rmHLtbSize");
@@ -756,8 +783,8 @@ else
         butSave.style.backgroundColor = 'grey';
         butSave.style.cursor = 'default';
 
-        pageRef = tbElem.value;
-        pageTitle = textElem2.value;
+        /*pageRef = tbElem.value;*/
+        /*pageTitle = textElem2.value;*/
         sameBlock = Number(selElem.value);
         sideWidth = tbSizeW.value;
             if(sideWidth.indexOf("px") > -1 || sideWidth.indexOf("PX") > -1 || sideWidth.indexOf("Px") > -1 || sideWidth.indexOf("pX") > -1)
@@ -952,7 +979,7 @@ else
         var divElemMain = document.getElementById('rmHLiframe');
         var divSetElem = iframeDoc.getElementById("rmHLdivSett");
         var divTextElem = iframeDoc.getElementById("rmHLdivText");
-        var tbElem = iframeDoc.getElementById("rmHLtb");
+        var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
         var textElem2 = iframeDoc.getElementById("rmHLta2");
         var selElem = iframeDoc.getElementById("rmHLsel");
         var butSett = iframeDoc.getElementById("rmHLsettings");
@@ -964,8 +991,8 @@ else
             divElemMain.style.opacity = "1";
             divTextElem.style.width = "50%";
             divSetElem.style.setProperty('display', 'flex');
-            tbElem.value = pageRef;
-            textElem2.value = pageTitle;
+            /*tbElem.value = pageRef;*/
+            parseParentTitle();
             selElem.value = sameBlock;
             if(butMax.innerHTML == "Expand"){butMax.click();}
         }
@@ -1682,16 +1709,69 @@ Roam-highlighter Shortcut Keys (v${verNum})
         return tmpwholeLine
     }
 
+    function parseParentTitle()
+    {
+        var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
+        var textElem2 = iframeDoc.getElementById("rmHLta2");
+        var ptDate = new Date();
+
+        //Split by {% and %} placeholder format and loop through
+        var delimeters = selElemPT.value.split(/({%|%})/)
+        var openPlaceholder = false;
+        var finalPTstring = '';
+        for(var x=0, eachValue; eachValue = delimeters[x]; x++)
+        {
+            var parsedText = eachValue;
+            if(parsedText != '' && parsedText != '%}')
+            {
+                if(openPlaceholder)
+                {
+                    var eachValueArr = eachValue.split('@');
+                    eachValueStr = eachValueArr[0];
+                    if(eachValueArr[1]){var eachValParam = eachValueArr[1]}else{var eachValParam = ''}
+                    switch (eachValue.toLowerCase())
+                    {
+                        case 'title':
+                            parsedText = pageTitle;
+                            if(eachValParam != ''){parsedText = parsedText.split(eachValParam)[0].trim();}
+                            //Since Roam doesn't handle [ ] inside markdown links, replace with ( ) if found in page title
+                            parsedText = parsedText.split("[").join("(").split("]").join(")");
+                            break;
+                        case 'url':
+                            parsedText = location.href;
+                            break;
+                        case 'date':
+                            var parsedText = ptDate.toLocaleDateString();
+                            break;
+                        case 'time':
+                            var parsedText = ( ("0" + ptDate.getHours()).slice(-2) ) + ":" + ( ("0" + ptDate.getMinutes()).slice(-2) );
+                            break;
+                    }
+
+                    finalPTstring = finalPTstring + parsedText;
+                    openPlaceholder = false;
+                }
+                else
+                {
+                    if(eachValue == '{%')
+                    {
+                        openPlaceholder = true;
+                    }
+                    else
+                    {
+                        finalPTstring = finalPTstring + parsedText;
+                    }
+                }
+            }
+        }
+
+        textElem2.value = finalPTstring;
+    }
+
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
     function updateClipboard(event) {
-        var pageTitle2 = pageTitle;
-        if(pageTruncate != '')
-        {
-            pageTitle2 = pageTitle2.split(pageTruncate)[0].trim();
-        }
-        //Get page title and URL and put in Roam format [Page Title](URL)
-        pageTitle2 = pageTitle2.split("[").join("(").split("]").join(")");
-        var reference = `[${pageTitle2}](${location.href}) ${pageRef}`;
+        parseParentTitle(); //Sets the rmHLta2 value after parsing
+        var reference = iframeDoc.getElementById("rmHLta2").value;
         reference = reference.trim();
         if(debugMode != 0){writeToConsole('reference: ' + reference);}
 
@@ -2233,7 +2313,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
             if(debugMode != 0){writeToConsole(eachLine);}
             eachLine = eachLine.split("  ").join(" ")
-            if(elipOpt > 0){eachLine = addEllipsis(eachLine, thisIsHeader, thisIsBullet)}
+            if(elipOpt > 0 && (x > 0 || cbElemPgTitle.checked == false || reference == '')){eachLine = addEllipsis(eachLine, thisIsHeader, thisIsBullet)}
             htmlConcatHighlights = htmlConcatHighlights + eachLine;
             //debugMode = 0;
             lastWasHeader = thisIsHeader;
