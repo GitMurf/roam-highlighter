@@ -20,7 +20,6 @@ var formatBullets = '- ';
 var bHeaders = true;
 var bIndents = true;
 var bLinks = true;
-var pageTruncate = '';
 var pgRefCase = Number(0);
 var elipOpt = Number(0);
 //Kindle settings
@@ -100,7 +99,6 @@ async function startFunction()
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
         writeToConsole("bLinks: " + bLinks,-1);
-        writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("pgRefCase: " + pgRefCase,-1);
         writeToConsole("elipOpt: " + elipOpt,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
@@ -111,7 +109,7 @@ async function startFunction()
     }
 
     //Array to loop through to get values from browser.storage.local
-    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "bLinks", "pageTruncate", "pgRefCase", "elipOpt", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
+    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "bLinks", "pgRefCase", "elipOpt", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
 
     for(var s = 0; s < settingsArray.length; s++)
     {
@@ -174,10 +172,6 @@ async function startFunction()
                 if(varResult !== undefined){bLinks = varResult;}
                 setLocalStorageValue("bLinks", bLinks);
                 break;
-            case "pageTruncate":
-                if(varResult !== undefined){pageTruncate = varResult;}
-                setLocalStorageValue("pageTruncate", pageTruncate);
-                break;
             case "pgRefCase":
                 if(varResult !== undefined){pgRefCase = varResult;}
                 setLocalStorageValue("pgRefCase", pgRefCase);
@@ -223,7 +217,6 @@ async function startFunction()
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
         writeToConsole("bLinks: " + bLinks,-1);
-        writeToConsole("pageTruncate: " + pageTruncate,-1);
         writeToConsole("pgRefCase: " + pgRefCase,-1);
         writeToConsole("elipOpt: " + elipOpt,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
@@ -486,9 +479,6 @@ else
     cbElemPgTitle.checked = true;
     //if(bPgTitle){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
 
-    var tbElemPgTrunc = createNewElement('input',pageTruncate,'','padding:0px;text-align:center;width:15px;margin-left:20%;margin-right:0px;margin-bottom:2px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;display:inline-flex',formElem,'rmHLtbPgTrunc','rmHLtbPgTrunc');
-    var labelElemPgTruncate = createNewElement('label','Truncate','rmHLtbPgTrunc','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline-block;margin-left:5px',formElem,'','');
-
     formElem.appendChild(document.createElement('br'));
     var textElem2 = createNewElement('textarea',pageTitle,'','width:90%;min-height:auto;height:auto;max-height:none;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px',formElem,'rmHLta2','rmHLta2');
     textElem2.rows = 2;
@@ -617,7 +607,6 @@ else
         var cbElemLinks = iframeDoc.getElementById("rmHLcbLinks")
         var cbElem1 = iframeDoc.getElementById("rmHLcbType1")
         var cbElem2 = iframeDoc.getElementById("rmHLcbType2")
-        var tbElemPgTrunc = iframeDoc.getElementById("rmHLtbPgTrunc");
         var cbElemPgTitle = iframeDoc.getElementById("rmHLcbPgTitle");
         var selPgRefCase = iframeDoc.getElementById("rmHLcaseSel");
         var selElip = iframeDoc.getElementById("rmHLelip");
@@ -665,7 +654,6 @@ else
         tbSizeH.value = '30%';
         cbElem1.checked = true;
         cbElem2.checked = false;
-        tbElemPgTrunc.value = '';
         selPgRefCase.value = 0;
         selElip.value = 0;
         if(tbKinHLref != null)
@@ -689,7 +677,6 @@ else
         formatBullets = tbElemBullet.value;
         bIndents = cbElemIndents.checked;
         bLinks = cbElemLinks.checked;
-        pageTruncate = tbElemPgTrunc.value;
         pgRefCase = Number(selPgRefCase.value);
         elipOpt = Number(selElip.value);
         //Kindle settings
@@ -714,7 +701,6 @@ else
         setLocalStorageValue("formatBullets", formatBullets);
         setLocalStorageValue("bIndents", bIndents);
         setLocalStorageValue("bLinks", bLinks);
-        setLocalStorageValue("pageTruncate", pageTruncate);
         setLocalStorageValue("pgRefCase", pgRefCase);
         setLocalStorageValue("elipOpt", elipOpt);
         //Kindle settings
@@ -768,7 +754,6 @@ else
         var tbElemBullet = iframeDoc.getElementById("rmHLtbBullet");
         var cbElemIndents = iframeDoc.getElementById("rmHLcbIndents")
         var cbElemLinks = iframeDoc.getElementById("rmHLcbLinks")
-        var tbElemPgTrunc = iframeDoc.getElementById("rmHLtbPgTrunc");
         var selPgRefCase = iframeDoc.getElementById("rmHLcaseSel");
         var selElip = iframeDoc.getElementById("rmHLelip");
         //Kindle settings
@@ -827,7 +812,6 @@ else
         formatBullets = tbElemBullet.value;
         bIndents = cbElemIndents.checked;
         bLinks = cbElemLinks.checked;
-        pageTruncate = tbElemPgTrunc.value;
         pgRefCase = Number(selPgRefCase.value);
         elipOpt = Number(selElip.value);
         //Kindle settings
@@ -852,7 +836,6 @@ else
         setLocalStorageValue("formatBullets", formatBullets);
         setLocalStorageValue("bIndents", bIndents);
         setLocalStorageValue("bLinks", bLinks);
-        setLocalStorageValue("pageTruncate", pageTruncate);
         setLocalStorageValue("pgRefCase", pgRefCase);
         setLocalStorageValue("elipOpt", elipOpt);
         //Kindle settings
@@ -1051,6 +1034,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
             var initIndentAmount = '    ';
             var cbElemPgTitle = iframeDoc.getElementById("rmHLcbPgTitle");
+            if(iframeDoc.getElementById("rmHLta2").value != ''){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
             if(cbElemPgTitle.checked == false){initIndentAmount = '';}
 
             var indentAmount = '    ';
@@ -2118,6 +2102,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         }
 
         var cbElemPgTitle = iframeDoc.getElementById("rmHLcbPgTitle");
+        if(iframeDoc.getElementById("rmHLta2").value != ''){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
         //Check if no highlights and just want the page name in Roam link format [Page Title](URL)
         if(plainConcatHighlights == "" || htmlConcatHighlights == "")
         {
