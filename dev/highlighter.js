@@ -1435,6 +1435,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         if(nextNodeSib){var nextNodeSibName = nextNodeSib.nodeName}else{var nextNodeSibName = ""}
         if(nextNodeSib){var nextNodeSibText = nextNodeSib.textContent.replace(/\n|\r/g,'').trim()}else{var nextNodeSibText = ""}
         if(prevSibElem){var prevSibElemName = prevSibElem.nodeName}else{var prevSibElemName = ""}
+        if(prevSibElem){var prevSibElemClass = prevSibElem.className}else{var prevSibElemClass = ""}
         if(nextSibELem){var nextSibELemName = nextSibELem.nodeName}else{var nextSibELemName = ""}
         if(prevSibNode){var prevSibNodeText = prevSibNode.textContent.replace(/\n|\r/g,'').trim()}else{var prevSibNodeText = ""}
         if(nextSibNode){var nextSibNodeText = nextSibNode.textContent.replace(/\n|\r/g,'').trim()}else{var nextSibNodeText = ""}
@@ -1450,7 +1451,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         else
         {
             //Check if start of line (SOL) ; this is used for determining later whether to add ellipsis on front / end
-            if(eachHighlight == parElemText.substring(0,eachHighlight.length) || (prevSibElemName == 'BR' && prevSibNodeText == '')){tmpEachHighlight = '||SOL||' + eachHighlight}
+            if(eachHighlight == parElemText.substring(0,eachHighlight.length) || ((prevSibElemName == 'BR' || prevSibElemClass == 'c-mrkdwn__br') && prevSibNodeText == '')){tmpEachHighlight = '||SOL||' + eachHighlight}
             //Check if end of line (EOL)
             if(eachHighlight == parElemText.slice(-1*eachHighlight.length) || (nextSibELemName == 'BR' && nextSibNodeText == '')){tmpEachHighlight = tmpEachHighlight + '||EOL||'}
         }
