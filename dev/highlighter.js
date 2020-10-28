@@ -1,13 +1,18 @@
-//Date: October 21, 2020
-var verNum = '1.9.8.1';
+//Date: October 28, 2020
+var verNum = '1.9.8.2';
 var getPage = location.href;
 var iframeDoc = document; //Placeholder for later setting global variable to iframe document
 
 //Default settings in case no local storage saved
 var sameBlock = Number(0);
-var pageRef = "#[[Roam-Highlights]]";
-var parentTitleArr = [['NONE',''],['DEFAULT','[{%title%}]({%url%}) #[[Roam-Highlights]]'],['two','[{%title%}]({%url%}) [[other option]]'],['three','text before [{%title%}]({%url%}) text after'],['four','[{%title%}]({%url%}) {%date%} {%time%}']];
-var parentTitle = parentTitleArr[0][1];
+var parentTitleArr = 
+[
+    ['*NONE',''],
+    ['*Roam','[{%title%}]({%url%}) #[[Roam-Highlights]]'],
+    ['*Obsidian','[{%title%}]({%url%}) [[Obsidian-Highlights]]'],
+    ['*All Placeholders','[{%title%}]({%url%}) {%date%} {%time%}']
+];
+var parentTitle = parentTitleArr[1][1];
 var sideWidth = "20%";
 var sideHeight = "30%";
 var showWindow = Number(1);
@@ -88,7 +93,6 @@ async function startFunction()
     if(debugMode != 0)
     {
         writeToConsole("sameBlock: " + sameBlock,-1);
-        writeToConsole("pageRef: " + pageRef,-1);
         writeToConsole("sideWidth: " + sideWidth,-1);
         writeToConsole("sideHeight: " + sideHeight,-1);
         writeToConsole("showWindow: " + showWindow,-1);
@@ -101,6 +105,8 @@ async function startFunction()
         writeToConsole("bLinks: " + bLinks,-1);
         writeToConsole("pgRefCase: " + pgRefCase,-1);
         writeToConsole("elipOpt: " + elipOpt,-1);
+        writeToConsole("parentTitleArr: " + parentTitleArr,-1);
+        writeToConsole("parentTitle: " + parentTitle,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
         writeToConsole("bLocation: " + bLocation,-1);
         writeToConsole("bColor: " + bColor,-1);
@@ -109,7 +115,7 @@ async function startFunction()
     }
 
     //Array to loop through to get values from browser.storage.local
-    var settingsArray = ["sameBlock", "pageRef", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "bLinks", "pgRefCase", "elipOpt", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
+    var settingsArray = ["sameBlock", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "bLinks", "pgRefCase", "elipOpt", "parentTitleArr", "parentTitle", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
 
     for(var s = 0; s < settingsArray.length; s++)
     {
@@ -127,10 +133,6 @@ async function startFunction()
             case "sameBlock":
                 if(varResult !== undefined){sameBlock = varResult;}
                 setLocalStorageValue("sameBlock", sameBlock);
-                break;
-            case "pageRef":
-                if(varResult !== undefined){pageRef = varResult;}
-                setLocalStorageValue("pageRef", pageRef);
                 break;
             case "sideWidth":
                 if(varResult !== undefined){sideWidth = varResult;}
@@ -180,6 +182,22 @@ async function startFunction()
                 if(varResult !== undefined){elipOpt = varResult;}
                 setLocalStorageValue("elipOpt", elipOpt);
                 break;
+            case "parentTitleArr":
+                if(varResult !== undefined){parentTitleArr = varResult;}
+                /*parentTitleArr = 
+                [
+                    ['*NONE',''],
+                    ['*Roam','[{%title%}]({%url%}) #[[Roam-Highlights]]'],
+                    ['*Obsidian','[{%title%}]({%url%}) [[Obsidian-Highlights]]'],
+                    ['*All Placeholders','[{%title%}]({%url%}) {%date%} {%time%}']
+                ];*/
+                setLocalStorageValue("parentTitleArr", parentTitleArr);
+                break;
+            case "parentTitle":
+                if(varResult !== undefined){parentTitle = varResult;}
+                //parentTitle = parentTitleArr[1][1];
+                setLocalStorageValue("parentTitle", parentTitle);
+                break;
             case "kindleHLref":
                 if(varResult !== undefined){kindleHLref = varResult;}
                 setLocalStorageValue("kindleHLref", kindleHLref);
@@ -206,7 +224,6 @@ async function startFunction()
     if(debugMode != 0)
     {
         writeToConsole("sameBlock: " + sameBlock,-1);
-        writeToConsole("pageRef: " + pageRef,-1);
         writeToConsole("sideWidth: " + sideWidth,-1);
         writeToConsole("sideHeight: " + sideHeight,-1);
         writeToConsole("showWindow: " + showWindow,-1);
@@ -398,21 +415,65 @@ else
     var arrLength = parentTitleArr.length;
     for (var i = 0; i < arrLength; i++)
     {
-        if(i == 0)
-        {
-            selElemPT.options.add( new Option(parentTitleArr[i][0],parentTitleArr[i][1], true, true) );
-        }
-        else
-        {
-            selElemPT.options.add( new Option(parentTitleArr[i][0],parentTitleArr[i][1]) );
-        }
+        selElemPT.options.add( new Option(parentTitleArr[i][0],parentTitleArr[i][1]) );
     }
     selElemPT.value = parentTitle;
 
-    /* Removing as adding new Parent Title format
-    var tbElem = createNewElement('input',pageRef,'','padding-left:5px;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid',formElem,'rmHLtb','rmHLtb');
-    tbElem.placeholder = "#[[Roam-Highlights]]";
-    */
+    selElemPT.addEventListener("change", function(evt){
+        var selElemPT = evt.target;
+        var textElem2 = iframeDoc.getElementById("rmHLta2");
+        textElem2.value = selElemPT.value;
+        parentTitle = textElem2.value;
+        var butSave = iframeDoc.getElementById("rmHLsave");
+        butSave.style.backgroundColor = 'blue';
+        butSave.click();
+    });
+
+    var butAdd = createNewElement('button','Add','','background-color:grey;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:default;padding:5px;margin-left:10px;',formElem,'rmHLadd','rmHLadd');
+
+    var butDel = createNewElement('button','Delete','','background-color:crimson;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:pointer;padding:5px;margin-left:10px;',formElem,'rmHLdel','rmHLdel');
+
+    butAdd.addEventListener("click", function(evt){
+        var butAdd = evt.target;
+        if(butAdd.style.backgroundColor == 'grey'){return;}
+        var textElem2 = iframeDoc.getElementById("rmHLta2");
+        var textElem2Val = textElem2.value;
+        var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
+        parentTitle = textElem2Val;
+        //Calling the butSave.click after the prompt was causing issues (probably async related) to where teh 'cut' event wouldn't fire from butSave.click if waited on the prompt for a few seconds.
+        var butSave = iframeDoc.getElementById("rmHLsave");
+        butSave.style.backgroundColor = 'blue';
+        butSave.click();
+        var itemDesc = prompt("Enter a short description to save for future.", "New");
+        if(itemDesc == '' || itemDesc == null){itemDesc = 'Saved without a name'}
+        parentTitleArr.push([itemDesc,textElem2Val]);
+        selElemPT.options.add( new Option(itemDesc,textElem2Val) );
+        selElemPT.value = textElem2Val;
+        butAdd.style.backgroundColor = 'grey';
+        butAdd.style.cursor = 'default';
+        setLocalStorageValue("parentTitle", parentTitle);
+        setLocalStorageValue("parentTitleArr", parentTitleArr);
+    });
+
+    butDel.addEventListener("click", function(evt){
+        var textElem2 = iframeDoc.getElementById("rmHLta2");
+        var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
+        var selIndex = selElemPT.selectedIndex;
+        if(selIndex <= 3)
+        {
+            window.alert("Cannot delete default items!");
+            return;
+        }
+        parentTitleArr.splice(selIndex, 1);
+        selElemPT.remove(selIndex);
+        if(selIndex >= selElemPT.length){selIndex = selElemPT.length - 1};
+        selElemPT.selectedIndex = selIndex;
+        textElem2.value = selElemPT.value;
+        parentTitle = textElem2.value;
+        var butSave = iframeDoc.getElementById("rmHLsave");
+        butSave.style.backgroundColor = 'blue';
+        butSave.click();
+    });
 
     if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE))
     {
@@ -480,8 +541,14 @@ else
     //if(bPgTitle){cbElemPgTitle.checked = true;}else{cbElemPgTitle.checked = false;}
 
     formElem.appendChild(document.createElement('br'));
-    var textElem2 = createNewElement('textarea',pageTitle,'','width:90%;min-height:auto;height:auto;max-height:none;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px',formElem,'rmHLta2','rmHLta2');
+    var textElem2 = createNewElement('textarea',parentTitle,'','width:90%;min-height:auto;height:auto;max-height:none;font-size:12px;line-height:normal;border-color:black;border-width:1px;border-style:solid;padding:5px',formElem,'rmHLta2','rmHLta2');
     textElem2.rows = 2;
+
+    textElem2.addEventListener("input", function(evt){
+        var butAdd = iframeDoc.getElementById("rmHLadd");
+        butAdd.style.backgroundColor = 'green';
+        butAdd.style.cursor = 'pointer';
+    });
 
     //5 Options for handling line breaks within each selected highlight by the user (a few words, or a few paragraphs... whatever user selects as a single highlight)
         //Set to 0 (Default) if you want line breaks (e.g., each paragraph) to create new bullets at same hierarchy/level
@@ -595,7 +662,7 @@ else
         //var divElemMain = iframeDoc.getElementById("rmHLmain");
         var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
         var textElem2 = iframeDoc.getElementById("rmHLta2");
-        var selElem = iframeDoc.getElementById("rmHLsel");
+        var selElem = iframeDoc.getElementById("rmHLsel"); 
         var tbSizeW = iframeDoc.getElementById("rmHLtbSize");
         var tbSizeH = iframeDoc.getElementById("rmHLtbSize2");
         var tbElemBold = iframeDoc.getElementById("rmHLtbBold");
@@ -616,14 +683,12 @@ else
         var cbCol = iframeDoc.getElementById("rmHLcbHlColor");
         var cbColRef = iframeDoc.getElementById("rmHLcbHlColorLink");
         var selKindle = iframeDoc.getElementById("rmHLkindleSel");
-
         var selDefaults = iframeDoc.getElementById("rmHLdefaultsSel");
 
         switch (Number(selDefaults.value))
         {
             case 0:
                 //Roam
-                /*tbElem.value = '#[[Roam-Highlights]]';*/
                 tbElemBold.value = '**';
                 tbElemItalic.value = '__';
                 tbElemCode.value = '`';
@@ -633,10 +698,12 @@ else
                 cbElemLinks.checked = true;
                 //Kindle settings
                 if(tbKinHLref != null){tbKinHLref.value = '#[[Kindle-Highlights]]';}
+                textElem2.value = '[{%title%}]({%url%}) #[[Roam-Highlights]]';
+                parentTitle = textElem2.value;
+                selElemPT.value = parentTitle;
                 break;
             case 1:
                 //Obsidian
-                /*tbElem.value = '[[Obsidian-Highlights]]';*/
                 tbElemBold.value = '**';
                 tbElemItalic.value = '_';
                 tbElemCode.value = '`';
@@ -646,6 +713,9 @@ else
                 cbElemLinks.checked = true;
                 //Kindle settings
                 if(tbKinHLref != null){tbKinHLref.value = '[[Kindle-Highlights]]';}
+                textElem2.value = '[{%title%}]({%url%}) [[Obsidian-Highlights]]';
+                parentTitle = textElem2.value;
+                selElemPT.value = parentTitle;
                 break;
         }
 
@@ -665,7 +735,6 @@ else
         }
         cbElemPgTitle.checked = true;
 
-        /*pageRef = tbElem.value;*/
         /*pageTitle = textElem2.value;*/
         sameBlock = Number(selElem.value);
         sideWidth = tbSizeW.value;
@@ -690,7 +759,6 @@ else
         }
 
         //Save to local storage to keep persistent
-        setLocalStorageValue("pageRef", pageRef);
         setLocalStorageValue("sameBlock", sameBlock);
         setLocalStorageValue("sideWidth", sideWidth);
         setLocalStorageValue("sideHeight", sideHeight);
@@ -709,6 +777,8 @@ else
         setLocalStorageValue("bColor", bColor);
         setLocalStorageValue("bColorRef", bColorRef);
         setLocalStorageValue("kindleHLstructure", kindleHLstructure);
+        setLocalStorageValue("parentTitle", parentTitle);
+        setLocalStorageValue("parentTitleArr", parentTitleArr);
 
         //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
         //We already have the "cut" event listener set to run our code, so this should activate it
@@ -726,7 +796,7 @@ else
     var butSave = createNewElement('button','Save','','background-color:grey;color:white;border-color:white;font-size:12px;line-height:normal;border-color:white;border-width:1px;border-style:solid;cursor:default;padding:5px;margin-left:0px;',formElem,'rmHLsave','rmHLsave');
 
     formElem.addEventListener("input", function(evt){
-        if(evt.target.id != 'rmHLdefaultsSel')
+        if(evt.target.id != 'rmHLdefaultsSel' && evt.target.id != 'rmHLta2')
         {
             var butSave = iframeDoc.getElementById("rmHLsave");
             butSave.style.backgroundColor = 'blue';
@@ -741,8 +811,9 @@ else
     });
 
     butSave.addEventListener("click", function(){
+        var butSave = iframeDoc.getElementById("rmHLsave");
+        if(butSave.style.backgroundColor == 'grey'){return;}
         //var divElemMain = iframeDoc.getElementById("rmHLmain");
-        var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
         var textElem2 = iframeDoc.getElementById("rmHLta2");
         var selElem = iframeDoc.getElementById("rmHLsel");
         var tbSizeW = iframeDoc.getElementById("rmHLtbSize");
@@ -763,13 +834,10 @@ else
         var cbColRef = iframeDoc.getElementById("rmHLcbHlColorLink");
         var selKindle = iframeDoc.getElementById("rmHLkindleSel");
 
-        var butSave = iframeDoc.getElementById("rmHLsave");
-
         butSave.style.backgroundColor = 'grey';
         butSave.style.cursor = 'default';
+        parentTitle = textElem2.value;
 
-        /*pageRef = tbElem.value;*/
-        /*pageTitle = textElem2.value;*/
         sameBlock = Number(selElem.value);
         sideWidth = tbSizeW.value;
             if(sideWidth.indexOf("px") > -1 || sideWidth.indexOf("PX") > -1 || sideWidth.indexOf("Px") > -1 || sideWidth.indexOf("pX") > -1)
@@ -825,7 +893,6 @@ else
         }
 
         //Save to local storage to keep persistent
-        setLocalStorageValue("pageRef", pageRef);
         setLocalStorageValue("sameBlock", sameBlock);
         setLocalStorageValue("sideWidth", sideWidth);
         setLocalStorageValue("sideHeight", sideHeight);
@@ -838,6 +905,8 @@ else
         setLocalStorageValue("bLinks", bLinks);
         setLocalStorageValue("pgRefCase", pgRefCase);
         setLocalStorageValue("elipOpt", elipOpt);
+        setLocalStorageValue("parentTitle", parentTitle);
+        setLocalStorageValue("parentTitleArr", parentTitleArr);
         //Kindle settings
         setLocalStorageValue("kindleHLref", kindleHLref);
         setLocalStorageValue("bLocation", bLocation);
@@ -974,8 +1043,6 @@ else
             divElemMain.style.opacity = "1";
             divTextElem.style.width = "50%";
             divSetElem.style.setProperty('display', 'flex');
-            /*tbElem.value = pageRef;*/
-            parseParentTitle();
             selElem.value = sameBlock;
             if(butMax.innerHTML == "Expand"){butMax.click();}
         }
@@ -1695,12 +1762,11 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
     function parseParentTitle()
     {
-        var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
         var textElem2 = iframeDoc.getElementById("rmHLta2");
         var ptDate = new Date();
 
         //Split by {% and %} placeholder format and loop through
-        var delimeters = selElemPT.value.split(/({%|%})/)
+        var delimeters = textElem2.value.split(/({%|%})/)
         var openPlaceholder = false;
         var finalPTstring = '';
         for(var x=0, eachValue; eachValue = delimeters[x]; x++)
@@ -1710,10 +1776,11 @@ Roam-highlighter Shortcut Keys (v${verNum})
             {
                 if(openPlaceholder)
                 {
-                    var eachValueArr = eachValue.split('@');
-                    eachValueStr = eachValueArr[0];
+                    var eachValueArr = parsedText.split('@');
+                    var eachValueStr = eachValueArr[0];
                     if(eachValueArr[1]){var eachValParam = eachValueArr[1]}else{var eachValParam = ''}
-                    switch (eachValue.toLowerCase())
+
+                    switch (eachValueStr.toLowerCase())
                     {
                         case 'title':
                             parsedText = pageTitle;
@@ -1749,13 +1816,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
         }
 
-        textElem2.value = finalPTstring;
+        return finalPTstring;
     }
 
     //This function loops through the elements with the highlighter "class" set by the script and adds to clipboard in Roam format
     function updateClipboard(event) {
-        parseParentTitle(); //Sets the rmHLta2 value after parsing
-        var reference = iframeDoc.getElementById("rmHLta2").value;
+        var reference = parseParentTitle();
         reference = reference.trim();
         if(debugMode != 0){writeToConsole('reference: ' + reference);}
 
