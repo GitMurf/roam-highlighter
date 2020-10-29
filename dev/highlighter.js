@@ -2667,15 +2667,15 @@ Roam-highlighter Shortcut Keys (v${verNum})
             function ignoreElementContainer(elemInput)
             {
                 //This will stop parsing through any children of an element found so you can add a parent element class instead of having to add all the variations under it like in the ignoreElement function
-                //Slack post reactions, timestamps, media etc.
+                //Slack post reactions, timestamps, media etc. + GitHub hidden comments boxes and reaction emoji stuff
                 var elemClassCheck = elemInput.className;
                 if (typeof elemClassCheck === 'string' || elemClassCheck instanceof String){elemClassCheck = elemClassCheck.trim()}else{elemClassCheck = ''}
-                var parElemClassCheck = elemInput.parentElement.className;
-                if (typeof parElemClassCheck === 'string' || parElemClassCheck instanceof String){parElemClassCheck = parElemClassCheck.trim()}else{parElemClassCheck = ''}
-                var parParElemClassCheck = elemInput.parentElement.parentElement.className;
-                if (typeof parParElemClassCheck === 'string' || parParElemClassCheck instanceof String){parParElemClassCheck = parParElemClassCheck.trim()}else{parParElemClassCheck = ''}
 
-                if(elemClassCheck == 'c-message_kit__attachments' || elemClassCheck == 'toggl-button slack-message min')
+                if(
+                //Slack messages
+                elemClassCheck == 'c-message_kit__attachments' || elemClassCheck == 'toggl-button slack-message min'
+                //Github issues
+                 || elemClassCheck == 'avatar-parent-child TimelineItem-avatar d-none d-md-block' || elemClassCheck == 'timeline-comment-actions flex-shrink-0' || elemClassCheck == 'd-none d-sm-flex' || elemClassCheck == 'text-normal drag-and-drop hx_drag-and-drop position-relative d-flex flex-justify-between' || elemClassCheck == 'comment-reactions flex-items-center border-top  js-reactions-container' || elemClassCheck == 'js-details-container Details toolbar-commenting d-flex no-wrap flex-items-start flex-wrap px-2 pt-2 pt-lg-0 border-md-top border-lg-top-0' || elemClassCheck == 'js-comment-update' || elemClassCheck == 'js-minimize-comment d-none js-update-minimized-content' || elemClassCheck == 'js-comment-edit-history' || elemClassCheck == 'TimelineItem' || elemClassCheck == 'TimelineItem js-targetable-element')
                 {
                     return true;
                 }
@@ -2696,7 +2696,13 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 var elemClassCheck = elemInput.parentElement.className.trim();
                 var parElemClassCheck = elemInput.parentElement.parentElement.className.trim();
                 var parParElemClassCheck = elemInput.parentElement.parentElement.parentElement.className.trim();
-                if(elemClassCheck == 'c-reaction__count' || elemClassCheck == 'c-timestamp__label' || elemClassCheck == 'c-message__edited_label' || elemClassCheck == 'c-message_kit__file__meta__text' || elemClassCheck == 'c-message_kit__file__meta' || elemClassCheck == 'c-pillow_file__swap' || elemClassCheck == 'c-pillow_file__title' || elemClassCheck == 'c-pillow_file__slide c-pillow_file__size__action' || parElemClassCheck == 'c-message_kit__file__meta__text' || elemClassCheck == 'c-link--button c-message_kit__labels__link' || parElemClassCheck == 'c-pillow_file__header c-pillow_file__header--tombstone' || elemClassCheck == 'c-message_attachment__author_name' || elemClassCheck == 'c-message_attachment__author c-message_attachment__author--has_subname' || elemClassCheck == 'c-message_attachment__author_subname' || parElemClassCheck == 'c-link c-message_attachment__title_link' || elemClassCheck == 'p-threads_flexpane__separator_count' || elemClassCheck == 'p-threads_view_load_older_message p-threads_view_load_older_message--with-gutter' || elemClassCheck == 'c-link--button c-message_attachment__text_expander' || elemClassCheck == 'c-message_attachment__footer_attribution c-message_attachment__part' || parElemClassCheck == 'c-message_attachment__footer_attribution c-message_attachment__part' || elemClassCheck == 'c-message_attachment__footer_text c-message_attachment__part' || parParElemClassCheck == 'c-message_attachment__footer_text c-message_attachment__part' || parElemClassCheck == 'c-message_attachment__text' || parParElemClassCheck == 'c-message_attachment__text' || elemClassCheck == 'c-message_attachment__footer' || parElemClassCheck == 'c-link--button c-member_link c-message_attachment__author_name' || parElemClassCheck == 'c-message_attachment__footer_text c-message_attachment__part' || parElemClassCheck == 'c-message_attachment__footer_ts c-message_attachment__part' || parElemClassCheck == 'c-message_attachment__part sk_highlight' || elemClassCheck == 'c-message_list__unread_divider__label')
+                var parElemType = elemInput.parentElement.nodeName;
+
+                if(
+                    //Slack
+                    elemClassCheck == 'c-reaction__count' || elemClassCheck == 'c-timestamp__label' || elemClassCheck == 'c-message__edited_label' || elemClassCheck == 'c-message_kit__file__meta__text' || elemClassCheck == 'c-message_kit__file__meta' || elemClassCheck == 'c-pillow_file__swap' || elemClassCheck == 'c-pillow_file__title' || elemClassCheck == 'c-pillow_file__slide c-pillow_file__size__action' || parElemClassCheck == 'c-message_kit__file__meta__text' || elemClassCheck == 'c-link--button c-message_kit__labels__link' || parElemClassCheck == 'c-pillow_file__header c-pillow_file__header--tombstone' || elemClassCheck == 'c-message_attachment__author_name' || elemClassCheck == 'c-message_attachment__author c-message_attachment__author--has_subname' || elemClassCheck == 'c-message_attachment__author_subname' || parElemClassCheck == 'c-link c-message_attachment__title_link' || elemClassCheck == 'p-threads_flexpane__separator_count' || elemClassCheck == 'p-threads_view_load_older_message p-threads_view_load_older_message--with-gutter' || elemClassCheck == 'c-link--button c-message_attachment__text_expander' || elemClassCheck == 'c-message_attachment__footer_attribution c-message_attachment__part' || parElemClassCheck == 'c-message_attachment__footer_attribution c-message_attachment__part' || elemClassCheck == 'c-message_attachment__footer_text c-message_attachment__part' || parParElemClassCheck == 'c-message_attachment__footer_text c-message_attachment__part' || parElemClassCheck == 'c-message_attachment__text' || parParElemClassCheck == 'c-message_attachment__text' || elemClassCheck == 'c-message_attachment__footer' || parElemClassCheck == 'c-link--button c-member_link c-message_attachment__author_name' || parElemClassCheck == 'c-message_attachment__footer_text c-message_attachment__part' || parElemClassCheck == 'c-message_attachment__footer_ts c-message_attachment__part' || parElemClassCheck == 'c-message_attachment__part sk_highlight' || elemClassCheck == 'c-message_list__unread_divider__label'
+                    //Github issues
+                    || parElemType == 'G-EMOJI' || parElemType == 'BUTTON' || parElemType == 'TEXTAREA' || parElemClassCheck == 'comment-form-error comment-show-stale' || parElemClassCheck == 'link-gray js-timestamp')
                 {
                     return true;
                 }
@@ -2803,7 +2809,8 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
                             if(!skipElement)
                             {
-                                if(foundStartOfSelection == 1 && elemInput.parentElement.nodeName != 'STYLE'){createSpanElement(elemInput, startPos, elemInput, endPos);}
+                                //if(foundStartOfSelection == 1 && elemInput.parentElement.nodeName != 'STYLE' && elemInput.nodeName != 'TEMPLATEs'){createSpanElement(elemInput, startPos, elemInput, endPos);}
+                                if(foundStartOfSelection == 1 && elemInput.parentElement.nodeName != 'STYLE' && elemInput.parentElement.nodeName != 'SVG'){createSpanElement(elemInput, startPos, elemInput, endPos);}
                             }
                         }
                     }
