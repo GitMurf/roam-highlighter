@@ -1668,6 +1668,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     || (prevNode.innerText.substring(prevNode.innerText.length - 1) == ":" && (lastParNodeName == "EM" || lastParNodeName == "I" || lastParNodeName == "STRONG" || lastParNodeName == "B" || lastParNodeName == "DEL" || lastParNodeName == "STRIKE" || lastParNodeName == "S" || lastParNodeName == "INS") && curNode.parentElement.parentElement.innerText.toString().trim() != curHighlight.toString().trim())
                 )
                 && (parOfparNodeName != "LI" || curHighlight.toString().trim() != curNode.parentElement.parentElement.innerText.toString().trim()) //If an LI item and current matches full text of LI, then you want a new line
+                && (parNodeName != "A" || (lastParNodeName != 'H1' && lastParNodeName != 'H2' && lastParNodeName != 'H3'))
             )
             || (
                 (
