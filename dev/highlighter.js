@@ -3013,20 +3013,23 @@ Roam-highlighter Shortcut Keys (v${verNum})
     //Add listener for auto highlighting trigger without needing ctrl+X
     document.addEventListener('click', function (evt)
     {
-        //console.log('single click');
-        //console.log(evt.detail); //Returns the click count.... 2 if double click... 3 if triple click
+        if(bAutoHL)
+        {
+            if(evt.detail > 1 && evt.detail != 3){return} //Prevents double-click so that if already highlighted then double click still changes to blue which means Roam page link; also allows triple click to work
+
         if(typeof window.getSelection != "undefined")
         {
             var selectedTextStr = window.getSelection().toString();
-            //console.log(selectedTextStr);
             if(selectedTextStr != '')
             {
-                //console.log('START THE CUT!');
+                    var selectedElement = evt.target;
+                    if(selectedElement.className == "roamJsHighlighter" || selectedElement.className == "roamJsHighlighter pageLink"){return} //Exit if already highlighted as need ability to select multi word highlights to turn blue with Alt + Z
                 //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
                 //We already have the "cut" event listener set to run our code, so this should activate it
                 clickEvent = 0;
                 document.execCommand('cut');
             }
+        }
         }
     });
 
