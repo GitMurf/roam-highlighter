@@ -1,8 +1,7 @@
 //Date: October 28, 2020
-var verNum = '1.9.8.2';
+var verNum = '1.9.8.3';
 var getPage = location.href;
-var iframeDoc = document; //Placeholder for later setting global variable to iframe document
-
+var iframeDoc = document; //Allow highlights via selection without pressing Ctrl + X
 //Default settings in case no local storage saved
 var sameBlock = Number(0);
 var parentTitleArr = 
@@ -41,6 +40,7 @@ var kindleHLstructure = Number(0);
 var pageTitle = document.title.toString();
 var roamHighlighterLoaded;
 var veryFirstRun = 1;
+var tripleClick = false;
 
 //-1 = Only for current item you are testing... never leave these permanently
 //0 = [Default] Don't show debug
@@ -3009,6 +3009,26 @@ Roam-highlighter Shortcut Keys (v${verNum})
         e.preventDefault();
     }
     );
+
+    //Add listener for auto highlighting trigger without needing ctrl+X
+    document.addEventListener('click', function (evt)
+    {
+        //console.log('single click');
+        //console.log(evt.detail); //Returns the click count.... 2 if double click... 3 if triple click
+        if(typeof window.getSelection != "undefined")
+        {
+            var selectedTextStr = window.getSelection().toString();
+            //console.log(selectedTextStr);
+            if(selectedTextStr != '')
+            {
+                //console.log('START THE CUT!');
+                //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+                //We already have the "cut" event listener set to run our code, so this should activate it
+                clickEvent = 0;
+                document.execCommand('cut');
+            }
+        }
+    });
 
     //Add click event to allow for "erasing" of previous highlights you don't want anymore. Simply click anywhere inside the highlight
     //Or if you selected text then it will try and add page linking for Roam
