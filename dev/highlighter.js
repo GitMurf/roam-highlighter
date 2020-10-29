@@ -1,7 +1,7 @@
-//Date: October 28, 2020
-var verNum = '1.9.8.3';
+//Date: October 29, 2020
+var verNum = '2.0'; //Allow highlights via selection without pressing Ctrl + X
 var getPage = location.href;
-var iframeDoc = document; //Allow highlights via selection without pressing Ctrl + X
+var iframeDoc = document;
 //Default settings in case no local storage saved
 var sameBlock = Number(0);
 var parentTitleArr = 
