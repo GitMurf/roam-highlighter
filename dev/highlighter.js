@@ -10,7 +10,7 @@ var parentTitleArr =
     ['*NONE',''],
     ['*Roam','[{%title%}]({%url%}) #[[Roam-Highlights]]'],
     ['*Obsidian','[{%title%}]({%url%}) [[Obsidian-Highlights]]'],
-    ['*All Placeholders','[{%title%}]({%url%}) {%date%} {%time%}']
+    ['*All Placeholders','[{%title%}]({%url%}) {%date%} {%time%} ... TRUNCATE TITLE BY ADDING @ followed by character(s) to cutoff at ex. {%title@-%} ... FORMAT DATES ex. {%date@mm-dd-yyyy%} or {%date@day month dd, yyyy%} or Roam date [[{%date@roam%}]]']
 ];
 var parentTitle = parentTitleArr[1][1];
 var sideWidth = "20%";
