@@ -24,6 +24,7 @@ var formatBullets = '- ';
 var bHeaders = true;
 var bIndents = true;
 var bLinks = true;
+var bAutoHL = true;
 var pgRefCase = Number(0);
 var elipOpt = Number(0);
 //Kindle settings
@@ -40,7 +41,6 @@ var kindleHLstructure = Number(0);
 var pageTitle = document.title.toString();
 var roamHighlighterLoaded;
 var veryFirstRun = 1;
-var tripleClick = false;
 
 //-1 = Only for current item you are testing... never leave these permanently
 //0 = [Default] Don't show debug
@@ -103,6 +103,7 @@ async function startFunction()
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
         writeToConsole("bLinks: " + bLinks,-1);
+        writeToConsole("bAutoHL: " + bAutoHL,-1);
         writeToConsole("pgRefCase: " + pgRefCase,-1);
         writeToConsole("elipOpt: " + elipOpt,-1);
         writeToConsole("parentTitleArr: " + parentTitleArr,-1);
@@ -115,7 +116,7 @@ async function startFunction()
     }
 
     //Array to loop through to get values from browser.storage.local
-    var settingsArray = ["sameBlock", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "bLinks", "pgRefCase", "elipOpt", "parentTitleArr", "parentTitle", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
+    var settingsArray = ["sameBlock", "sideWidth", "sideHeight", "showWindow", "formatBold", "formatItalics", "formatCode", "bHeaders", "formatBullets", "bIndents", "bLinks", "bAutoHL", "pgRefCase", "elipOpt", "parentTitleArr", "parentTitle", "kindleHLref", "bLocation", "bColor", "bColorRef", "kindleHLstructure"];
 
     for(var s = 0; s < settingsArray.length; s++)
     {
@@ -173,6 +174,10 @@ async function startFunction()
             case "bLinks":
                 if(varResult !== undefined){bLinks = varResult;}
                 setLocalStorageValue("bLinks", bLinks);
+                break;
+            case "bAutoHL":
+                if(varResult !== undefined){bAutoHL = varResult;}
+                setLocalStorageValue("bAutoHL", bAutoHL);
                 break;
             case "pgRefCase":
                 if(varResult !== undefined){pgRefCase = varResult;}
@@ -234,6 +239,7 @@ async function startFunction()
         writeToConsole("formatBullets: " + formatBullets,-1);
         writeToConsole("bIndents: " + bIndents,-1);
         writeToConsole("bLinks: " + bLinks,-1);
+        writeToConsole("bAutoHL: " + bAutoHL,-1);
         writeToConsole("pgRefCase: " + pgRefCase,-1);
         writeToConsole("elipOpt: " + elipOpt,-1);
         writeToConsole("kindleHLref: " + kindleHLref,-1);
@@ -403,6 +409,10 @@ else
     butClearAll.addEventListener("click", function(){
         removeAllHighlights();
     });
+
+    var labelElemAutoHL = createNewElement('label','Auto Highlight','rmHLcbAutoHL','font-size:12px;line-height:normal;margin-left:15px;color:black;font-weight:bold;display:inline-block',formElem,'','');
+    var cbElemAutoHL = createNewElement('checkbox','','','vertical-align:inherit;margin-left:10px;font-size:12px;line-height:normal;cursor:pointer;opacity:1;display:inline-flex;pointer-events:auto',formElem,'rmHLcbAutoHL','rmHLcbAutoHL');
+    if(bAutoHL){cbElemAutoHL.checked = true;}else{cbElemAutoHL.checked = false;}
 
     formElem.appendChild(document.createElement('br'));
     formElem.appendChild(document.createElement('br'));
@@ -672,6 +682,7 @@ else
         var tbElemBullet = iframeDoc.getElementById("rmHLtbBullet");
         var cbElemIndents = iframeDoc.getElementById("rmHLcbIndents")
         var cbElemLinks = iframeDoc.getElementById("rmHLcbLinks")
+        var cbElemAutoHL = iframeDoc.getElementById("rmHLcbAutoHL")
         var cbElem1 = iframeDoc.getElementById("rmHLcbType1")
         var cbElem2 = iframeDoc.getElementById("rmHLcbType2")
         var cbElemPgTitle = iframeDoc.getElementById("rmHLcbPgTitle");
@@ -696,6 +707,7 @@ else
                 tbElemBullet.value = '- ';
                 cbElemIndents.checked = true;
                 cbElemLinks.checked = true;
+                cbElemAutoHL.checked = false;
                 //Kindle settings
                 if(tbKinHLref != null){tbKinHLref.value = '#[[Kindle-Highlights]]';}
                 textElem2.value = '[{%title%}]({%url%}) #[[Roam-Highlights]]';
@@ -711,6 +723,7 @@ else
                 tbElemBullet.value = '';
                 cbElemIndents.checked = false;
                 cbElemLinks.checked = true;
+                cbElemAutoHL.checked = false;
                 //Kindle settings
                 if(tbKinHLref != null){tbKinHLref.value = '[[Kindle-Highlights]]';}
                 textElem2.value = '[{%title%}]({%url%}) [[Obsidian-Highlights]]';
@@ -746,6 +759,7 @@ else
         formatBullets = tbElemBullet.value;
         bIndents = cbElemIndents.checked;
         bLinks = cbElemLinks.checked;
+        bAutoHL = cbElemAutoHL.checked;
         pgRefCase = Number(selPgRefCase.value);
         elipOpt = Number(selElip.value);
         //Kindle settings
@@ -769,6 +783,7 @@ else
         setLocalStorageValue("formatBullets", formatBullets);
         setLocalStorageValue("bIndents", bIndents);
         setLocalStorageValue("bLinks", bLinks);
+        setLocalStorageValue("bAutoHL", bAutoHL);
         setLocalStorageValue("pgRefCase", pgRefCase);
         setLocalStorageValue("elipOpt", elipOpt);
         //Kindle settings
@@ -825,6 +840,7 @@ else
         var tbElemBullet = iframeDoc.getElementById("rmHLtbBullet");
         var cbElemIndents = iframeDoc.getElementById("rmHLcbIndents")
         var cbElemLinks = iframeDoc.getElementById("rmHLcbLinks")
+        var cbElemAutoHL = iframeDoc.getElementById("rmHLcbAutoHL")
         var selPgRefCase = iframeDoc.getElementById("rmHLcaseSel");
         var selElip = iframeDoc.getElementById("rmHLelip");
         //Kindle settings
@@ -880,6 +896,7 @@ else
         formatBullets = tbElemBullet.value;
         bIndents = cbElemIndents.checked;
         bLinks = cbElemLinks.checked;
+        bAutoHL = cbElemAutoHL.checked;
         pgRefCase = Number(selPgRefCase.value);
         elipOpt = Number(selElip.value);
         //Kindle settings
@@ -903,6 +920,7 @@ else
         setLocalStorageValue("formatBullets", formatBullets);
         setLocalStorageValue("bIndents", bIndents);
         setLocalStorageValue("bLinks", bLinks);
+        setLocalStorageValue("bAutoHL", bAutoHL);
         setLocalStorageValue("pgRefCase", pgRefCase);
         setLocalStorageValue("elipOpt", elipOpt);
         setLocalStorageValue("parentTitle", parentTitle);
@@ -3017,19 +3035,19 @@ Roam-highlighter Shortcut Keys (v${verNum})
         {
             if(evt.detail > 1 && evt.detail != 3){return} //Prevents double-click so that if already highlighted then double click still changes to blue which means Roam page link; also allows triple click to work
 
-        if(typeof window.getSelection != "undefined")
-        {
-            var selectedTextStr = window.getSelection().toString();
-            if(selectedTextStr != '')
+            if(typeof window.getSelection != "undefined")
             {
+                var selectedTextStr = window.getSelection().toString();
+                if(selectedTextStr != '')
+                {
                     var selectedElement = evt.target;
                     if(selectedElement.className == "roamJsHighlighter" || selectedElement.className == "roamJsHighlighter pageLink"){return} //Exit if already highlighted as need ability to select multi word highlights to turn blue with Alt + Z
-                //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
-                //We already have the "cut" event listener set to run our code, so this should activate it
-                clickEvent = 0;
-                document.execCommand('cut');
+                    //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
+                    //We already have the "cut" event listener set to run our code, so this should activate it
+                    clickEvent = 0;
+                    document.execCommand('cut');
+                }
             }
-        }
         }
     });
 
