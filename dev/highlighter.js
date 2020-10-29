@@ -2571,10 +2571,12 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var selection = window.getSelection();
             //Create range from selected text
             var range = selection.getRangeAt(0);
-            var allWithinRangeParent = range.commonAncestorContainer;
-
             var startCont = range.startContainer;
-            if(startCont.nodeName != '#text')
+            var startOff = range.startOffset;
+            var endCont = range.endContainer;
+            var endOff = range.endOffset;
+
+            if(startCont.nodeName != '#text') //Typically means they started their selection in a weird spot outside the text element. Often happens when trying to make sure you don't miss any text.
             {
                 if(startCont.textContent == '' && startCont.innerText == '')
                 {
@@ -2582,15 +2584,34 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     do
                     {
                         startCont = startCont.parentElement;
+                        startOff = 0;
                         if(startCont.innerText){var foundText = startCont.innerText}else{var foundText = ''}
                         if(foundText != '' && foundText){break;}
                         loopCtr++;
                     }while (loopCtr < 10 && startCont.parentElement.nodeName != 'BODY')
                 }
             }
-            var startOff = range.startOffset;
-            var endCont = range.endContainer;
-            var endOff = range.endOffset;
+
+            if(endCont.nodeName != '#text' && endOff == 0) //Typically means user did a triple click selection
+            {
+                if(startCont.parentElement.lastChild.nodeName == '#text')
+                {
+                    endCont = startCont.parentElement.lastChild; //Set to the start selection container to be safe and use last child to get entire element
+                    endOff = endCont.length;
+                }
+                else
+                {
+                    if(startCont.parentElement.lastChild.childNodes[0].nodeName == '#text')
+                    {
+                        endCont = startCont.parentElement.lastChild.childNodes[0];
+                        endOff = endCont.length;
+                    }
+                }
+            }
+
+            range.setStart(startCont, startOff)
+            range.setEnd(endCont, endOff)
+            var allWithinRangeParent = range.commonAncestorContainer;
 
             //Other variables
             var tempLogLevel = 1;
@@ -2721,8 +2742,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 else
                 {
                     if(debugMode != 0){writeToConsole("FIND LOWEST NODE: NO CHILDREN",3);}
-                    //if(inputNodeName == '#text'){inputNodeText = elemInput.textContent;}else{inputNodeText = elemInput.innerHTML;}
-                    if(inputNodeName == '#text'){inputNodeText = elemInput.textContent;}else{inputNodeText = elemInput.innerHTML;}
+                    if(inputNodeName == '#text'){inputNodeText = elemInput.textContent;}else{inputNodeText = elemInput.innerText;}
                     if (typeof inputNodeText == "undefined"){inputNodeText = '';}
                     thisHierarchyLevel += ':' + inputNodeText.trim();
                     if(inputNodeText.trim() != '')
