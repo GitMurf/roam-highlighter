@@ -1,7 +1,18 @@
 //Date: October 29, 2020
-var verNum = '2.0'; //Allow highlights via selection without pressing Ctrl + X
+var verNum = '2.0.1'; //Turn off auto HL by default on update and deactivate when side window is hidden
 var getPage = location.href;
 var iframeDoc = document;
+
+//Clear storage settings to start fresh for testing
+/*
+var useBrowser = chrome
+useBrowser.storage.local.clear(function() {
+    var error = useBrowser.runtime.lastError;
+    if (error) {
+        console.error(error);
+    }
+});
+*/
 //Default settings in case no local storage saved
 var sameBlock = Number(0);
 var parentTitleArr = 
@@ -24,7 +35,7 @@ var formatBullets = '- ';
 var bHeaders = true;
 var bIndents = true;
 var bLinks = true;
-var bAutoHL = true;
+var bAutoHL = false;
 var pgRefCase = Number(0);
 var elipOpt = Number(0);
 //Kindle settings
@@ -3031,7 +3042,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
     //Add listener for auto highlighting trigger without needing ctrl+X
     document.addEventListener('click', function (evt)
     {
-        if(bAutoHL)
+        if(bAutoHL && showWindow == 1)
         {
             if(evt.detail > 1 && evt.detail != 3){return} //Prevents double-click so that if already highlighted then double click still changes to blue which means Roam page link; also allows triple click to work
 
