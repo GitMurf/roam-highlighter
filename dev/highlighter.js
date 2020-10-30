@@ -2605,19 +2605,79 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var endCont = range.endContainer;
             var endOff = range.endOffset;
 
-            if(startCont.nodeName != '#text') //Typically means they started their selection in a weird spot outside the text element. Often happens when trying to make sure you don't miss any text.
+            //debugMode = 1;
+            if(debugMode != 0)
             {
-                if(startCont.textContent == '' && startCont.innerText == '')
+                writeToConsole('');
+                writeToConsole(selection,1,0);
+                writeToConsole(range,1,0);
+                writeToConsole(startCont,1,0);
+                writeToConsole(endCont,1,0);
+                writeToConsole('startOff: ' + startOff);
+                writeToConsole('endOff: ' + endOff);
+            }
+            //debugMode = 0;
+
+            if(startCont.nodeName != '#text' && startCont.innerText == '') //Typically means they started their selection in a weird spot outside the text element. Often happens when trying to make sure you don't miss any text.
+            {
+                startOff = 0;
+                //Loop through going UP to next parent element until you find one that has a nextsibling which the goal is would be back to your element that you actually tried to select but it went into overflow
+                var loopCtr = 0;
+                do
                 {
-                    var loopCtr = 0;
+                    if(startCont.nextElementSibling)
+                    {
+                        startCont = startCont.nextElementSibling;
+                        break;
+                    }
+                    else
+                    {
+                        startCont = startCont.parentElement;
+                    }
+                    loopCtr++;
+                }while(loopCtr < 20  && startCont.parentElement.nodeName != 'BODY')
+
+                function findFirstChildWithText(startingElement)
+                {
+                    if(startingElement.childElementCount > 0)
+                    {
+                        for (var i=0, childElem; childElem = startingElement.childNodes[i]; i++)
+                        {
+                            var findWithText = findFirstChildWithText(childElem);
+                            if(findWithText != null){return findWithText}
+                        }
+                    }
+                    else
+                    {
+                        if(startingElement.textContent != '')
+                        {
+                            return startingElement;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+
+                    return null
+                }
+                //Loop through children until find first #text node or the child element where the entire text string is held as no #text nodes as all just one element of plain text
+                var findWithText = findFirstChildWithText(startCont);
+                if(findWithText != null){startCont = findWithText}
+                if(startCont.textContent == '')
+                {
+                    loopCtr = 0;
                     do
                     {
                         startCont = startCont.parentElement;
-                        startOff = 0;
                         if(startCont.innerText){var foundText = startCont.innerText}else{var foundText = ''}
                         if(foundText != '' && foundText){break;}
                         loopCtr++;
-                    }while (loopCtr < 10 && startCont.parentElement.nodeName != 'BODY')
+                    }while (loopCtr < 20 && startCont.parentElement.nodeName != 'BODY')
+
+                    //Loop through children until find first #text node or the child element where the entire text string is held as no #text nodes as all just one element of plain text
+                    var findWithText = findFirstChildWithText(startCont);
+                    if(findWithText != null){startCont = findWithText}
                 }
             }
 
@@ -2641,6 +2701,19 @@ Roam-highlighter Shortcut Keys (v${verNum})
             range.setStart(startCont, startOff)
             range.setEnd(endCont, endOff)
             var allWithinRangeParent = range.commonAncestorContainer;
+
+            //debugMode = 1;
+            if(debugMode != 0)
+            {
+                writeToConsole('');
+                writeToConsole(selection,1,0);
+                writeToConsole(range,1,0);
+                writeToConsole(startCont,1,0);
+                writeToConsole(endCont,1,0);
+                writeToConsole('startOff: ' + startOff);
+                writeToConsole('endOff: ' + endOff);
+            }
+            //debugMode = 0;
 
             //Other variables
             var tempLogLevel = 1;
