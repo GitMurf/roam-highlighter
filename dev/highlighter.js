@@ -3442,12 +3442,25 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 for(var i = 0; i < elemsInSameHighlight.length; i++)
                 {
                     eachElement = elemsInSameHighlight.item(i);
-                    eachElement.setAttribute("hlHeader", "1");
-                    eachElement.style.setProperty("color", "red", "important");
+                    //Check if already set
+                    var foundHeader = eachElement.getAttribute('hlheader');
+                    if(foundHeader == null)
+                    {
+                        eachElement.setAttribute("hlHeader", "1");
+                        eachElement.style.setProperty("color", "red", "important");
+                    }else if(foundHeader == '1')
+                    {
+                        eachElement.setAttribute("hlHeader", "2");
+                        eachElement.style.setProperty("color", "darkseagreen", "important");
+                    }else if(foundHeader == '2')
+                    {
+                        eachElement.removeAttribute("hlHeader");
+                        eachElement.style.setProperty("color", "unset", "important");
+                    }
                 }
 
                 //Clear the original user mouse selection
-                document.getSelection().removeAllRanges();
+                //document.getSelection().removeAllRanges();
 
                 //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
                 //We already have the "cut" event listener set to run our code, so this should activate it
