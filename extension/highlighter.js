@@ -1,5 +1,5 @@
 //Date: Nov 1, 2020
-var verNum = '2.1'; //Updated indenting logic to allow going in and out
+var verNum = '2.1.1'; //Indenting bug in Slack chat
 var getPage = location.href;
 var iframeDoc = document;
 
@@ -1420,7 +1420,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
         {
             if(elemSpan.parentElement.classList.contains("c-message__sender_link")) //Slack username link
             {
-                elemSpan.setAttribute("hlHeader", "1");
+                elemSpan.setAttribute("hlHeader", "3");
             }
         }
 
@@ -1642,7 +1642,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
         }
 
-        //if(foundHeader == 1 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '<h6>' + eachHighlight + '</h6>';}
+        if(foundHeader == 3 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '<h6>' + eachHighlight + '</h6>';}
         if(foundHeader == 1 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '||h-out||' + eachHighlight;}
         if(foundHeader == 2 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '||h-in||' + eachHighlight;}
 
