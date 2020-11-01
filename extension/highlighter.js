@@ -1,5 +1,5 @@
-//Date: October 31, 2020
-var verNum = '2.0.3'; //Fix a Slack bug selecting text before message but after username
+//Date: Nov 1, 2020
+var verNum = '2.1'; //Updated indenting logic to allow going in and out
 var getPage = location.href;
 var iframeDoc = document;
 
@@ -1642,7 +1642,9 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
         }
 
-        if(foundHeader == 1 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '<h6>' + eachHighlight + '</h6>';}
+        //if(foundHeader == 1 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '<h6>' + eachHighlight + '</h6>';}
+        if(foundHeader == 1 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '||h-out||' + eachHighlight;}
+        if(foundHeader == 2 && bFoundHeader == false && bFoundUlBullet == false){eachHighlight = '||h-in||' + eachHighlight;}
 
         return eachHighlight;
     }
@@ -2291,7 +2293,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 htmlString = htmlString.split("))").join("^)^)^");
             }
 
-            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]").split("||ul-one||").join("").split("||ul-two||").join("").split("||ul-three||").join("").split("||ul-four||").join("").split(":**__").join(":** __").split(":****").join(":** **").split("^)^)^").join("))");
+            plainText = plainText.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("||h1||").join("<h1>").split("||h2||").join("<h2>").split("||h3||").join("<h3>").split("^)^]^").join(")]]").split("||ul-one||").join("").split("||ul-two||").join("").split("||ul-three||").join("").split("||ul-four||").join("").split(":**__").join(":** __").split(":****").join(":** **").split("^)^)^").join("))").split("||h-out||").join("").split("||h-in||").join("");
             htmlString = htmlString.split("::").join("`::`").split("[[").join("[").split("]]").join("]").split("#").join("`#`").split("|[|[").join("[[").split("|]|]").join("]]").split("|HASHTAG|").join("#").split(")]").join(")").split("))").join(")").split("((").join("(").split("|)|]").join(")]").split("<H1>").join("<`H1`>").split("<H2>").join("<`H2`>").split("<H3>").join("<`H3`>").split("<h1>").join("<`h1`>").split("<h2>").join("<`h2`>").split("<h3>").join("<`h3`>").split("^)^]^").join(")]]").split(":**__").join(":** __").split(":****").join(":** **").split("^)^)^").join("))");
 
             if(plainText.trim().length > 0){plainConcatHighlights += `${plainText}`;}
@@ -2402,6 +2404,25 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 if(bHeaders){eachLine = '<li><h6>' + eachLine + '</h6></li>';}else{eachLine = '<li>' + eachLine + '</li>';}
                 if(indentLevel == 0){eachLine = eachLine.replace('</li>','</li><ul>');}else{eachLine = '</ul>' + eachLine.replace('</li>','</li><ul>');}
                 indentLevel++;
+            }
+
+            if(eachLine.substring(0,13) == '<li>||h-out||')
+            {
+                eachLine = eachLine.split("||h-out||").join('').split("<li>").join('').split("</li>").join('');
+                eachLine = '<li>' + eachLine + '</li>';
+                eachLine = eachLine.replace('</li>','</li><ul>');
+                indentLevel++;
+            }
+
+            if(eachLine.substring(0,12) == '<li>||h-in||')
+            {
+                eachLine = eachLine.split("||h-in||").join('').split("<li>").join('').split("</li>").join('');
+                eachLine = '<li>' + eachLine + '</li>';
+                if(indentLevel > 0)
+                {
+                    eachLine = eachLine + '</ul>';
+                    indentLevel--;
+                }
             }
 
             //if(eachLine.substring(0,9) == '<li>||ul-')
@@ -3267,9 +3288,25 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 for(var i = 0; i < elemsInSameHighlight.length; i++)
                 {
                     eachElement = elemsInSameHighlight.item(i);
-                    eachElement.setAttribute("hlHeader", "1");
-                    eachElement.style.setProperty("color", "red", "important");
+                    //Check if already set
+                    var foundHeader = eachElement.getAttribute('hlheader');
+                    if(foundHeader == null)
+                    {
+                        eachElement.setAttribute("hlHeader", "1");
+                        eachElement.style.setProperty("color", "red", "important");
+                    }else if(foundHeader == '1')
+                    {
+                        eachElement.setAttribute("hlHeader", "2");
+                        eachElement.style.setProperty("color", "darkseagreen", "important");
+                    }else if(foundHeader == '2')
+                    {
+                        eachElement.removeAttribute("hlHeader");
+                        eachElement.style.setProperty("color", "black", "important");
+                    }
+                    //Only do the first item otherwise if you have a multi line highlight it will indent out for each line
+                    break;
                 }
+
                 evt.preventDefault();
                 //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
                 //We already have the "cut" event listener set to run our code, so this should activate it
@@ -3442,12 +3479,27 @@ Roam-highlighter Shortcut Keys (v${verNum})
                 for(var i = 0; i < elemsInSameHighlight.length; i++)
                 {
                     eachElement = elemsInSameHighlight.item(i);
-                    eachElement.setAttribute("hlHeader", "1");
-                    eachElement.style.setProperty("color", "red", "important");
+                    //Check if already set
+                    var foundHeader = eachElement.getAttribute('hlheader');
+                    if(foundHeader == null)
+                    {
+                        eachElement.setAttribute("hlHeader", "1");
+                        eachElement.style.setProperty("color", "red", "important");
+                    }else if(foundHeader == '1')
+                    {
+                        eachElement.setAttribute("hlHeader", "2");
+                        eachElement.style.setProperty("color", "darkseagreen", "important");
+                    }else if(foundHeader == '2')
+                    {
+                        eachElement.removeAttribute("hlHeader");
+                        eachElement.style.setProperty("color", "black", "important");
+                    }
+                    //Only do the first item otherwise if you have a multi line highlight it will indent out for each line
+                    break;
                 }
 
-                //Clear the original user mouse selection
-                document.getSelection().removeAllRanges();
+                //Clear the original user mouse selection //Update: Want to leave it so can quickly toggle betweeen options above
+                //document.getSelection().removeAllRanges();
 
                 //Force the "cut" event because the clipboardData event setData doesn't work unless activated from a cut/copy event.
                 //We already have the "cut" event listener set to run our code, so this should activate it
