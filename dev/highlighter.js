@@ -2604,6 +2604,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
             var startOff = range.startOffset;
             var endCont = range.endContainer;
             var endOff = range.endOffset;
+            var loopCtr = 0;
 
             //debugMode = 1;
             if(debugMode != 0)
@@ -2618,11 +2619,48 @@ Roam-highlighter Shortcut Keys (v${verNum})
             }
             //debugMode = 0;
 
+            function findFirstChildWithText(startingElement)
+            {
+                if(startingElement.childElementCount > 0)
+                {
+                    for (var i=0, childElem; childElem = startingElement.childNodes[i]; i++)
+                    {
+                        var findWithText = findFirstChildWithText(childElem);
+                        if(findWithText != null){return findWithText}
+                    }
+                }
+                else
+                {
+                    if(startingElement.textContent != '')
+                    {
+                        return startingElement;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+
+                return null
+            }
+
+            if(startCont.nodeName != '#text' && startCont.childElementCount > 0 && startOff > 0) //Start before the line of text so need to find the first text node after it
+            {
+                //start container offset is set to the nth element number if an element and not a #text node
+                startCont = startCont.childNodes[startOff + 1];
+                var findFirst = findFirstChildWithText(startCont);
+                if(findFirst != null)
+                {
+                    startCont = findFirst;
+                    startOff = 0;
+                }
+            }
+
             if(startCont.nodeName != '#text' && startCont.innerText == '') //Typically means they started their selection in a weird spot outside the text element. Often happens when trying to make sure you don't miss any text.
             {
                 startOff = 0;
                 //Loop through going UP to next parent element until you find one that has a nextsibling which the goal is would be back to your element that you actually tried to select but it went into overflow
-                var loopCtr = 0;
+                loopCtr = 0;
                 do
                 {
                     if(startCont.nextElementSibling)
@@ -2637,30 +2675,6 @@ Roam-highlighter Shortcut Keys (v${verNum})
                     loopCtr++;
                 }while(loopCtr < 20  && startCont.parentElement.nodeName != 'BODY')
 
-                function findFirstChildWithText(startingElement)
-                {
-                    if(startingElement.childElementCount > 0)
-                    {
-                        for (var i=0, childElem; childElem = startingElement.childNodes[i]; i++)
-                        {
-                            var findWithText = findFirstChildWithText(childElem);
-                            if(findWithText != null){return findWithText}
-                        }
-                    }
-                    else
-                    {
-                        if(startingElement.textContent != '')
-                        {
-                            return startingElement;
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-
-                    return null
-                }
                 //Loop through children until find first #text node or the child element where the entire text string is held as no #text nodes as all just one element of plain text
                 var findWithText = findFirstChildWithText(startCont);
                 if(findWithText != null){startCont = findWithText}
@@ -2683,20 +2697,44 @@ Roam-highlighter Shortcut Keys (v${verNum})
 
             if(endCont.nodeName != '#text' && endOff == 0) //Typically means user did a triple click selection
             {
-                if(startCont.parentElement.lastChild.nodeName == '#text')
+                if(startCont.parentElement.lastChild)
                 {
-                    endCont = startCont.parentElement.lastChild; //Set to the start selection container to be safe and use last child to get entire element
-                    endOff = endCont.length;
-                }
-                else
-                {
-                    if(startCont.parentElement.lastChild.childNodes[0].nodeName == '#text')
+                    if(startCont.parentElement.lastChild.nodeName == '#text')
                     {
-                        endCont = startCont.parentElement.lastChild.childNodes[0];
+                        endCont = startCont.parentElement.lastChild; //Set to the start selection container to be safe and use last child to get entire element
                         endOff = endCont.length;
                     }
+                    else
+                    {
+                        if(startCont.parentElement.lastChild.childNodes[0])
+                        {
+                            if(startCont.parentElement.lastChild.childNodes[0].nodeName == '#text')
+                            {
+                                endCont = startCont.parentElement.lastChild.childNodes[0];
+                                endOff = endCont.length;
+                            }
+                        }
+                    }
+                }
+
+                if(endCont.textContent == '')
+                {
+                    //Typically when selected text "overflows" past an element into like an image. Loop through parents until you find one with innerText.
+                    //That can be your end point and with endOff zero then it will highlight up until the beginning of this element
+                    loopCtr = 0;
+                    do
+                    {
+                        endCont = endCont.parentElement;
+                        loopCtr++;
+                    }while(loopCtr < 20 && endCont.textContent == '' && endCont.parentElement.nodeName != 'BODY')
+
+                    endOff = 0;
                 }
             }
+            if(startCont.childNodes[0]){if(startCont.childNodes[0].nodeName == '#text' && startCont.childNodes[0].textContent != ''){startCont = startCont.childNodes[0]}}
+            if(startCont.childNodes[1]){if(startCont.childNodes[1].nodeName == '#text' && startCont.childNodes[1].textContent != ''){startCont = startCont.childNodes[1]}}
+            if(endCont.childNodes[0]){if(endCont.childNodes[0].nodeName == '#text' && endCont.childNodes[0].textContent != ''){endCont = endCont.childNodes[0]}}
+            if(endCont.childNodes[1]){if(endCont.childNodes[1].nodeName == '#text' && endCont.childNodes[1].textContent != ''){endCont = endCont.childNodes[1]}}
 
             range.setStart(startCont, startOff)
             range.setEnd(endCont, endOff)
