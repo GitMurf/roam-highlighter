@@ -15,7 +15,7 @@ useBrowser.storage.local.clear(function() {
 */
 //Default settings in case no local storage saved
 var sameBlock = Number(0);
-var parentTitleArr = 
+var parentTitleArr =
 [
     ['*NONE',''],
     ['*Roam','[{%title%}]({%url%}) #[[Roam-Highlights]]'],
@@ -43,6 +43,7 @@ var kindleNotesAddress = 'read.amazon.com/notebook';
 var kindleNotesLoginAddress = 'read.amazon.com/kp/notebook';
 var kindleNotesAddressFR = 'lire.amazon.fr/notebook'; //French
 var kindleNotesAddressDE = 'lesen.amazon.de/notebook'; //German
+var kindleNotesAddressJP = 'read.amazon.co.jp/notebook'; //Japanese
 var kindleHLref = "#[[Kindle-Highlights]]";
 var bLocation = true;
 var bColor = true;
@@ -200,7 +201,7 @@ async function startFunction()
                 break;
             case "parentTitleArr":
                 if(varResult !== undefined){parentTitleArr = varResult;}
-                /*parentTitleArr = 
+                /*parentTitleArr =
                 [
                     ['*NONE',''],
                     ['*Roam','[{%title%}]({%url%}) #[[Roam-Highlights]]'],
@@ -496,7 +497,7 @@ else
         butSave.click();
     });
 
-    if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE))
+    if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE) || getPage.includes(kindleNotesAddressJP))
     {
         //Text box for Kindle-highlights tag
         var labelKindle4 = createNewElement('label','Highlights #Tag: ','rmHLkingleTb1','font-size:12px;line-height:normal;color:black;font-weight:bold;display:inline;margin-right:5px;vertical-align:middle;padding:0px',divKindle,'','');
@@ -683,7 +684,7 @@ else
         //var divElemMain = iframeDoc.getElementById("rmHLmain");
         var selElemPT = iframeDoc.getElementById("rmHLparentTitle");
         var textElem2 = iframeDoc.getElementById("rmHLta2");
-        var selElem = iframeDoc.getElementById("rmHLsel"); 
+        var selElem = iframeDoc.getElementById("rmHLsel");
         var tbSizeW = iframeDoc.getElementById("rmHLtbSize");
         var tbSizeH = iframeDoc.getElementById("rmHLtbSize2");
         var tbElemBold = iframeDoc.getElementById("rmHLtbBold");
@@ -994,7 +995,7 @@ else
 
         if(butMax.innerHTML == "Expand")
         {
-            if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE))
+            if(getPage.includes(kindleNotesAddress) || getPage.includes(kindleNotesLoginAddress) || getPage.includes(kindleNotesAddressFR) || getPage.includes(kindleNotesAddressDE) || getPage.includes(kindleNotesAddressJP))
             {
                 divElemMain.style.width = "90%";
                 divElemMain.style.height = "80%";
@@ -1162,7 +1163,7 @@ Roam-highlighter Shortcut Keys (v${verNum})
                       }
                       const dateStr = foundDate.getDate();
                       const monthStr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][foundDate.getMonth()];
-                      
+
                       return `[[${monthStr} ${dateStr}${nth(dateStr)}, ${foundDate.getFullYear()}]]`;
                 }
             }
